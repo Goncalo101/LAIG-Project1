@@ -558,6 +558,35 @@ class MySceneGraph {
                 var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
 
                 this.primitives[primitiveId] = rect;
+            } else if (primitiveType == 'cylinder') {
+                // base
+                var base = this.reader.getFloat(grandChildren[0], 'base');
+                if (!(base != null && !isNaN(base)))
+                    return "unable to parse base radius of primitive with ID = " + primitiveId;
+                
+                // top
+                var top = this.reader.getFloat(grandChildren[0], 'top');
+                if (!(top != null && !isNaN(top)))
+                    return "unable to parse top radius of primitive with ID = " + primitiveId;
+                
+                // height
+                var height = this.reader.getFloat(grandChildren[0], 'height');
+                if (!(height != null && !isNaN(height)))
+                    return "unable to parse top height of primitive with ID = " + primitiveId;
+
+                // slices
+                var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                if (!(slices != null && !isNaN(slices)))
+                    return "unable to parse number of slices of primitive with ID = " + primitiveId;
+
+                // stacks
+                var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
+                if (!(stacks != null && !isNaN(stacks)))
+                    return "unable to parse the number of stacks of primitive with ID = " + primitiveId;
+
+                var cylinder = new MyCylinder(this.scene, base, top, height, slices, stacks);
+
+                this.primitives[primitiveId] = cylinder;
             }
             else {
                 console.warn("To do: Parse other primitives.");
@@ -740,6 +769,6 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['demoRectangle'].display();
+        this.primitives['cylinder'].display();
     }
 }
