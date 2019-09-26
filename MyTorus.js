@@ -42,12 +42,12 @@ class MyTorus extends CGFobject {
 
 
         for (var i = 0; i < this.loops; i++) {
-            for (var j = 0; j  < this.slices; j++) {
+            for (var j = 0; j < this.slices; j++) {
 
-                var curcur = i * this.loops + j;
-                var curnext = i * this.loops + (j + 1) % this.slices;
-                var nextcur = (i+1) % this.loops * this.loops + j;
-                var nextnext = (i+1) % this.loops * this.loops + (j + 1) % this.slices;
+                var curcur = i * this.slices + j;
+                var curnext = i * this.slices + ((j + 1) % this.slices);
+                var nextcur = ((i+1) % this.loops) * this.slices + j;
+                var nextnext = ((i+1) % this.loops) * this.slices + ((j + 1) % this.slices);
 
                 this.indices.push(curnext, curcur, nextcur);
                 this.indices.push(curnext, nextcur, nextnext);
