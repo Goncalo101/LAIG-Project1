@@ -41,6 +41,11 @@ class MyCylinder extends CGFobject {
             var temp = [];
             for (var i = 0; i < this.slices; i++) {
                 temp.push(index++);
+
+                this.texCoords.push((1 / this.slices) * i, 1,
+                    (1 / this.slices) * i, 0,
+                    (1 / this.slices) * (i + 1), 0,
+                    (1 / this.slices) * (i + 1), 1);
             }
 
             slice_indices.push(temp);
@@ -55,70 +60,6 @@ class MyCylinder extends CGFobject {
             this.indices.push(slice_indices[stack][this.slices - 1], slice_indices[stack][0], slice_indices[stack + 1][this.slices - 1]);
             this.indices.push(slice_indices[stack + 1][this.slices - 1], slice_indices[stack][0], slice_indices[stack + 1][0]);
         }
-
-        // for (var i = 0; i < this.height; i += stack_height) {
-        //     var widening_factor = ((this.radius_top - this.radius_bottom) / this.stacks) * i + this.radius_bottom;
-        //     for (var j = 0; j < this.slices; j++) {
-        //         var sa = Math.sin(ang);
-        //         var saa = Math.sin(ang + alphaAng);
-        //         var ca = Math.cos(ang);
-        //         var caa = Math.cos(ang + alphaAng);
-
-        //         this.vertices.push(ca * widening_factor, -sa * widening_factor, i + stack_height);
-        //         this.vertices.push(ca * widening_factor, -sa * widening_factor, i);
-        //         this.vertices.push(caa * widening_factor, -saa * widening_factor, i);
-        //         this.vertices.push(caa * widening_factor, -saa * widening_factor, i + stack_height);
-
-        //         // Compute normal direction
-        //         var normal = [
-        //             caa,
-        //             0,
-        //             -saa
-        //         ]
-
-        //         var normal2 = [
-        //             ca,
-        //             0,
-        //             -sa
-        //         ]
-
-        //         // Normalize vector
-        //         var nsize = Math.sqrt(
-        //             normal[0] * normal[0] +
-        //             normal[1] * normal[1] +
-        //             normal[2] * normal[2]
-        //         )
-
-        //         normal[0] /= nsize
-        //         normal[1] /= nsize
-        //         normal[2] /= nsize
-
-        //         var nsize = Math.sqrt(
-        //             normal2[0] * normal2[0] +
-        //             normal2[1] * normal2[1] +
-        //             normal2[2] * normal2[2]
-        //         )
-
-        //         normal2[0] /= nsize
-        //         normal2[1] /= nsize
-        //         normal2[2] /= nsize
-
-        //         // push normal once for each vertex of this rectangle
-        //         this.normals.push(...normal2)
-        //         this.normals.push(...normal2)
-        //         this.normals.push(...normal)
-        //         this.normals.push(...normal)
-
-        //         // this.texCoords.push((1 / this.slices) * j, 1,
-        //         //     (1 / this.slices) * j, 0,
-        //         //     1 / this.slices * (j + 1), 0,
-        //         //     1 / this.slices * (j + 1), 1);
-
-        //         // this.indices.push(4 * j, (4 * j + 3), (4 * j + 2), (4 * j + 1), 4 * j)
-        //         this.indices.push(4 * j, (4 * j + 3), (4 * j + 2), (4 * j + 2), (4 * j + 1), 4 * j)
-        //         ang += alphaAng;
-        //     }
-        // }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
