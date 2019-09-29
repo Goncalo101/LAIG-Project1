@@ -1,7 +1,10 @@
-class MySemiSphere extends CGFobject {
-    constructor(scene, slices, stacks) {
+class MySphere extends CGFobject {
+
+
+    constructor(scene, id, radius, slices, stacks) {
         super(scene);
 
+        this.radius = radius;
         this.slices = slices;
         this.stacks = stacks;
 
@@ -22,7 +25,7 @@ class MySemiSphere extends CGFobject {
         for (var i = 0; i < this.stacks + 1; i++) {
             for (var j = 0; j < this.slices; j++) {
 
-                this.vertices.push(Math.cos(alpha * j) * Math.cos(betaSphere * i), Math.sin(alpha * j) * Math.cos(betaSphere * i), Math.sin(betaSphere * i));
+                this.vertices.push(this.radius * Math.cos(alpha * j) * Math.cos(betaSphere * i),this.radius * Math.sin(alpha * j) * Math.cos(betaSphere * i), this.radius * Math.sin(betaSphere * i));
 
                 this.normals.push(Math.cos(alpha * j) * Math.cos(betaSphere * i), Math.sin(alpha * j) * Math.cos(betaSphere * i), Math.sin(betaSphere * i));
 
@@ -30,6 +33,20 @@ class MySemiSphere extends CGFobject {
 
             }
         }
+
+        for (var i = 0; i < this.stacks + 1; i++) {
+            for (var j = 0; j < this.slices; j++) {
+
+                this.vertices.push(this.radius * Math.cos(alpha * j) * Math.cos(betaSphere * i),this.radius * Math.sin(alpha * j) * Math.cos(betaSphere * i), -this.radius * Math.sin(betaSphere * i));
+
+                this.normals.push(Math.cos(alpha * j) * Math.cos(betaSphere * i), Math.sin(alpha * j) * Math.cos(betaSphere * i), -Math.sin(betaSphere * i));
+
+                this.texCoords.push(-(Math.cos(j * alpha) * Math.cos(betaSphere * i) + 1) / 2, (Math.sin( alpha * j) * Math.cos(betaSphere * i) + 1) / 2);
+
+            }
+        }
+
+       
 
         for (var i = 0; i < this.stacks; i++) {
             for (var j = 0; j  < this.slices; j++) {
@@ -46,6 +63,24 @@ class MySemiSphere extends CGFobject {
 
             }
         }
+
+        for (var i = 0; i <= this.stacks; i++) {
+            for (var j = 0; j  < this.slices; j++) {
+
+                if (j == this.slices - 1) {
+                   
+                    this.indices.push(this.slices * ((i + this.stacks) + 1), this.slices * (i + this.stacks), j + this.slices * ((i + this.stacks) + 1));
+                    this.indices.push(j + this.slices * ((i + this.stacks) + 1), this.slices * (i + this.stacks), j + this.slices * (i + this.stacks));
+                } else {
+                 
+                    this.indices.push(1 + j + this.slices * (i + this.stacks), j + this.slices * (i + this.stacks), j + this.slices * ((i + this.stacks) + 1));
+                    this.indices.push(1 + j + this.slices * ((i + this.stacks) + 1) , 1 + j + this.slices * (i + this.stacks), j + this.slices * ((i + this.stacks) + 1));
+                }
+
+            }
+        }
+
+        
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
