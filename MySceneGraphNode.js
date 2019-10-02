@@ -9,12 +9,11 @@ class MySceneGraphNode {
      * @param {CGFappearance} appearance Appearance to be applied, can be inherited from parent or class-defined
      * @param primitive Primitive to be drawn, defined only by leaf nodes
      */
-    constructor(id, transform, appearance, texture, primitive) {
+    constructor(id, transform, appearance, primitive) {
         this.id = id;
         this.primitive = primitive;
         this.transform = transform;
         this.appearance = appearance; 
-        this.texture = texture;
         this.visited = false;
         this.adjacent = [];
     }

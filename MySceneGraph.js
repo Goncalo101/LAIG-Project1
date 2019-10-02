@@ -849,6 +849,39 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
+    dfs(root_node) {
+        this.nodes.forEach(element => {
+            element.visited = false;
+        });
+
+        if (!root_node.visited) {
+            dfs_visit(root_node);
+        }
+    }
+
+    dfs_display(node) {
+        node.visited = true;
+        
+        if (node.primitive !== undefined) {
+            node.primitive.display();
+            return;
+        }
+
+        node.adjacent.forEach(element => {
+            if (!element.dest.visited) {
+                if (element.dest.transform !== undefined) {
+                    this.scene.multMatrix(element.dest.transform);
+                }
+
+                if (element.dest.appearance !== undefined) {
+                    element.dest.appearance.apply();
+                }
+
+                this.dfs_display(element.dest);
+            }
+        });
+    }
+
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
