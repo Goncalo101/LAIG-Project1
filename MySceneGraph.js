@@ -391,9 +391,43 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
+        var children = texturesNode.children;
 
-        //For each texture in textures block, check ID and file URL
-        this.onXMLMinorError("To do: Parse textures.");
+        this.textures = [];
+
+        var nodeNames = [];
+
+
+        // Any number of textures.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "texture") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current texture.
+            var textureID = this.reader.getString(children[i], 'id');
+            if (textureID == null)
+                return "no ID defined for texture";
+
+            // Checks for repeated IDs.
+            if (this.textures[textureID] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureID + ")";
+
+            
+            // Get file of the current texture.
+            var textureFile = this.reader.getString(children[i], 'file');
+            if (textureFile == null)
+                return "no file defined for texture (conflict: ID = " + textureID + ")";
+
+            this.textures[textureID] = new CGFappearance(this.scene);
+            this.textures[textureID].loadTexture(textureFile);
+            this.textures[textureID].setTextureWrap('REPEAT', 'REPEAT');            
+
+        }
+
+        this.log("Parsed textures");
         return null;
     }
 
@@ -426,8 +460,6 @@ class MySceneGraph {
             if (this.materials[materialID] != null)
                 return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
 
             this.materials[materialID] = new CGFappearance(this.scene);
 
@@ -456,6 +488,24 @@ class MySceneGraph {
                     return "tag <" + grandChildren[j].nodeName + "> must be unique for each material (conflict: ID = " + materialID + ")";
 
                 if (grandChildren[j].nodeName == "emission"){
+
+                    var r = this.reader.getFloat(grandChildren[j], 'r');
+                    if (!(r != null && !isNaN(r) && r >= 0.0 && r <= 1.0))
+                        return "unable to parse r of emission property of the material with ID = " + materialID;
+
+                    var g = this.reader.getFloat(grandChildren[j], 'g');
+                    if (!(g != null && !isNaN(g) && g >= 0.0 && g <= 1.0))
+                        return "unable to parse g of emission property of the material with ID = " + materialID;
+
+                    var b = this.reader.getFloat(grandChildren[j], 'b');
+                    if (!(b != null && !isNaN(b) && b >= 0.0 && b <= 1.0))
+                        return "unable to parse b of emission property of the material with ID = " + materialID;
+
+                    var a = this.reader.getFloat(grandChildren[j], 'a');
+                    if (!(a != null && !isNaN(a) && a >= 0.0 && a <= 1.0))
+                        return "unable to parse a of emission property of the material with ID = " + materialID;
+
+                    this.materials[materialID].setEmission(r, g, b, a);
 
                 } else if (grandChildren[j].nodeName == "ambient"){
 
