@@ -872,14 +872,57 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
-            this.onXMLMinorError("To do: Parse components.");
             // Transformations
 
-            // Materials
+            // var transformation;
 
-            // Texture
+            // var transformationChildren = grandChildren[transformationIndex].children;
+
+            // // using reference for transformation
+            // if (transformationChildren.length == 1 && transformationChildren[0].nodeName == "transformationref"){ 
+
+            //     // Get id of the current transformation.
+            //     var transformationID = this.reader.getString(transformationChildren[0], 'id');
+            //     if (transformationID == null)
+            //         return "no ID defined for transformation in component with ID = " + componentID;
+
+            //     if (transformations[transformationID] == null)
+            //         return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
+
+            //     transformation = transformations[transformationID];
+
+            // } else {
+
+            //     // TODO
+
+            // }
+
+            // // Materials
+
+            // var materials = [];
+
+            // var materialsChildren = grandChildren[materialsIndex].children;
+
+            // for (var j = 0; j < materialsChildren.length; j++){
+
+            //     // Get id of the current material.
+            //     var materialID = this.reader.getString(materialsChildren[j], 'id');
+            //     if (materialID == null)
+            //         return "no ID defined for material in component with ID = " + componentID;
+
+                                
+
+            //     if (materials[transformationID] == null)
+            //         return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
+
+            //     transformation = transformations[transformationID];
+            // }
+
+            // // Texture
 
             // Children
+
+            // var node = MySceneGraphNode(componentID, transformation);
         }
     }
 
@@ -1034,11 +1077,79 @@ class MySceneGraph {
     displayScene() {
         //To do: Create display loop for transversing the scene graph
 
+        this.scene.pushMatrix();
+
+        var triangle1 = new MyTriangle(this.scene, 6464, 0, 0, 1, 1, 0, 0);
+        var triangle2 = new MyTriangle(this.scene, 6464, 0, 1, 0, 1, 0, 0);
+
+        this.scene.translate(0, 0.5, 0);  // here
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.75, 0, 0);
+        triangle1.display();
+        triangle2.display();
+        this.scene.popMatrix();
+
+        this.scene.rotate(-Math.PI/2, 0,1,0);
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.75, 0, 0);
+        triangle1.display();
+        triangle2.display();
+        this.scene.popMatrix();
+
+        this.scene.rotate(-Math.PI/2, 0,1,0);
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.75, 0, 0);
+        triangle1.display();
+        triangle2.display();
+        this.scene.popMatrix();
+
+        this.scene.rotate(-Math.PI/2, 0,1,0);
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.75, 0, 0);
+        triangle1.display();
+        triangle2.display();
+        this.scene.popMatrix();
+
+
+        this.scene.popMatrix();
+
+
+
+        this.scene.pushMatrix();
+
+        // this.scene.translate(0,0,0);
+
+        // this.scene.scale(7, 5, 7);
+
+        this.scene.rotate(-Math.PI/2, 1,0,0);
+
+        
+        var cylL = new MyCylinder(this.scene, 0.75, 0.75, 4, 10, 6);
+        var cylS = new MyCylinder(this.scene, 1.25, 0.01, 1.5, 8, 3);
+
+        cylL.display();
+
+        this.scene.pushMatrix();
+
+        this.scene.translate(0,0,4);
+
+        cylS.display();
+
+        this.scene.popMatrix();
+
+        
+
         //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['cylinder'].display();
-        this.primitives['demoTriangle'].display();
-        this.primitives['demoRectangle'].display();
-        this.primitives['demoSphere'].display();
-        this.primitives['demoTorus'].display();
+        // this.primitives['cylinder'].display();
+        // this.primitives['demoTriangle'].display();
+        // this.primitives['demoRectangle'].display();
+        // this.primitives['demoSphere'].display();
+        // this.primitives['demoTorus'].display();
+
+        this.scene.popMatrix();
     }
 }

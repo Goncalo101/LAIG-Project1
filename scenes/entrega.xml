@@ -1,0 +1,202 @@
+<lxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="30" y="15" z="30" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <globals>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="demoTextureTrunk" file="scenes/images/trunk-image.jpg" />
+        <texture id="demoTextureLeaves" file="scenes/images/leaves.jpg" />
+        <texture id="demoTextureRock" file="scenes/images/rocks.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransformTriangle">
+            <translate x="0.75" y="0" z="0" />
+        </transformation>
+        <transformation id="demoRotateTriangle">
+            <rotate axis="y" angle="-90" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="demoTriangle1">
+            <triangle x1="0" y1="1" x2="0" y2="0.0" x3="1" y3="0.0"/>
+        </primitive>
+        <primitive id="demoTriangle2">
+            <triangle x1="0" y1="1" x2="1" y2="0.0" x3="0" y3="0.0"/>
+        </primitive>
+        <!-- <primitive id="demoRectangle">
+            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive> -->
+        <!-- <primitive id="demoSphere">
+            <sphere radius="0.5" slices="5" stacks="10" />
+        </primitive> -->
+        <!-- <primitive id="demoTorus">
+            <torus inner="0.5" outer="3" slices="10" loops="6" />
+        </primitive> -->
+        <primitive id="demoCylinderL">
+            <cylinder base="0.75" top="0.75" height="4.0" slices="10" stacks="6" />
+        </primitive>
+        <primitive id="demoCylinderS">
+            <cylinder base="1.25" top="0.01" height="1.5" slices="8" stacks="3" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="demoRoot">
+            <transformation>
+                
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="demoCompTriangles" />
+            </children>
+        </component>
+
+        <component id="demoCompCylinders">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTextureTrunk"/>
+            <children>
+                <primitiveref id="demoCylinderL" />
+                <componentref id="demoCompCylinderSmall" />
+            </children>
+        </component>
+
+        <component id="demoCompCylinderSmall">
+            <transformation>
+                <translate x="0" y="0" z="4" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTextureRock"/>
+            <children>
+                <primitiveref id="demoCylinderS" />
+            </children>
+        </component>
+
+
+
+        <component id="demoCompTriangles">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="demoTextureLeaves"/>
+            <children>
+                <primitiveref id="demoCompSoloTriangle" />
+                <componentref id="demoCompTrianglesRotate1" />
+            </children>
+        </component>
+
+        <component id="demoCompSoloTriangle">
+            <transformation>
+                <transformationref id="demoTransformTriangle" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoTriangle1" />
+                <primitiveref id="demoTriangle2" />
+            </children>
+        </component>
+
+        <component id="demoCompTrianglesRotate1">
+            <transformation>
+                <transformationref id="demoRotateTriangle" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="demoCompSoloTriangle" />
+                <componentref id="demoCompTrianglesRotate2" />
+            </children>
+        </component>
+
+        <component id="demoCompTrianglesRotate2">
+            <transformation>
+                <transformationref id="demoRotateTriangle" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="demoCompSoloTriangle" />
+                <componentref id="demoCompTrianglesRotate3" />
+            </children>
+        </component>
+
+        <component id="demoCompTrianglesRotate3">
+            <transformation>
+                <transformationref id="demoRotateTriangle" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="demoCompSoloTriangle" />
+            </children>
+        </component>
+
+
+
+
+        <component id="demoRoot">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <scale x="2" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTextureTrunk"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+            </children>
+        </component>
+    </components>  
+</lxs>

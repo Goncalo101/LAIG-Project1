@@ -13,7 +13,7 @@ class MySceneGraphNode {
         this.id = id;
         this.primitive = primitive;
         this.transform = transform;
-        this.appearance = appearance; 
+        this.material = material;
         this.visited = false;
         this.adjacent = [];
     }
