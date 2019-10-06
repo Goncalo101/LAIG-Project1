@@ -51,13 +51,16 @@
 
     <primitives>
         <primitive id="demoTriangle1">
-            <triangle x1="0" y1="1" x2="0" y2="0.0" x3="1" y3="0.0"/>
+            <triangle x1="0" y1="2" x2="0" y2="1.0" x3="1" y3="1.0"/>
         </primitive>
         <primitive id="demoTriangle2">
-            <triangle x1="0" y1="1" x2="1" y2="0.0" x3="0" y3="0.0"/>
+            <triangle x1="0" y1="2" x2="1" y2="1.0" x3="0" y3="1.0"/>
         </primitive>
-        <primitive id="demoRectangle">
-            <rectangle x1="0" y1="2" x2="-1" y2="1" />
+        <primitive id="demoRectangleF">
+            <rectangle x1="0" y1="-1" x2="0" y2="1" />
+        </primitive>
+        <primitive id="demoRectangleB">
+            <rectangle x1="2" y1="-1" x2="0" y2="1" />
         </primitive>
         <primitive id="demoSphere">
             <sphere radius="1.0" slices="10" stacks="10" />
@@ -96,7 +99,8 @@
             </materials>
             <texture id="demoTextureTrunk"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="demoRectangleF" />
+                <primitiveref id="demoRectangleB" />
                 <componentref id="demoBaseRectangle2" />
                 <componentref id="demoBaseRectangle3" />
                 <componentref id="demoBaseRectangle4" />
@@ -112,7 +116,8 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="demoRectangleF" />
+                <primitiveref id="demoRectangleB" />
             </children>
         </component>
 
@@ -125,7 +130,8 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="demoRectangleF" />
+                <primitiveref id="demoRectangleB" />
             </children>
         </component>
         
@@ -138,7 +144,8 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="demoRectangleF" />
+                <primitiveref id="demoRectangleB" />
             </children>
         </component>
 
@@ -154,9 +161,9 @@
             </children>
         </component>
 
-        <component id="demoBaseSphere">
+        <component id="demoBaseTorus">
             <transformation>
-                <translate x="4.0" y="0.0" z="0.0"/>
+                <translate x="0.0" y="4.0" z="0.0"/>
             </transformation>
             <materials>
                 <material id="demoMaterial" />

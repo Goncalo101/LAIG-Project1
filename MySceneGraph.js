@@ -1145,16 +1145,21 @@ class MySceneGraph {
         this.scene.popMatrix();
 
         var rect = new MyRectangle(this.scene, "", 0, 2, -1, 1);
+        var rect2 = new MyRectangle(this.scene, "" , 2, 0, -1, 1);
 
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
         rect.display();
+        rect2.display();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);
         rect.display();
+        rect2.display();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);
         rect.display();
+        rect2.display();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);
         rect.display();
+        rect2.display();
         this.scene.popMatrix();
 
         var torus = new MyTorus(this.scene, "", 0.5, 1.5, 10, 10);
