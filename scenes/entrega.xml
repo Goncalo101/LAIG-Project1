@@ -44,6 +44,9 @@
         <transformation id="demoRotateTriangle">
             <rotate axis="y" angle="-90" />
         </transformation>
+        <transformation id="transformRectangle">
+            <rotate axis="y" angle="90" />
+        </transformation>
     </transformations>
 
     <primitives>
@@ -53,15 +56,15 @@
         <primitive id="demoTriangle2">
             <triangle x1="0" y1="1" x2="1" y2="0.0" x3="0" y3="0.0"/>
         </primitive>
-        <!-- <primitive id="demoRectangle">
-            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
-        </primitive> -->
-        <!-- <primitive id="demoSphere">
-            <sphere radius="0.5" slices="5" stacks="10" />
-        </primitive> -->
-        <!-- <primitive id="demoTorus">
-            <torus inner="0.5" outer="3" slices="10" loops="6" />
-        </primitive> -->
+        <primitive id="demoRectangle">
+            <rectangle x1="0" y1="2" x2="-1" y2="1" />
+        </primitive>
+        <primitive id="demoSphere">
+            <sphere radius="1.0" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="demoTorus">
+            <torus inner="0.5" outer="1.5" slices="10" loops="10" />
+        </primitive>
         <primitive id="demoCylinderL">
             <cylinder base="0.75" top="0.75" height="4.0" slices="10" stacks="6" />
         </primitive>
@@ -81,6 +84,86 @@
             <texture id="none"/>
             <children>
                 <componentref id="demoCompTriangles" />
+            </children>
+        </component>
+
+        <component id="demoBaseRectangles">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTextureTrunk"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+                <componentref id="demoBaseRectangle2" />
+                <componentref id="demoBaseRectangle3" />
+                <componentref id="demoBaseRectangle4" />
+            </children>
+        </component>
+
+        <component id="demoBaseRectangle2">
+            <transformation>
+                <transformationref id="demoTransformRectangle" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+            </children>
+        </component>
+
+        <component id="demoBaseRectangle3">
+            <transformation>
+                <transformationref id="demoTransformRectangle" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+            </children>
+        </component>
+        
+        <component id="demoBaseRectangle4">
+            <transformation>
+                <transformationref id="demoTransformRectangle" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+            </children>
+        </component>
+
+        <component id="demoBaseSphere">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTextureTrunk"/>
+            <children>
+                <primitiveref id="demoSphere" />
+            </children>
+        </component>
+
+        <component id="demoBaseSphere">
+            <transformation>
+                <translate x="4.0" y="0.0" z="0.0"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTextureTrunk"/>
+            <children>
+                <primitiveref id="demoTorus" />
             </children>
         </component>
 
