@@ -57,7 +57,7 @@
             <triangle x1="0" y1="2" x2="1" y2="1.0" x3="0" y3="1.0"/>
         </primitive>
         <primitive id="demoRectangleF">
-            <rectangle x1="0" y1="-1" x2="0" y2="1" />
+            <rectangle x1="0" y1="-1" x2="2" y2="1" />
         </primitive>
         <primitive id="demoRectangleB">
             <rectangle x1="2" y1="-1" x2="0" y2="1" />
@@ -92,7 +92,7 @@
 
         <component id="demoBaseRectangles">
             <transformation>
-                <rotate axis="x" angle="90"/>
+                <!-- <rotate axis="x" angle="90"/> -->
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -102,14 +102,12 @@
                 <primitiveref id="demoRectangleF" />
                 <primitiveref id="demoRectangleB" />
                 <componentref id="demoBaseRectangle2" />
-                <componentref id="demoBaseRectangle3" />
-                <componentref id="demoBaseRectangle4" />
             </children>
         </component>
 
         <component id="demoBaseRectangle2">
             <transformation>
-                <transformationref id="demoTransformRectangle" />
+                <transformationref id="transformRectangle" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -118,12 +116,13 @@
             <children>
                 <primitiveref id="demoRectangleF" />
                 <primitiveref id="demoRectangleB" />
+                <componentref id="demoBaseRectangle3" />
             </children>
         </component>
 
         <component id="demoBaseRectangle3">
             <transformation>
-                <transformationref id="demoTransformRectangle" />
+                <transformationref id="transformRectangle" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -132,12 +131,13 @@
             <children>
                 <primitiveref id="demoRectangleF" />
                 <primitiveref id="demoRectangleB" />
+                <componentref id="demoBaseRectangle4" />
             </children>
         </component>
         
         <component id="demoBaseRectangle4">
             <transformation>
-                <transformationref id="demoTransformRectangle" />
+                <transformationref id="transformRectangle" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -177,6 +177,7 @@
         <component id="demoCompCylinders">
             <transformation>
                 <rotate axis="x" angle="-90" />
+                <translate x="0" y="0" z="1">
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -205,7 +206,7 @@
 
         <component id="demoCompTriangles">
             <transformation>
-                <translate x="0" y="0.5" z="0" />
+                <translate x="0" y="1.5" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -275,7 +276,7 @@
 
 
 
-        <component id="demoRoot">
+        <!-- <component id="demoRoot">
             <transformation>
                 <translate x="0" y="0" z="1" />
                 <scale x="2" y="1" z="1" />
@@ -287,6 +288,6 @@
             <children>
                 <primitiveref id="demoRectangle" />
             </children>
-        </component>
+        </component> -->
     </components>  
 </lxs>
