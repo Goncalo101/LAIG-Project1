@@ -866,23 +866,24 @@ class MySceneGraph {
             for (var j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
             }
-
+            
             var transformationIndex = nodeNames.indexOf("transformation");
             var materialsIndex = nodeNames.indexOf("materials");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
-            var childrenTransforms = [];
-            var transforms = grandChildren[transformationIndex].children;
+            // Transformations
+            var nodeTransforms = [];
+            var transformationChildren = grandChildren[transformationIndex].children;
 
             console.log("children length: " + children.length);
             console.log(children);
             console.log(grandChildren);
             console.log(this.transformations);
-            console.log("transforms length = " + transforms.length);
+            console.log("transforms length = " + transformationChildren.length);
 
-            for (var transformIndex = 0; transformIndex < transforms.length; ++transformIndex) {
-                var transform = transforms[transformIndex];
+            for (var transformIndex = 0; transformIndex < transformationChildren.length; ++transformIndex) {
+                var transform = transformationChildren[transformIndex];
                 switch(transform.nodeName) {
                     case "transformationref":
                         // Get id of the current transformation.
@@ -894,7 +895,7 @@ class MySceneGraph {
                         if (transformation == null) 
                             return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
 
-                        childrenTransforms.push(transformation);
+                        nodeTransforms.push(transformation);
                         break;
                     case "translate":
                         var translateX = this.reader.getString(transform, 'x');
@@ -912,65 +913,55 @@ class MySceneGraph {
                         var translationMatrix = mat4.create();
                         translationMatrix = mat4.translate(translationMatrix, translationMatrix, translationVector);
 
-                        childrenTransforms.push(translationMatrix);
+                        nodeTransforms.push(translationMatrix);
                         break;
                     default:
-                        return "Unsupported transformation";
+                        return "Unsupported transformation: " + transform.nodeName;
                 } 
             }
 
-            console.log(childrenTransforms);
+            console.log(nodeTransforms);
 
-            // // Transformations
+            // Materials
 
-            // var transformation;
+            var materials = [];
+            var materialsChildren = grandChildren[materialsIndex].children;
 
-            // var transformationChildren = grandChildren[transformationIndex].children;
+            for (var j = 0; j < materialsChildren.length; j++){
+                // Get id of the current material.
+                var materialID = this.reader.getString(materialsChildren[j], 'id');
+                if (materialID == null)
+                    return "no ID defined for material in component with ID = " + componentID;
 
-            // // using reference for transformation
-            // if (transformationChildren.length == 1 && transformationChildren[0].nodeName == "transformationref"){ 
+                if (materials[materialID] == null)
+                    return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
 
-            //     // Get id of the current transformation.
-            //     var transformationID = this.reader.getString(transformationChildren[0], 'id');
-            //     if (transformationID == null)
-            //         return "no ID defined for transformation in component with ID = " + componentID;
-
-            //     if (transformations[transformationID] == null)
-            //         return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
-
-            //     transformation = this.transformations[transformationID];
-
-            // } else {
-
-            //     // TODO
-
-            // }
-
-            // // Materials
-
-            // var materials = [];
-
-            // var materialsChildren = grandChildren[materialsIndex].children;
-
-            // for (var j = 0; j < materialsChildren.length; j++){
-
-            //     // Get id of the current material.
-            //     var materialID = this.reader.getString(materialsChildren[j], 'id');
-            //     if (materialID == null)
-            //         return "no ID defined for material in component with ID = " + componentID;
-
-
-
-            //     if (materials[transformationID] == null)
-            //         return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
-
-            //     transformation = this.transformations[transformationID];
-            // }
+                materials.push(materialID);
+            }
 
             // // Texture
 
-            // // Children
+            // Children
+            var children = [];
+            var childrenChildren = grandChildren[childrenIndex].children;
 
+            for (var childrenIndex = 0; childrenIndex < childrenChildren.length; ++childrenIndex) {
+                var child = childrenChildren[childrenIndex];
+                switch(child.nodeName) {
+                    case "primitiveref": 
+                        var primitiveID = this.reader.getString(child, 'id');
+
+                        if (this.primitives[primitiveID] == null) return "primitive not found";
+                        
+                        children.push(this.primitives[primitiveID]);
+                        break;
+                    case "componentref":
+                        // TODO
+                        break;
+                    default:
+                        return "Unsupported child type: " + child.nodeName;
+                }
+            }
             // var node = MySceneGraphNode(componentID, transformation);
         }
     }
