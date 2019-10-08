@@ -872,7 +872,56 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
-            // Transformations
+            var childrenTransforms = [];
+            var transforms = grandChildren[transformationIndex].children;
+
+            console.log("children length: " + children.length);
+            console.log(children);
+            console.log(grandChildren);
+            console.log(this.transformations);
+            console.log("transforms length = " + transforms.length);
+
+            for (var transformIndex = 0; transformIndex < transforms.length; ++transformIndex) {
+                var transform = transforms[transformIndex];
+                switch(transform.nodeName) {
+                    case "transformationref":
+                        // Get id of the current transformation.
+                        var transformationID = this.reader.getString(transform.nodeName, 'id');
+                        var transformation = this.transformations[transformationID];
+                        
+                        if (transformationID == null)
+                            return "no ID defined for transformation in component with ID = " + componentID;
+                        if (transformation == null) 
+                            return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
+
+                        childrenTransforms.push(transformation);
+                        break;
+                    case "translate":
+                        var translateX = this.reader.getString(transform, 'x');
+                        var translateY = this.reader.getString(transform, 'y');
+                        var translateZ = this.reader.getString(transform, 'z');
+
+                        if (translateX == null) return "translation in the x axis undefined";
+                        if (translateY == null) return "translation in the y axis undefined";
+                        if (translateZ == null) return "translation in the z axis undefined";
+                        
+                        console.log(translateX + " " + translateY + " " + translateZ);
+                        var translationVector = vec3.create();
+                        vec3.set(translationVector, translateX, translateY, translateZ);
+
+                        var translationMatrix = mat4.create();
+                        translationMatrix = mat4.translate(translationMatrix, translationMatrix, translationVector);
+
+                        childrenTransforms.push(translationMatrix);
+                        break;
+                    default:
+                        return "Unsupported transformation";
+                } 
+            }
+
+            console.log(childrenTransforms);
+
+            // // Transformations
 
             // var transformation;
 
@@ -889,7 +938,7 @@ class MySceneGraph {
             //     if (transformations[transformationID] == null)
             //         return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
 
-            //     transformation = transformations[transformationID];
+            //     transformation = this.transformations[transformationID];
 
             // } else {
 
@@ -915,12 +964,12 @@ class MySceneGraph {
             //     if (materials[transformationID] == null)
             //         return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
 
-            //     transformation = transformations[transformationID];
+            //     transformation = this.transformations[transformationID];
             // }
 
             // // Texture
 
-            // Children
+            // // Children
 
             // var node = MySceneGraphNode(componentID, transformation);
         }
@@ -1145,7 +1194,7 @@ class MySceneGraph {
         this.scene.popMatrix();
 
         var rect = new MyRectangle(this.scene, "", 0, 2, -1, 1);
-        var rect2 = new MyRectangle(this.scene, "" , 2, 0, -1, 1);
+        var rect2 = new MyRectangle(this.scene, "", 0, 2, 1, -1);
 
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
