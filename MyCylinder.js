@@ -28,7 +28,6 @@ class MyCylinder extends CGFobject {
         var radius_variation = (this.radius_top - this.radius_bottom) / this.stacks;
 
         for (var current_height = 0, index = 0, radius = this.radius_bottom; current_height <= this.height; current_height += stack_height, radius += radius_variation) {
-            console.log("radius: " + radius);
             for (var current_angle = 0; current_angle < 2 * Math.PI; current_angle += alphaAng) {
                 var x_coord = radius * Math.cos(current_angle);
                 var y_coord = radius * Math.sin(current_angle);
