@@ -177,7 +177,7 @@
         <component id="demoCompCylinders">
             <transformation>
                 <rotate axis="x" angle="-90" />
-                <translate x="0" y="0" z="1">
+                <translate x="0" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
