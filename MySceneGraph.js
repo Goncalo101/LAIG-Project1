@@ -915,6 +915,10 @@ class MySceneGraph {
 
                         nodeTransforms.push(translationMatrix);
                         break;
+                    case "scale":
+                        break;
+                    case "rotate":
+                        break;
                     default:
                         return "Unsupported transformation: " + transform.nodeName;
                 } 
@@ -933,8 +937,8 @@ class MySceneGraph {
                 if (materialID == null)
                     return "no ID defined for material in component with ID = " + componentID;
 
-                if (materials[materialID] == null)
-                    return "transformation with ID = " + transformationID + " not found on component with ID = " + componentID;
+                if (this.materials[materialID] == null)
+                    return "material with ID = " + materialID + " not found on component with ID = " + componentID;
 
                 materials.push(materialID);
             }
