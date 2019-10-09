@@ -230,6 +230,7 @@ class MySceneGraph {
         this.onXMLMinorError("To do: Parse views and create cameras.");
 
         return null;
+
     }
 
     /**
@@ -630,15 +631,29 @@ class MySceneGraph {
                         transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'rotate':
-                        var coordinates = this.parseCoordinates4D(grandChildren[j], "rotate transformation for ID " + transformationID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
+                        
+                        var axis = this.reader.getString(grandChildren[j], 'axis');
+                        if (!(axis != null && (axis == 'x' || axis == 'y' || axis == 'z')))
+                            return "unable to parse axis of rotation from transformation with ID = " + transformationID;
 
-                        var axis = [];
-                        axis.push(coordinates[0], coordinates[1], coordinates[2]);
-                        var angle = coordinates[3]/180;
+                        var angle = this.reader.getFloat(grandChildren[j], 'angle');
+                        if (!(angle != null && !isNaN(angle)))
+                            return "unable to parse angle of rotation from transformation with ID = " + transformationID;
 
-                        transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle, axis);
+                        switch(axis){
+                            case 'x':
+                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle/180);
+                                break;
+                            case 'y':
+                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle/180);
+                                break;
+                            case 'z':
+                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle/180);
+                                break;
+                            default:
+                                break;
+                        }
+
                         break;
                 }
             }
@@ -833,7 +848,7 @@ class MySceneGraph {
 
             }
             else {
-                console.warn("To do: Parse other primitives.");
+                return "undefined primitive with ID = " + primitiveId;
             }
         }
 
