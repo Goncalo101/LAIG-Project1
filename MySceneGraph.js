@@ -25,7 +25,7 @@ class MySceneGraph {
         this.scene = scene;
         scene.graph = this;
 
-        this.nodes = [];
+        this.nodes = {};
 
         this.idRoot = null;                    // The id of the root element.
 
@@ -835,7 +835,7 @@ class MySceneGraph {
    * @param {components block element} componentsNode
    */
     parseComponents(componentsNode) {
-        var children = componentsNode.children;
+        var componentsChildren = componentsNode.children;
 
         this.components = [];
 
@@ -844,15 +844,15 @@ class MySceneGraph {
         var nodeNames = [];
 
         // Any number of components.
-        for (var i = 0; i < children.length; i++) {
+        for (var i = 0; i < componentsChildren.length; i++) {
 
-            if (children[i].nodeName != "component") {
-                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+            if (componentsChildren[i].nodeName != "component") {
+                this.onXMLMinorError("unknown tag <" + componentsChildren[i].nodeName + ">");
                 continue;
             }
 
             // Get id of the current component.
-            var componentID = this.reader.getString(children[i], 'id');
+            var componentID = this.reader.getString(componentsChildren[i], 'id');
             if (componentID == null)
                 return "no ID defined for componentID";
 
@@ -860,7 +860,7 @@ class MySceneGraph {
             if (this.components[componentID] != null)
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
-            grandChildren = children[i].children;
+            grandChildren = componentsChildren[i].children;
 
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
@@ -876,8 +876,8 @@ class MySceneGraph {
             var nodeTransforms = [];
             var transformationChildren = grandChildren[transformationIndex].children;
 
-            console.log("children length: " + children.length);
-            console.log(children);
+            console.log("children length: " + componentsChildren.length);
+            console.log(componentsChildren);
             console.log(grandChildren);
             console.log(this.transformations);
             console.log("transforms length = " + transformationChildren.length);
@@ -947,26 +947,30 @@ class MySceneGraph {
 
             // Children
             var children = [];
+            var primitiveChildren = [];
             var childrenChildren = grandChildren[childrenIndex].children;
 
             for (var childrenIndex = 0; childrenIndex < childrenChildren.length; ++childrenIndex) {
                 var child = childrenChildren[childrenIndex];
+                var id = this.reader.getString(child, 'id');
                 switch(child.nodeName) {
                     case "primitiveref": 
-                        var primitiveID = this.reader.getString(child, 'id');
-
-                        if (this.primitives[primitiveID] == null) return "primitive not found";
+                        if (this.primitives[id] == null) return "primitive not found";
                         
-                        children.push(this.primitives[primitiveID]);
+                        primitiveChildren.push(this.primitives[id]);
                         break;
                     case "componentref":
-                        // TODO
+                        children.push(id);
                         break;
                     default:
                         return "Unsupported child type: " + child.nodeName;
                 }
             }
-            // var node = MySceneGraphNode(componentID, transformation);
+
+            var node = new MySceneGraphNode(componentID, nodeTransforms, materials);
+            node.addAdjacent(children);
+            node.addPrimitives(primitiveChildren);
+            this.nodes[componentID] = node;
         }
     }
 
