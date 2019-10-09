@@ -1283,7 +1283,6 @@ class MySceneGraph {
 
     dfs_display(node) {
         node.visited = true;
-        node.primitives[0].display();
 
         node.primitives.forEach(primitive => {
             primitive.display();
