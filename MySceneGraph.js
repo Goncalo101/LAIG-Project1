@@ -623,11 +623,22 @@ class MySceneGraph {
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':
-                        this.onXMLMinorError("To do: Parse scale transformations.");
+                        var coordinates = this.parseCoordinates3D(grandChildren[j], "scale transformation for ID " + transformationID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'rotate':
-                        // angle
-                        this.onXMLMinorError("To do: Parse rotate transformations.");
+                        var coordinates = this.parseCoordinates4D(grandChildren[j], "rotate transformation for ID " + transformationID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        var axis = [];
+                        axis.push(coordinates[0], coordinates[1], coordinates[2]);
+                        var angle = coordinates[3]/180;
+
+                        transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle, axis);
                         break;
                 }
             }
