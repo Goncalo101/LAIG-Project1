@@ -227,6 +227,168 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
+
+        var children = viewsNode.children;
+
+        this.cameras = [];
+
+        var grandChildren = [];
+        var nodeNames = [];
+
+        // Any number of cameras.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "perspective" && children[i].nodeName != "ortho") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current cameraID.
+            var cameraID = this.reader.getString(children[i], 'id');
+            if (cameraID == null)
+                return "no ID defined for camera";
+
+            // Checks for repeated IDs.
+            if (this.cameras[cameraID] != null)
+                return "ID must be unique for each camera (conflict: ID = " + cameraID + ")";
+
+
+            // this.cameras[materialID] = new CGFappearance(this.scene);
+
+            var near = this.reader.getFloat(children[i], 'near');
+            if (near == null)
+                return "no near defined for camera (conflict: ID = " + cameraID + ")";
+
+            if (!(near != null && !isNaN(near)))
+                return "unable to parse near of camera with ID = " + cameraID;
+
+            
+            var far = this.reader.getFloat(children[i], 'far');
+            if (far == null)
+                return "no far defined for camera (conflict: ID = " + cameraID + ")";
+
+            if (!(far != null && !isNaN(far)))
+                return "unable to parse far of camera with ID = " + cameraID;
+
+            var angle = null;
+            var left = null;
+            var right = null;
+            var top = null;
+            var bottom = null;
+
+
+            if (children[i].nodeName == 'perspective'){
+
+                var angle = this.reader.getFloat(children[i], 'angle');
+                if (angle == null)
+                    return "no angle defined for camera (conflict: ID = " + cameraID + ")";
+
+                if (!(angle != null && !isNaN(angle)))
+                    return "unable to parse angle of camera with ID = " + cameraID;
+
+            } else if (children[i].nodeName == 'ortho') {
+
+                left = this.reader.getFloat(children[i], 'left');
+                if (left == null)
+                    return "no left defined for camera (conflict: ID = " + cameraID + ")";
+
+                if (!(left != null && !isNaN(left)))
+                    return "unable to parse left of camera with ID = " + cameraID;
+
+
+                right = this.reader.getFloat(children[i], 'right');
+                if (right == null)
+                    return "no right defined for camera (conflict: ID = " + cameraID + ")";
+
+                if (!(right != null && !isNaN(right)))
+                    return "unable to parse right of camera with ID = " + cameraID;
+
+
+                top = this.reader.getFloat(children[i], 'top');
+                if (top == null)
+                    return "no top defined for camera (conflict: ID = " + cameraID + ")";
+
+                if (!(top != null && !isNaN(top)))
+                    return "unable to parse top of camera with ID = " + cameraID;
+
+
+                bottom = this.reader.getFloat(children[i], 'bottom');
+                if (bottom == null)
+                    return "no bottom defined for camera (conflict: ID = " + cameraID + ")";
+
+                if (!(bottom != null && !isNaN(bottom)))
+                    return "unable to parse bottom of camera with ID = " + cameraID;
+
+            }
+
+            grandChildren = children[i].children;
+
+            var updated = [];
+
+            var from = null;
+            var to = null;
+            var up = null;
+
+            for (var j = 0; j < grandChildren.length; j++) {
+
+                if (updated[grandChildren[j].nodeName] != null)
+                    return "tag <" + grandChildren[j].nodeName + "> must be unique for each camera (conflict: ID = " + cameraID + ")";
+
+                if (grandChildren[j].nodeName == "from") {
+
+                    from = this.parseCoordinates3D(grandChildren[j], "camera 'from' position for ID = " + cameraID);
+
+                    if (!Array.isArray(from))
+                            return from;
+
+
+                } else if (grandChildren[j].nodeName == "to") {
+
+                    to = this.parseCoordinates3D(grandChildren[j], "camera 'to' position for ID = " + cameraID);
+
+                    if (!Array.isArray(to))
+                            return to;
+
+                } else if (grandChildren[j].nodeName == "up") {
+
+                    if (children[i].nodeName == 'perspective')
+                        return "perspective camera can't receive 'up' parameter in camera with ID = " + cameraID;
+
+                    up = this.parseCoordinates3D(grandChildren[j], "camera 'up' position for ID = " + cameraID);
+
+                    if (!Array.isArray(up))
+                            return up;
+
+                } else {
+                    return "tag <" + grandChildren[j].nodeName + "> not recognized for camera (conflict: ID = " + cameraID + ")";
+                }
+
+                updated[grandChildren[j].nodeName] = 1;
+            }
+
+            if (children[i].nodeName == "perspective"){
+                if (from == null || to == null || angle == null)
+                    return "missing atributes for camera with ID = " + cameraID;
+
+                this.cameras[cameraID] = new CGFcamera(angle/180, near, far, from, to);
+                
+            } else if (children[i].nodeName == "ortho"){
+                if (left == null || right == null || bottom == null || top == null || from == null || to == null)
+                    return "missing atributes for camera with ID = " + cameraID;
+
+                if (up == null)
+                    up.push(0,1,0);
+                
+                this.cameras[cameraID] = new CGFcameraOrtho(left, right, bottom, top, near, far, from, to, up)
+            }
+
+        }
+
+        this.log("Parsed materials");
+        return null;
+
+
+
         this.onXMLMinorError("To do: Parse views and create cameras.");
 
         return null;
