@@ -25,7 +25,7 @@ class MySceneGraph {
         this.scene = scene;
         scene.graph = this;
 
-        this.nodes = {};
+        this.nodes = [];
 
         this.idRoot = null;                    // The id of the root element.
 
@@ -1114,46 +1114,49 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
-    dfs(root_node) {
+    dfs(rootID) {
         this.nodes.forEach(element => {
             element.visited = false;
         });
 
-        if (!root_node.visited) {
-            dfs_display(root_node);
+        var rootNode = this.nodes[rootID];
+
+        if (!rootNode.visited) {
+            this.dfs_display(rootNode);            
         }
     }
 
     dfs_display(node) {
         node.visited = true;
+        node.primitives[0].display();
 
-        if (node.primitive !== undefined) {
-            node.primitive.display();
-            return;
-        }
+        // node.primitives.forEach(primitive => {
+        //     console.log(primitive);
+        //     primitive.display();
+        // });
+        
+        // node.adjacent.forEach(element => {
+        //     if (!element.dest.visited) {
+        //         if (element.dest.transform !== undefined) {
+        //             this.scene.multMatrix(element.dest.transform);
+        //         }
 
-        node.adjacent.forEach(element => {
-            if (!element.dest.visited) {
-                if (element.dest.transform !== undefined) {
-                    this.scene.multMatrix(element.dest.transform);
-                }
+        //         if (element.dest.appearance !== undefined) {
+        //             element.dest.appearance.apply();
+        //         }
 
-                if (element.dest.appearance !== undefined) {
-                    element.dest.appearance.apply();
-                }
-
-                this.dfs_display(element.dest);
-            }
-        });
+        //         this.dfs_display(element.dest);
+        //     }
+        // });
     }
 
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // this.dfs(this.root_node);
+        this.dfs(this.idRoot);
 
-        this.displayAlternative();
+        // this.displayAlternative();
 
         //To test the parsing/creation of the primitives, call the display function directly
         // this.primitives['cylinder'].display();
@@ -1162,7 +1165,7 @@ class MySceneGraph {
         // this.primitives['demoSphere'].display();
         // this.primitives['demoTorus'].display();
 
-        this.scene.popMatrix();
+        // this.scene.popMatrix();
     }
 
     displayAlternative() {
