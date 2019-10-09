@@ -1117,10 +1117,10 @@ class MySceneGraph {
                 var materialID = this.reader.getString(materialsChildren[j], 'id');
                 var material = this.materials[materialID];
 
-                if (materialID == null)
+                if (materialID == null && materialID != "inherit")
                     return "no ID defined for material in component with ID = " + componentID;
 
-                if (material == null)
+                if (material == null && materialID != "inherit")
                     return "material with ID = " + materialID + " not found on component with ID = " + componentID;
 
                 materials.push(material);
@@ -1288,19 +1288,27 @@ class MySceneGraph {
             primitive.display();
         });
         
-        // node.adjacent.forEach(element => {
-        //     if (!element.dest.visited) {
-        //         if (element.dest.transform !== undefined) {
-        //             this.scene.multMatrix(element.dest.transform);
-        //         }
+        node.adjacent.forEach(adjacent_id => {
+            var adjacent_node = this.nodes[adjacent_id];
+            if (!adjacent_node.visited) {
+                this.dfs_display(this.nodes[adjacent_id]) * adjacent_node.transform;
+                
+            }
 
-        //         if (element.dest.appearance !== undefined) {
-        //             element.dest.appearance.apply();
-        //         }
 
-        //         this.dfs_display(element.dest);
-        //     }
-        // });
+            // if (!element.dest.visited) {
+            //     if (element.dest.transform !== undefined) {
+            //         this.scene.multMatrix(element.dest.transform);
+            //     }
+
+            //     if (element.dest.appearance !== undefined) {
+            //         element.dest.appearance.apply();
+            //     }
+
+            // }
+        });
+
+        return node.transform;
     }
 
     /**
