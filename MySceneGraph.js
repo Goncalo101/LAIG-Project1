@@ -386,13 +386,6 @@ class MySceneGraph {
 
         this.log("Parsed materials");
         return null;
-
-
-
-        this.onXMLMinorError("To do: Parse views and create cameras.");
-
-        return null;
-
     }
 
     /**
@@ -1277,9 +1270,9 @@ class MySceneGraph {
     }
 
     dfs(rootID) {
-        this.nodes.forEach(element => {
-            element.visited = false;
-        });
+        for (var key in this.nodes) {
+            this.nodes[key].visited = false;
+        }
 
         var rootNode = this.nodes[rootID];
 
@@ -1292,10 +1285,9 @@ class MySceneGraph {
         node.visited = true;
         node.primitives[0].display();
 
-        // node.primitives.forEach(primitive => {
-        //     console.log(primitive);
-        //     primitive.display();
-        // });
+        node.primitives.forEach(primitive => {
+            primitive.display();
+        });
         
         // node.adjacent.forEach(element => {
         //     if (!element.dest.visited) {
@@ -1317,6 +1309,8 @@ class MySceneGraph {
      */
     displayScene() {
         this.dfs(this.idRoot);
+
+        // this.nodes[this.idRoot].primitives[0].display();
 
         // this.displayAlternative();
 
