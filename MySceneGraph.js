@@ -945,16 +945,18 @@ class MySceneGraph {
             for (var j = 0; j < materialsChildren.length; j++){
                 // Get id of the current material.
                 var materialID = this.reader.getString(materialsChildren[j], 'id');
+                var material = this.materials[materialID];
+
                 if (materialID == null)
                     return "no ID defined for material in component with ID = " + componentID;
 
-                if (this.materials[materialID] == null)
+                if (material == null)
                     return "material with ID = " + materialID + " not found on component with ID = " + componentID;
 
-                materials.push(materialID);
+                materials.push(material);
             }
 
-            // // Texture
+            // Texture
 
             // Children
             var children = [];
@@ -1103,7 +1105,7 @@ class MySceneGraph {
         });
 
         if (!root_node.visited) {
-            dfs_visit(root_node);
+            dfs_display(root_node);
         }
     }
 
@@ -1134,8 +1136,21 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //To do: Create display loop for transversing the scene graph
+        // this.dfs(this.root_node);
 
+        this.displayAlternative();
+
+        //To test the parsing/creation of the primitives, call the display function directly
+        // this.primitives['cylinder'].display();
+        // this.primitives['demoTriangle'].display();
+        // this.primitives['demoRectangle'].display();
+        // this.primitives['demoSphere'].display();
+        // this.primitives['demoTorus'].display();
+
+        this.scene.popMatrix();
+    }
+
+    displayAlternative() {
         this.scene.pushMatrix();
 
         var triangle1 = new MyTriangle(this.scene, 6464, 0, 0, 1, 1, 0, 0);
@@ -1230,15 +1245,5 @@ class MySceneGraph {
 
         var sphere = new MySphere(this.scene, "", 1, 10, 10);
         sphere.display();
-
-
-        //To test the parsing/creation of the primitives, call the display function directly
-        // this.primitives['cylinder'].display();
-        // this.primitives['demoTriangle'].display();
-        // this.primitives['demoRectangle'].display();
-        // this.primitives['demoSphere'].display();
-        // this.primitives['demoTorus'].display();
-
-        this.scene.popMatrix();
     }
 }
