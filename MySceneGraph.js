@@ -1103,11 +1103,11 @@ class MySceneGraph {
 
                         transfMatrix = this.parseBasicTrasformation('anonymousID', transform, transfMatrix);
 
-                        if (typeof transfMatrix == "string"){ // Error during parsing
+                        if (typeof transfMatrix == "string") { // Error during parsing
                             return transfMatrix;
                         }
                         
-                        nodeTransforms.push(transformation);
+                        nodeTransforms.push(transfMatrix);
 
                         break;
                     default:
@@ -1287,38 +1287,34 @@ class MySceneGraph {
         var rootNode = this.nodes[rootID];
 
         if (!rootNode.visited) {
-            this.dfs_display(rootNode);            
+            var current_matrix = this.scene.getMatrix();
+            this.dfs_display(rootNode, current_matrix);
+            // this.scene.setMatrix(current_matrix);            
         }
     }
 
-    dfs_display(node) {
+    dfs_display(node, transform) {
         node.visited = true;
+
+        var cenas = mat4.create();
+        mat4.multiply(cenas, transform, node.transform[0]);
+        this.scene.setMatrix(cenas);
 
         node.primitives.forEach(primitive => {
             primitive.display();
         });
+
         
         node.adjacent.forEach(adjacent_id => {
             var adjacent_node = this.nodes[adjacent_id];
             if (!adjacent_node.visited) {
-                this.dfs_display(this.nodes[adjacent_id]) * adjacent_node.transform;
-                
+                var new_transform_matrix = mat4.multiply(transform, transform, adjacent_node.transform);
+                this.scene.setMatrix(new_transform_matrix);
+                this.scene.pushMatrix();
+                this.dfs_display(this.nodes[adjacent_id], new_transform_matrix);
+                this.scene.popMatrix();
             }
-
-
-            // if (!element.dest.visited) {
-            //     if (element.dest.transform !== undefined) {
-            //         this.scene.multMatrix(element.dest.transform);
-            //     }
-
-            //     if (element.dest.appearance !== undefined) {
-            //         element.dest.appearance.apply();
-            //     }
-
-            // }
         });
-
-        return node.transform;
     }
 
     /**

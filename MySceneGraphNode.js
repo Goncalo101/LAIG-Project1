@@ -12,7 +12,13 @@ class MySceneGraphNode {
     constructor(id, transform, material, primitive) {
         this.id = id;
         this.primitives = [];
-        this.transform = transform;
+
+        if (transform.length == 0) {
+            this.transform = [mat4.create()];
+        } else {
+            this.transform = transform;
+        }
+
         this.material = material;
         this.visited = false;
         this.adjacent = [];
