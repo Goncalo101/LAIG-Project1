@@ -817,13 +817,13 @@ class MySceneGraph {
 
                 switch(axis){
                     case 'x':
-                        matrix = mat4.rotateX(matrix, matrix, angle/180);
+                        matrix = mat4.rotateX(matrix, matrix, angle * DEGREE_TO_RAD);
                         break;
                     case 'y':
-                        matrix = mat4.rotateY(matrix, matrix, angle/180);
+                        matrix = mat4.rotateY(matrix, matrix, angle * DEGREE_TO_RAD);
                         break;
                     case 'z':
-                        matrix = mat4.rotateZ(matrix, matrix, angle/180);
+                        matrix = mat4.rotateZ(matrix, matrix, angle * DEGREE_TO_RAD);
                         break;
                     default:
                         break;
@@ -1305,7 +1305,7 @@ class MySceneGraph {
         mat4.multiply(transform, transform, trans);
         this.scene.setMatrix(transform);
 
-        if (this.count == 0)
+        if (this.count < 2)
             console.log(trans);
         ++this.count;
         
