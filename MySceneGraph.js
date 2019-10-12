@@ -1289,26 +1289,21 @@ class MySceneGraph {
 
         if (!rootNode.visited) {
             var current_matrix = this.scene.getMatrix();
-            this.dfs_display(rootNode, current_matrix);
-            // this.scene.setMatrix(current_matrix);            
+            this.dfs_display(rootNode, current_matrix);         
         }
     }
 
     dfs_display(node, transform) {
         node.visited = true;
-
+        
         // calculate transformation matrix for the node and set it 
         var trans = mat4.create();
         for (var i = node.transform.length - 1; i >= 0; i--) {
-            mat4.multiply(trans, trans, node.transform[i]);
+            mat4.multiply(trans, node.transform[i], trans);
         }
         mat4.multiply(transform, transform, trans);
-        this.scene.setMatrix(transform);
+        this.scene.setMatrix(transform); 
 
-        if (this.count < 2)
-            console.log(trans);
-        ++this.count;
-        
         node.primitives.forEach(primitive => {
             primitive.display();
         });
