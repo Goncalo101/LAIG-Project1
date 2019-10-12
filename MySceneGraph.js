@@ -578,9 +578,10 @@ class MySceneGraph {
             if (textureFile == null)
                 return "no file defined for texture (conflict: ID = " + textureID + ")";
 
-            this.textures[textureID] = new CGFappearance(this.scene);
-            this.textures[textureID].loadTexture(textureFile);
-            this.textures[textureID].setTextureWrap('REPEAT', 'REPEAT');
+            this.textures[textureID] = textureFile;
+            console.log(this.textures);
+            // this.textures[textureID].loadTexture(textureFile);
+            // this.textures[textureID].setTextureWrap('REPEAT', 'REPEAT');
 
         }
 
@@ -1119,7 +1120,6 @@ class MySceneGraph {
             console.log(nodeTransforms);
 
             // Materials
-
             var materials = [];
             var materialsChildren = grandChildren[materialsIndex].children;
 
@@ -1138,10 +1138,33 @@ class MySceneGraph {
             }
 
             // Texture
+            var texture_file = "";
+            var texturesChildren = grandChildren[textureIndex];
+            console.log("texturesChildren");
+            console.log(texturesChildren);
+
+            var textureID = this.reader.getString(texturesChildren, 'id');
+            var texture = this.textures[textureID];
+
+            if (textureID == null && textureID != "inherit")
+                return "no ID defined for texture in component with ID = " + componentID;
+
+            if (texture == null && materialID != "inherit")
+                return "texutre with ID = " + materialID + " not found on component with ID = " + componentID;
+
+            texture_file = texture;
+            console.log("texures:")
+            console.log(texture_file);
+            
+
+            materials.forEach(material => {
+                material.loadTexture(texture_file);
+                material.setTextureWrap('REPEAT', 'REPEAT');
+            });
 
             // Children
             var children = [];
-            var primitiveChildren = [];
+            var primitiveChildren = []; 
             var childrenChildren = grandChildren[childrenIndex].children;
 
             for (var childrenIndex = 0; childrenIndex < childrenChildren.length; ++childrenIndex) {
@@ -1303,6 +1326,8 @@ class MySceneGraph {
         }
         mat4.multiply(transform, transform, trans);
         this.scene.setMatrix(transform); 
+
+        if (node.material != undefined) node.material[0].apply();
 
         node.primitives.forEach(primitive => {
             primitive.display();
