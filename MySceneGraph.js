@@ -19,6 +19,7 @@ class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
+        this.count = 0;
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
@@ -1114,7 +1115,7 @@ class MySceneGraph {
                         return "Unsupported transformation: " + transform.nodeName;
                 } 
             }
-
+            console.log("transforms: ");
             console.log(nodeTransforms);
 
             // Materials
@@ -1296,23 +1297,27 @@ class MySceneGraph {
     dfs_display(node, transform) {
         node.visited = true;
 
-        var cenas = mat4.create();
-        mat4.multiply(cenas, transform, node.transform[0]);
-        this.scene.setMatrix(cenas);
+        // calculate transformation matrix for the node and set it 
+        var trans = mat4.create();
+        for (var i = node.transform.length - 1; i >= 0; i--) {
+            mat4.multiply(trans, trans, node.transform[i]);
+        }
+        mat4.multiply(transform, transform, trans);
+        this.scene.setMatrix(transform);
 
+        if (this.count == 0)
+            console.log(trans);
+        ++this.count;
+        
         node.primitives.forEach(primitive => {
             primitive.display();
         });
 
-        
+        // visit all adjacent nodes recursively and display them
         node.adjacent.forEach(adjacent_id => {
             var adjacent_node = this.nodes[adjacent_id];
             if (!adjacent_node.visited) {
-                var new_transform_matrix = mat4.multiply(transform, transform, adjacent_node.transform);
-                this.scene.setMatrix(new_transform_matrix);
-                this.scene.pushMatrix();
-                this.dfs_display(this.nodes[adjacent_id], new_transform_matrix);
-                this.scene.popMatrix();
+                this.dfs_display(this.nodes[adjacent_id], this.scene.getMatrix());
             }
         });
     }
