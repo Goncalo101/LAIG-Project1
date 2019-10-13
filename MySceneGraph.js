@@ -1149,18 +1149,18 @@ class MySceneGraph {
             if (textureID == null && textureID != "inherit")
                 return "no ID defined for texture in component with ID = " + componentID;
 
-            if (texture == null && materialID != "inherit")
-                return "texutre with ID = " + materialID + " not found on component with ID = " + componentID;
+            if (texture == null && textureID != "inherit")
+                return "texture with ID = " + textureID + " not found on component with ID = " + componentID;
 
             texture_file = texture;
             console.log("texures:")
             console.log(texture_file);
             
-
-            materials.forEach(material => {
-                material.loadTexture(texture_file);
-                material.setTextureWrap('REPEAT', 'REPEAT');
-            });
+            if (texture != undefined)
+                materials.forEach(material => {
+                    material.loadTexture(texture_file);
+                    material.setTextureWrap('REPEAT', 'REPEAT');
+                });
 
             // Children
             var children = [];

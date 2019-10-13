@@ -27,7 +27,7 @@ class MyCylinder extends CGFobject {
         var stack_height = this.height / this.stacks;
         var radius_variation = (this.radius_top - this.radius_bottom) / this.stacks;
 
-        for (var current_height = 0, index = 0, radius = this.radius_bottom; current_height <= this.height; current_height += stack_height, radius += radius_variation) {
+        for (var current_height = 0, index = 0, count = 0, radius = this.radius_bottom; count < this.stacks; current_height += stack_height, radius += radius_variation, ++count) {
             for (var current_angle = 0; current_angle < 2 * Math.PI; current_angle += alphaAng) {
                 var x_coord = radius * Math.cos(current_angle);
                 var y_coord = radius * Math.sin(current_angle);
@@ -50,8 +50,9 @@ class MyCylinder extends CGFobject {
             slice_indices.push(temp);
         }
 
-        for (var stack = 0; stack < this.stacks; stack++) {
-            for (var i = 0; i < this.slices; i++) {
+        for (var stack = 0; stack < this.stacks - 1; stack++) {
+            console.log("stack no. " + stack);
+            for (var i = 0; i < this.slices - 1; i++) {
                 this.indices.push(slice_indices[stack][i], slice_indices[stack][i + 1], slice_indices[stack + 1][i]);
                 this.indices.push(slice_indices[stack][i + 1], slice_indices[stack + 1][i + 1], slice_indices[stack + 1][i]);
             }
