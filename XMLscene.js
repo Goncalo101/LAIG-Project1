@@ -12,6 +12,7 @@ class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+        this.key_presses = 0;
     }
 
     /**
@@ -100,6 +101,12 @@ class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+    }
+
+    update() {
+        if (this.interface.isKeyPressed("KeyM")) {
+            ++this.key_presses;
+        }
     }
 
     /**

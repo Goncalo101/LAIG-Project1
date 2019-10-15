@@ -1327,7 +1327,7 @@ class MySceneGraph {
         mat4.multiply(transform, transform, trans);
         this.scene.setMatrix(transform); 
 
-        if (node.material != undefined) node.material[0].apply();
+        if (node.material != undefined) node.material[this.key_presses % node.material.length].apply();
 
         node.primitives.forEach(primitive => {
             primitive.display();
