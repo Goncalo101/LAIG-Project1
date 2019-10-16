@@ -24,10 +24,17 @@
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="solar" file="scenes/images/solar.jpg" />
     </textures>
 
     <materials>
         <material id="demoMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+        </material>
+        <material id="demoMaterial2" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
@@ -37,10 +44,9 @@
 
     <transformations>
         <transformation id="demoTransform">
-            <scale x="5" y="1" z="5" />
-            <rotate axis="x" angle="-45" />
-            <rotate axis="z" angle="-45" />
-            <translate  x="5" y="1" z="5"/>
+            <translate x="0" y="0" z="1" />
+            <rotate axis="y" angle="-45" />
+            <scale x="2" y="1" z="1" />
         </transformation>
     </transformations>
 
@@ -65,8 +71,10 @@
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
+                <!-- <translate x="0" y="0" z="1" />
+                <rotate axis="y" angle="-45" />
+                <scale x="2" y="1" z="1" /> -->
+                <transformationref id="demoTransform" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -74,8 +82,42 @@
             <texture id="demoTexture"/>
             <children>
                 <primitiveref id="demoRectangle" />
+                <componentref id="test"/>
+                <componentref id="test2"/>
             </children>
         </component>
+
+        <component id="test">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <!-- <transformationref id="demoTransform" /> -->
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+                
+            </children>
+        </component>
+
+        <component id="test2">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <!-- <transformationref id="demoTransform" /> -->
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+                <material id="demoMaterial2" />
+            </materials>
+            <texture id="solar"/>
+            <children>
+                <primitiveref id="demoRectangle" />
+            </children>
+        </component>
+
+
     </components>
 
     <components>
@@ -89,16 +131,16 @@
                 <!-- deve conter uma referencia a uma das "transformation" -->
                 <!-- declaradas anteriormente -->
                
-                <transformationref id="ss" />
+                <transformationref id="demoTranformation" />
            
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!--        limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
                
-                <translate x="ff" y="ff" z="ff" />
+                <!-- <translate x="ff" y="ff" z="ff" />
                 <rotate axis="cc" angle="ff" />
-                <scale x="ff" y="ff" z="ff" />
+                <scale x="ff" y="ff" z="ff" /> -->
             </transformation>
    
             <!-- declaracao obrigatoria de pelo menos um material; -->
@@ -138,8 +180,8 @@
                     <!-- "primitiveref", identificando outros -->
                     <!-- componentes ou primitivas -->
                    
-                    <componentref id="ss" />
-                    <primitiveref id="ss" />
+                    <!-- <componentref id="ss" /> -->
+                    <primitiveref id="demoTriangle" />
              </children>
         </component>        
     </components>

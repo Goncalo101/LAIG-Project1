@@ -84,9 +84,14 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="demoTextureTrunk"/>
             <children>
+            <componentref id="demoBaseTorus">
                 <componentref id="demoCompTriangles" />
+                <componentref id="demoBaseRectangles">
+                
+                <componentref id="demoBaseSphere">
+                <componentref id="demoCompCylinders">
             </children>
         </component>
 
@@ -213,7 +218,7 @@
             </materials>
             <texture id="demoTextureLeaves"/>
             <children>
-                <primitiveref id="demoCompSoloTriangle" />
+                <componentref id="demoCompSoloTriangle" />
                 <componentref id="demoCompTrianglesRotate1" />
             </children>
         </component>

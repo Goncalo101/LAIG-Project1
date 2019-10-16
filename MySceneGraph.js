@@ -44,6 +44,8 @@ class MySceneGraph {
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
         this.reader.open('scenes/' + filename, this);
+
+        this.key_presses = 0;
     }
 
     /*
@@ -578,7 +580,9 @@ class MySceneGraph {
             if (textureFile == null)
                 return "no file defined for texture (conflict: ID = " + textureID + ")";
 
-            this.textures[textureID] = textureFile;
+            var texture = new CGFtexture(this.scene, textureFile);
+
+            this.textures[textureID] = texture;
             console.log(this.textures);
             // this.textures[textureID].loadTexture(textureFile);
             // this.textures[textureID].setTextureWrap('REPEAT', 'REPEAT');
@@ -893,12 +897,12 @@ class MySceneGraph {
 
                 // x2
                 var x2 = this.reader.getFloat(grandChildren[0], 'x2');
-                if (!(x2 != null && !isNaN(x2) && x2 > x1))
+                if (!(x2 != null && !isNaN(x2)))
                     return "unable to parse x2 of the primitive coordinates for ID = " + primitiveId;
 
                 // y2
                 var y2 = this.reader.getFloat(grandChildren[0], 'y2');
-                if (!(y2 != null && !isNaN(y2) && y2 > y1))
+                if (!(y2 != null && !isNaN(y2)))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
 
                 var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
@@ -1030,6 +1034,18 @@ class MySceneGraph {
         return null;
     }
 
+    copyMaterial(material){
+
+        var mat = new CGFappearance(this.scene);
+        mat.setAmbient(...material.ambient);
+        mat.setDiffuse(...material.diffuse);
+        mat.setEmission(...material.emission);
+        mat.setSpecular(...material.specular);
+        mat.setShininess(material.shininess);
+
+        return mat;
+    }
+
     /**
    * Parses the <components> block.
    * @param {components block element} componentsNode
@@ -1076,18 +1092,18 @@ class MySceneGraph {
             var nodeTransforms = [];
             var transformationChildren = grandChildren[transformationIndex].children;
 
-            console.log("children length: " + componentsChildren.length);
-            console.log(componentsChildren);
-            console.log(grandChildren);
-            console.log(this.transformations);
-            console.log("transforms length = " + transformationChildren.length);
+            // console.log("children length: " + componentsChildren.length);
+            // console.log(componentsChildren);
+            // console.log(grandChildren);
+            // console.log(this.transformations);
+            // console.log("transforms length = " + transformationChildren.length);
 
             for (var transformIndex = 0; transformIndex < transformationChildren.length; ++transformIndex) {
                 var transform = transformationChildren[transformIndex];
                 switch(transform.nodeName) {
                     case "transformationref":
                         // Get id of the current transformation.
-                        var transformationID = this.reader.getString(transform.nodeName, 'id');
+                        var transformationID = this.reader.getString(transform, 'id');
                         var transformation = this.transformations[transformationID];
                         
                         if (transformationID == null)
@@ -1116,8 +1132,8 @@ class MySceneGraph {
                         return "Unsupported transformation: " + transform.nodeName;
                 } 
             }
-            console.log("transforms: ");
-            console.log(nodeTransforms);
+            // console.log("transforms: ");
+            // console.log(nodeTransforms);
 
             // Materials
             var materials = [];
@@ -1134,33 +1150,31 @@ class MySceneGraph {
                 if (material == null && materialID != "inherit")
                     return "material with ID = " + materialID + " not found on component with ID = " + componentID;
 
-                materials.push(material);
+                if (materialID == 'inherit'){
+                    materials.push('inherit');
+                } else {
+                    materials.push(this.copyMaterial(material));
+                }
+
             }
 
             // Texture
-            var texture_file = "";
+
             var texturesChildren = grandChildren[textureIndex];
-            console.log("texturesChildren");
-            console.log(texturesChildren);
+            // console.log("texturesChildren");
+            // console.log(texturesChildren);
 
             var textureID = this.reader.getString(texturesChildren, 'id');
             var texture = this.textures[textureID];
 
-            if (textureID == null && textureID != "inherit")
+            if (textureID == null && textureID != "inherit" && textureID != "none") // TODO remove none
                 return "no ID defined for texture in component with ID = " + componentID;
 
-            if (texture == null && textureID != "inherit")
+            if (texture == null && textureID != "inherit" && textureID != "none")  // TODO remove none
                 return "texture with ID = " + textureID + " not found on component with ID = " + componentID;
 
-            texture_file = texture;
-            console.log("texures:")
-            console.log(texture_file);
-            
-            if (texture != undefined)
-                materials.forEach(material => {
-                    material.loadTexture(texture_file);
-                    material.setTextureWrap('REPEAT', 'REPEAT');
-                });
+            console.log("Initialize :" + textureID + " - id " + componentID);
+
 
             // Children
             var children = [];
@@ -1177,6 +1191,7 @@ class MySceneGraph {
                         primitiveChildren.push(this.primitives[id]);
                         break;
                     case "componentref":
+                        console.log("CHILD: " + id);
                         children.push(id);
                         break;
                     default:
@@ -1184,7 +1199,7 @@ class MySceneGraph {
                 }
             }
 
-            var node = new MySceneGraphNode(componentID, nodeTransforms, materials);
+            var node = new MySceneGraphNode(componentID, nodeTransforms, materials, textureID);
             node.addAdjacent(children);
             node.addPrimitives(primitiveChildren);
             this.nodes[componentID] = node;
@@ -1303,21 +1318,31 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
+    keyMPressed(){
+        ++this.key_presses;
+        this.count = 0;
+    }
+
     dfs(rootID) {
-        for (var key in this.nodes) {
-            this.nodes[key].visited = false;
-        }
+        // for (var node in this.nodes) {
+        //     // console.log("reseting key = " + key);
+        //     this.nodes[node].visited = false;
+        // }
 
         var rootNode = this.nodes[rootID];
 
-        if (!rootNode.visited) {
+        // if (!rootNode.visited) {
+            this.dfs_index = 0;
             var current_matrix = this.scene.getMatrix();
-            this.dfs_display(rootNode, current_matrix);         
-        }
+            this.dfs_display(rootNode, current_matrix, "none", undefined);   
+            this.count++;      
+        // }
     }
 
-    dfs_display(node, transform) {
-        node.visited = true;
+    dfs_display(node, transform, texture, material) {
+
+        // if (node.visited)
+        //     return;
         
         // calculate transformation matrix for the node and set it 
         var trans = mat4.create();
@@ -1325,21 +1350,58 @@ class MySceneGraph {
             mat4.multiply(trans, node.transform[i], trans);
         }
         mat4.multiply(transform, transform, trans);
+        this.scene.pushMatrix();
         this.scene.setMatrix(transform); 
 
-        if (node.material != undefined) node.material[this.key_presses % node.material.length].apply();
+        var nodeMaterial = node.material[this.key_presses % node.material.length];
+
+        // if (!node.visited){
+        if (this.count == 0){
+            if (nodeMaterial == "inherit"){
+                node.matDisplay[this.dfs_index] = this.copyMaterial(material);
+                console.log("copied material :" + " - id " + node.id);
+            } else {
+                node.matDisplay[this.dfs_index] = this.copyMaterial(nodeMaterial);
+            }
+            if (node.texture != "none" && node.texture != "inherit"){
+                node.matDisplay[this.dfs_index].setTexture(this.textures[node.texture]);
+                // node.material[0].setTextureWrap('REPEAT', 'REPEAT');
+                console.log("Text :" + node.texture + " - id " + node.id);
+            } else if (node.texture == "inherit") {
+                node.matDisplay[this.dfs_index].setTexture(this.textures[texture]);
+                // node.material[0].setTextureWrap('REPEAT', 'REPEAT');
+                console.log("Text :" + texture + " - id " + node.id);
+            } else {
+                node.matDisplay[this.dfs_index].setTexture(null);
+                console.log("Text :" + 'none' + " - id " + node.id);
+            }
+        }
+
+        node.matDisplay[this.dfs_index].apply();  // TODO transverse materials
 
         node.primitives.forEach(primitive => {
             primitive.display();
         });
 
+        // if (node.material[0] != undefined) {
+        //     node.material[0].setTexture(null);
+        //     node.material[0].apply();  // TODO transverse materials
+        // }
+
+        var curIndex = this.dfs_index;
+
+        this.dfs_index++;
         // visit all adjacent nodes recursively and display them
         node.adjacent.forEach(adjacent_id => {
             var adjacent_node = this.nodes[adjacent_id];
-            if (!adjacent_node.visited) {
-                this.dfs_display(this.nodes[adjacent_id], this.scene.getMatrix());
-            }
+            // console.log("Node: " + adjacent_id);
+            // if (!adjacent_node.visited) {
+                // if (adjacent_node != undefined)
+                this.dfs_display(this.nodes[adjacent_id], this.scene.getMatrix(), node.texture == "inherit" ? texture : node.texture, node.matDisplay[curIndex]);
+            // }
         });
+
+        this.scene.popMatrix();
     }
 
     /**

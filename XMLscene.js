@@ -105,7 +105,7 @@ class XMLscene extends CGFscene {
 
     update() {
         if (this.interface.isKeyPressed("KeyM")) {
-            ++this.key_presses;
+            this.graph.keyMPressed();
         }
     }
 
