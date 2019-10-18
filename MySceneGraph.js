@@ -373,14 +373,14 @@ class MySceneGraph {
                 if (from == null || to == null || angle == null)
                     return "missing atributes for camera with ID = " + cameraID;
 
-                this.cameras[cameraID] = new CGFcamera(angle/180, near, far, from, to);
+                this.cameras[cameraID] = new CGFcamera(angle/180*Math.PI, near, far, from, to);
 
             } else if (children[i].nodeName == "ortho"){
                 if (left == null || right == null || bottom == null || top == null || from == null || to == null)
                     return "missing atributes for camera with ID = " + cameraID;
 
                 if (up == null)
-                    up.push(0,1,0);
+                    up = [0,1,0];
                 
                 this.cameras[cameraID] = new CGFcameraOrtho(left, right, bottom, top, near, far, from, to, up)
             }

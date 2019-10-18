@@ -46,6 +46,9 @@ class XMLscene extends CGFscene {
 
         this.numberLights = 0;
 
+        this.views = [];
+        this.curView = 0;
+
     }
 
     /**
@@ -53,6 +56,23 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+    }
+
+    initCamerasAfterGraph() {
+        var first = true;
+        for (var key in this.graph.cameras) {
+
+            if (first){
+                this.curView = key;
+                first = false;
+            }
+            this.views.push(key);
+
+        }
+
+        this.interface.gui.add(this, 'curView', this.views).name('Camera');
+
+        this.camera =  this.graph.cameras[this.curView];
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -97,7 +117,6 @@ class XMLscene extends CGFscene {
 
                 i++;
                 this.numberLights++;
-                console.log("I: " + i);
             }
         }
     }
@@ -119,6 +138,8 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
+
+        this.initCamerasAfterGraph();
 
         this.sceneInited = true;
     }
@@ -149,11 +170,14 @@ class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
         
-        this.updateActiveLights();
 
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
+
+            this.updateActiveLights();
+
+            this.updateActiveCamera();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
@@ -162,6 +186,14 @@ class XMLscene extends CGFscene {
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+
+
+    updateActiveCamera(){
+        this.camera = this.graph.cameras[this.curView];
+
+        this.interface.setActiveCamera(this.camera);
+    }
+
 
     setLightTo(i, active){
         switch(i){
