@@ -48,7 +48,7 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive> -->
         <primitive id="cylinder">
-            <cylinder base="1.0" top="1.0" height="1.0" slices="10" stacks="10" />
+            <cylinder base="1.0" top="1.0" height="1.0" slices="4" stacks="4" />
         </primitive>
     </primitives>
 
@@ -63,7 +63,7 @@
             </materials>
             <texture id="demoTexture"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="cylinder" />
             </children>
         </component>
     </components>
