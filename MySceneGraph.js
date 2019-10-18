@@ -951,6 +951,11 @@ class MySceneGraph {
                 if (!(y1 != null && !isNaN(y1)))
                     return "unable to parse y1 of the primitive coordinates for ID = " + primitiveId;
 
+                // z1
+                var z1 = this.reader.getFloat(grandChildren[0], 'z1');
+                if (!(z1 != null && !isNaN(z1)))
+                    return "unable to parse z1 of the primitive coordinates for ID = " + primitiveId;
+
                 // x2
                 var x2 = this.reader.getFloat(grandChildren[0], 'x2');
                 if (!(x2 != null && !isNaN(x2)))
@@ -960,6 +965,11 @@ class MySceneGraph {
                 var y2 = this.reader.getFloat(grandChildren[0], 'y2');
                 if (!(y2 != null && !isNaN(y2)))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
+
+                // z2
+                var z2 = this.reader.getFloat(grandChildren[0], 'z2');
+                if (!(z2 != null && !isNaN(z2)))
+                    return "unable to parse z2 of the primitive coordinates for ID = " + primitiveId;
 
                 // x3
                 var x3 = this.reader.getFloat(grandChildren[0], 'x3');
@@ -971,7 +981,12 @@ class MySceneGraph {
                 if (!(y3 != null && !isNaN(y3)))
                     return "unable to parse y3 of the primitive coordinates for ID = " + primitiveId;
 
-                var triangle = new MyTriangle(this.scene, primitiveId, x1, x2, x3, y1, y2, y3);
+                // z3
+                var z3 = this.reader.getFloat(grandChildren[0], 'z3');
+                if (!(z3 != null && !isNaN(z3)))
+                    return "unable to parse z3 of the primitive coordinates for ID = " + primitiveId;
+
+                var triangle = new MyTriangle(this.scene, primitiveId, x1, x2, x3, y1, y2, y3, z1, z2, z3);
 
                 this.primitives[primitiveId] = triangle;
 
@@ -1349,12 +1364,12 @@ class MySceneGraph {
         // if (!rootNode.visited) {
             this.dfs_index = 0;
             var current_matrix = this.scene.getMatrix();
-            this.dfs_display(rootNode, current_matrix, "none", undefined, undefined, undefined);   
+            this.dfs_display(rootNode, current_matrix, "none", new CGFappearance(this.scene), 1, 1);   
             this.count++;      
         // }
     }
 
-    dfs_display(node, transform, texture, material, length_s, lenght_t) {
+    dfs_display(node, transform, texture, material, length_s, length_t) {
 
         // if (node.visited)
         //     return;
@@ -1380,10 +1395,8 @@ class MySceneGraph {
             }
             if (node.texture != "none" && node.texture != "inherit"){
                 node.matDisplay[this.dfs_index].setTexture(this.textures[node.texture]);
-                length_s = node.length_s;
-                lenght_t = node.lenght_t;
                 // node.material[0].setTextureWrap('REPEAT', 'REPEAT');
-                console.log("Text :" + node.texture + " - id " + node.id);
+                console.log("LENGHT :" + length_s + " - id " + length_t);
             } else if (node.texture == "inherit") {
                 node.matDisplay[this.dfs_index].setTexture(this.textures[texture]);
                 // node.material[0].setTextureWrap('REPEAT', 'REPEAT');
@@ -1394,18 +1407,19 @@ class MySceneGraph {
             }
         }
 
-        node.matDisplay[this.dfs_index].apply();  // TODO transverse materials
+        node.matDisplay[this.dfs_index].setTextureWrap('REPEAT', 'REPEAT');
+        node.matDisplay[this.dfs_index].apply();  
+
+        if (node.texture != "none" && node.texture != "inherit"){
+            length_s = node.s_length;
+            length_t = node.t_length;
+        }
 
         node.primitives.forEach(primitive => {
-            if (length_s != undefined && lenght_t != undefined)
-                primitive.updateTexCoords(length_s, lenght_t);
+            // if (length_s != undefined && length_t != undefined)
+                primitive.updateTexCoords(length_s, length_t);
             primitive.display();
         });
-
-        // if (node.material[0] != undefined) {
-        //     node.material[0].setTexture(null);
-        //     node.material[0].apply();  // TODO transverse materials
-        // }
 
         var curIndex = this.dfs_index;
 
@@ -1417,7 +1431,7 @@ class MySceneGraph {
             // if (!adjacent_node.visited) {
                 // if (adjacent_node != undefined)
                 this.dfs_display(this.nodes[adjacent_id], this.scene.getMatrix(), node.texture == "inherit" ? texture : node.texture, node.matDisplay[curIndex],
-                length_s, lenght_t);
+                length_s, length_t);
             // }
         });
 

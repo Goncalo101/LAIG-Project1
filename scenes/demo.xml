@@ -57,7 +57,9 @@
             <sphere radius="1.0" slices="10" stacks="10" />
         </primitive>
         <primitive id="triangle">
-            <triangle x3="0" y3="5" x2="5" y2="0.0" x1="0" y1="0.0"/>
+            <triangle   x1="0"   y1="0" z1="0"
+                        x2="3"   y2="0" z2="0"
+                        x3="1.5" y3="0" z3="6" />
         </primitive>
         <primitive id="rectangle">
             <rectangle x1="0" y1="-2" x2="2" y2="1" />
