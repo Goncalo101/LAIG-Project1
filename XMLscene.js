@@ -13,6 +13,7 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.key_presses = 0;
+        this.count = 0;
     }
 
     /**
@@ -128,10 +129,17 @@ class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.axis.display();
+        
 
         for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
+            if (this.lights[i].enabled) {
+                this.lights[i].setVisible(true);
+                this.lights[i].enable();
+            } else {
+                this.lights[i].setVisible(false);
+                this.lights[i].disable();
+            }
+            this.lights[i].update();
         }
 
         if (this.sceneInited) {
