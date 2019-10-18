@@ -12,7 +12,6 @@ class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
-        this.key_presses = 0;
     }
 
     /**
@@ -35,6 +34,21 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
+
+        this.light0 = true;
+        this.light1 = false;
+        this.light2 = false;
+        this.light3 = false;
+        this.light4 = false;
+        this.light5 = false;
+        this.light6 = false;
+        this.light7 = false;
+
+        this.numberLights = 0;
+
+        this.views = [];
+        this.curView = 0;
+
     }
 
     /**
@@ -42,6 +56,23 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+    }
+
+    initCamerasAfterGraph() {
+        var first = true;
+        for (var key in this.graph.cameras) {
+
+            if (first){
+                this.curView = key;
+                first = false;
+            }
+            this.views.push(key);
+
+        }
+
+        this.interface.gui.add(this, 'curView', this.views).name('Camera');
+
+        this.camera =  this.graph.cameras[this.curView];
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -70,14 +101,22 @@ class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
-                if (light[0])
+                if (light[0]){
                     this.lights[i].enable();
-                else
+                    this.setLightTo(i, true);
+                } else {
                     this.lights[i].disable();
+                    this.setLightTo(i, false);
+                }
+
+
 
                 this.lights[i].update();
 
+                this.interface.lights_folder.add(this, 'light' + i ).name(key);
+
                 i++;
+                this.numberLights++;
             }
         }
     }
@@ -99,6 +138,8 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
+
+        this.initCamerasAfterGraph();
 
         this.sceneInited = true;
     }
@@ -128,15 +169,15 @@ class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.axis.display();
-
-        for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
-        }
+        
 
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
+
+            this.updateActiveLights();
+
+            this.updateActiveCamera();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
@@ -144,5 +185,98 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+
+    updateActiveCamera(){
+        this.camera = this.graph.cameras[this.curView];
+
+        this.interface.setActiveCamera(this.camera);
+    }
+
+
+    setLightTo(i, active){
+        switch(i){
+            case 7:
+                this.light7 = active;
+                break;
+            case 6:
+                this.light6 = active;
+                break;
+            case 5:
+                this.light5 = active;
+                break;
+            case 4:
+                this.light4 = active;
+                break;
+            case 3:
+                this.light3 = active;
+                break;
+            case 2:
+                this.light2 = active;
+                break;
+            case 1:
+                this.light1 = active;
+                break;
+            case 0:
+                this.light0 = active;
+                break;
+            
+            default:
+        }
+    }
+
+    updateActiveLights(){
+        switch(this.numberLights){
+            case 8:
+                if (this.light7)
+                    this.lights[7].enable();
+                else    
+                    this.lights[7].disable();
+                this.lights[7].update();
+            case 7:
+                if (this.light6)
+                    this.lights[6].enable();
+                else    
+                    this.lights[6].disable();
+                this.lights[6].update();
+            case 6:
+                if (this.light5)
+                    this.lights[5].enable();
+                else    
+                    this.lights[5].disable();
+                this.lights[5].update();
+            case 5:
+                if (this.light4)
+                    this.lights[4].enable();
+                else    
+                    this.lights[4].disable();
+                this.lights[4].update();
+            case 4:
+                if (this.light3)
+                    this.lights[3].enable();
+                else    
+                    this.lights[3].disable();
+                this.lights[3].update();
+            case 3:
+                if (this.light2)
+                    this.lights[2].enable();
+                else    
+                    this.lights[2].disable();
+                this.lights[2].update();
+            case 2:
+                if (this.light1)
+                    this.lights[1].enable();
+                else    
+                    this.lights[1].disable();
+                this.lights[1].update();
+            case 1:
+                if (this.light0)
+                    this.lights[0].enable();
+                else    
+                    this.lights[0].disable();
+                this.lights[0].update();
+            default:
+        }
     }
 }

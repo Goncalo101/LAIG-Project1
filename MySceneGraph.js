@@ -373,7 +373,7 @@ class MySceneGraph {
                 if (from == null || to == null || angle == null)
                     return "missing atributes for camera with ID = " + cameraID;
 
-                this.cameras[cameraID] = new CGFcamera(angle/180, near, far, from, to);
+                this.cameras[cameraID] = new CGFcamera(angle/180*Math.PI, near, far, from, to);
 
             } else if (children[i].nodeName == "ortho"){
                 if (left == null || right == null || bottom == null || top == null || from == null || to == null)
@@ -384,7 +384,6 @@ class MySceneGraph {
                 
                 this.cameras[cameraID] = new CGFcameraOrtho(left, right, bottom, top, near, far, from, to, up)
             }
-
         }
 
         this.log("Parsed cameras");
@@ -473,7 +472,7 @@ class MySceneGraph {
             if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
                 this.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");
 
-            enableLight = aux || 1;
+            enableLight = aux;
 
             //Add enabled boolean and type name to light info
             global.push(enableLight);
@@ -534,6 +533,7 @@ class MySceneGraph {
 
             this.lights[lightId] = global;
             numLights++;
+
         }
 
         if (numLights == 0)
@@ -544,7 +544,7 @@ class MySceneGraph {
         this.log("Parsed lights");
         return null;
     }
-
+    
     /**
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
