@@ -386,13 +386,6 @@ class MySceneGraph {
             }
         }
 
-        var camera_map = {};
-        for (var key in this.cameras) {
-            camera_map[key] = this.cameras[key];
-        }
-        console.log(camera_map);
-        this.scene.interface.gui.add(this.scene, 'camera', camera_map).name('View');
-
         this.log("Parsed cameras");
         return null;
     }
@@ -479,7 +472,7 @@ class MySceneGraph {
             if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
                 this.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");
 
-            enableLight = aux || true;
+            enableLight = aux;
 
             //Add enabled boolean and type name to light info
             global.push(enableLight);
@@ -541,8 +534,6 @@ class MySceneGraph {
             this.lights[lightId] = global;
             numLights++;
 
-            // Add light toggle to interface 
-            this.scene.interface.lights_folder.add(this.lights[lightId], '0').name(lightId);
         }
 
         if (numLights == 0)
