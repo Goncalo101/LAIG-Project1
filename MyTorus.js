@@ -23,8 +23,8 @@ class MyTorus extends CGFobject {
 
         var betaSphere = (2 * Math.PI) / this.slices;
 
-        for (var i = 0; i < this.loops; i++) {
-            for (var j = 0; j < this.slices; j++) {
+        for (var i = 0; i <= this.loops; i++) {
+            for (var j = 0; j <= this.slices; j++) {
 
                 this.vertices.push(this.outerRadius * Math.cos(alpha * i) + this.innerRadius * Math.cos(betaSphere * j) * Math.cos(alpha * i),
                                     this.outerRadius * Math.sin(alpha * i) + this.innerRadius * Math.cos(betaSphere * j) * Math.sin(alpha * i), 
@@ -34,8 +34,7 @@ class MyTorus extends CGFobject {
                                     Math.cos(betaSphere * j) * Math.sin(alpha * i), 
                                     Math.sin(betaSphere * j));
 
-                this.texCoords.push(Math.cos(betaSphere * j) * Math.cos(alpha * i) / 2, 
-                                    Math.cos(betaSphere * j) * Math.sin(alpha * i) / 2);
+                this.texCoords.push(i/this.loops, j/this.slices);
 
             }
         }
@@ -44,10 +43,10 @@ class MyTorus extends CGFobject {
         for (var i = 0; i < this.loops; i++) {
             for (var j = 0; j < this.slices; j++) {
 
-                var curcur = i * this.slices + j;
-                var curnext = i * this.slices + ((j + 1) % this.slices);
-                var nextcur = ((i+1) % this.loops) * this.slices + j;
-                var nextnext = ((i+1) % this.loops) * this.slices + ((j + 1) % this.slices);
+                var curcur = i * (this.slices+1) + j;
+                var curnext = i * (this.slices+1) + ((j + 1) );
+                var nextcur = ((i+1) ) * (this.slices+1) + j;
+                var nextnext = ((i+1) ) * (this.slices+1) + ((j + 1) );
 
                 this.indices.push(curnext, curcur, nextcur);
                 this.indices.push(curnext, nextcur, nextnext);
@@ -58,5 +57,6 @@ class MyTorus extends CGFobject {
         
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
+        // this.initNormalVizBuffers();
     }
 };

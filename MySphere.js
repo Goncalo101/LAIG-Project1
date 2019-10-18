@@ -25,11 +25,15 @@ class MySphere extends CGFobject {
         for (var i = 0; i < this.stacks + 1; i++) {
             for (var j = 0; j < this.slices; j++) {
 
-                this.vertices.push(this.radius * Math.cos(alpha * j) * Math.cos(betaSphere * i),this.radius * Math.sin(alpha * j) * Math.cos(betaSphere * i), this.radius * Math.sin(betaSphere * i));
+                var x = this.radius * Math.cos(alpha * j) * Math.cos(betaSphere * i);
+                var y = this.radius * Math.sin(alpha * j) * Math.cos(betaSphere * i);
+                var z = this.radius * Math.sin(betaSphere * i);
+
+                this.vertices.push(x, y, z);
 
                 this.normals.push(Math.cos(alpha * j) * Math.cos(betaSphere * i), Math.sin(alpha * j) * Math.cos(betaSphere * i), Math.sin(betaSphere * i));
 
-                this.texCoords.push((Math.cos(j * alpha) * Math.cos(betaSphere * i) + 1) / 2, (Math.sin( alpha * j) * Math.cos(betaSphere * i) + 1) / 2);
+                this.texCoords.push(0.5 + Math.atan2(z/this.radius, x/this.radius)/(2*Math.PI), 0.5 - Math.asin(y/this.radius)/Math.PI);
 
             }
         }
@@ -37,11 +41,15 @@ class MySphere extends CGFobject {
         for (var i = 0; i < this.stacks + 1; i++) {
             for (var j = 0; j < this.slices; j++) {
 
-                this.vertices.push(this.radius * Math.cos(alpha * j) * Math.cos(betaSphere * i),this.radius * Math.sin(alpha * j) * Math.cos(betaSphere * i), -this.radius * Math.sin(betaSphere * i));
+                var x = this.radius * Math.cos(alpha * j) * Math.cos(betaSphere * i);
+                var y = this.radius * Math.sin(alpha * j) * Math.cos(betaSphere * i);
+                var z = -this.radius * Math.sin(betaSphere * i);
+
+                this.vertices.push(x,y,z);
 
                 this.normals.push(Math.cos(alpha * j) * Math.cos(betaSphere * i), Math.sin(alpha * j) * Math.cos(betaSphere * i), -Math.sin(betaSphere * i));
 
-                this.texCoords.push(-(Math.cos(j * alpha) * Math.cos(betaSphere * i) + 1) / 2, (Math.sin( alpha * j) * Math.cos(betaSphere * i) + 1) / 2);
+                this.texCoords.push(0.5 + Math.atan2(z/this.radius, x/this.radius)/(2*Math.PI), 0.5 - Math.asin(y/this.radius)/Math.PI);
 
             }
         }

@@ -31,7 +31,7 @@ class MyCylinder extends CGFobject {
         var top_vertices = [];
         var bottom_vertices = [];
         var stack_normals = [];
-        for (var angleIndex = 0; angleIndex < this.slices; angleIndex++) {
+        for (var angleIndex = 0; angleIndex <= this.slices; angleIndex++) {
             var current_angle = alphaAng * angleIndex;
             var x_coord = Math.cos(current_angle);
             var y_coord = Math.sin(current_angle);
@@ -44,7 +44,7 @@ class MyCylinder extends CGFobject {
         // generate all of the other vertices
         var middle_vertices = [];
         for (var stack = 1, radius = this.radius_bottom + delta_radius, height = delta_height; stack < this.stacks; ++stack) {
-            for (var angleIndex = 0; angleIndex < this.slices; angleIndex++) {
+            for (var angleIndex = 0; angleIndex <= this.slices; angleIndex++) {
                 var current_angle = alphaAng * angleIndex;
                 var x_coord = radius * Math.cos(current_angle);
                 var y_coord = radius * Math.sin(current_angle);
@@ -66,7 +66,7 @@ class MyCylinder extends CGFobject {
         for (var vertice_line = 0; vertice_line <= this.stacks; ++vertice_line) {
             this.normals.push(...stack_normals);
             
-            for (var i = 0; i < this.slices; i++){
+            for (var i = 0; i <= this.slices; i++){
                 this.texCoords.push(i/this.slices,vertice_line/this.stacks);
             }
         }
@@ -74,7 +74,7 @@ class MyCylinder extends CGFobject {
         // prepare indices for addition to the indices list
         for (var i = 0, index = 0; i <= this.stacks; ++i) {
             var temp = [];
-            for (var j = 0; j < this.slices; ++j) {
+            for (var j = 0; j <= this.slices; ++j) {
                 temp.push(index++);
             }
             slice_indices.push(temp);
@@ -82,13 +82,13 @@ class MyCylinder extends CGFobject {
 
         for (var stack = 0; stack < this.stacks; stack++) {
             console.log("stack no. " + stack);
-            for (var i = 0; i < this.slices - 1; i++) {
+            for (var i = 0; i < this.slices; i++) {
                 this.indices.push(slice_indices[stack][i], slice_indices[stack][i + 1], slice_indices[stack + 1][i]);
                 this.indices.push(slice_indices[stack][i + 1], slice_indices[stack + 1][i + 1], slice_indices[stack + 1][i]);
             }
 
-            this.indices.push(slice_indices[stack][this.slices - 1], slice_indices[stack][0], slice_indices[stack + 1][this.slices - 1]);
-            this.indices.push(slice_indices[stack + 1][this.slices - 1], slice_indices[stack][0], slice_indices[stack + 1][0]);
+            // this.indices.push(slice_indices[stack][this.slices - 1], slice_indices[stack][0], slice_indices[stack + 1][this.slices - 1]);
+            // this.indices.push(slice_indices[stack + 1][this.slices - 1], slice_indices[stack][0], slice_indices[stack + 1][0]);
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
