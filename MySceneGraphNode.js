@@ -9,7 +9,7 @@ class MySceneGraphNode {
      * @param {CGFappearance} material Appearance to be applied, can be inherited from parent or class-defined
      * @param primitive Primitive to be drawn, defined only by leaf nodes
      */
-    constructor(id, transform, material, texture) {
+    constructor(id, transform, material, texture, s_length, t_length) {
         this.id = id;
         this.primitives = [];
 
@@ -21,6 +21,8 @@ class MySceneGraphNode {
 
         this.material = material;
         this.texture = texture;
+        this.s_length = s_length;
+        this.t_length = t_length;
         this.adjacent = [];
         this.matDisplay = [];
     }

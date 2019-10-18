@@ -92,4 +92,8 @@ class MySphere extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+
+    updateTexCoords(s_length, t_length) {
+		this.updateTexCoordsGLBuffers();
+	}
 };

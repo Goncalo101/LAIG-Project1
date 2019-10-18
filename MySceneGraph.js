@@ -380,7 +380,7 @@ class MySceneGraph {
                     return "missing atributes for camera with ID = " + cameraID;
 
                 if (up == null)
-                    up.push(0,1,0);
+                    up = [0,1,0];
                 
                 this.cameras[cameraID] = new CGFcameraOrtho(left, right, bottom, top, near, far, from, to, up)
             }
@@ -1144,10 +1144,10 @@ class MySceneGraph {
                 var materialID = this.reader.getString(materialsChildren[j], 'id');
                 var material = this.materials[materialID];
 
-                if (materialID == null && materialID != "inherit")
+                if ((materialID == null || materialID == undefined) && materialID != "inherit")
                     return "no ID defined for material in component with ID = " + componentID;
 
-                if (material == null && materialID != "inherit")
+                if ((material == null || material == undefined) && materialID != "inherit")
                     return "material with ID = " + materialID + " not found on component with ID = " + componentID;
 
                 if (materialID == 'inherit'){
@@ -1166,12 +1166,27 @@ class MySceneGraph {
 
             var textureID = this.reader.getString(texturesChildren, 'id');
             var texture = this.textures[textureID];
+            var s_length, t_length;
 
             if (textureID == null && textureID != "inherit" && textureID != "none") // TODO remove none
                 return "no ID defined for texture in component with ID = " + componentID;
 
             if (texture == null && textureID != "inherit" && textureID != "none")  // TODO remove none
                 return "texture with ID = " + textureID + " not found on component with ID = " + componentID;
+
+
+            if (textureID != "inherit" && textureID != "none") {
+                
+                s_length = this.reader.getString(texturesChildren, 'length_s');
+                t_length = this.reader.getString(texturesChildren, 'length_t');
+
+                if (s_length == null && textureID != "inherit" && textureID != "none")  // TODO remove none
+                    return "s_lenght of texture with ID = " + textureID + " not found on component with ID = " + componentID;
+
+                if (t_length == null && textureID != "inherit" && textureID != "none")  // TODO remove none
+                    return "t_length of texture with ID = " + textureID + " not found on component with ID = " + componentID;
+
+            }
 
             console.log("Initialize :" + textureID + " - id " + componentID);
 
@@ -1199,7 +1214,7 @@ class MySceneGraph {
                 }
             }
 
-            var node = new MySceneGraphNode(componentID, nodeTransforms, materials, textureID);
+            var node = new MySceneGraphNode(componentID, nodeTransforms, materials, textureID, s_length, t_length);
             node.addAdjacent(children);
             node.addPrimitives(primitiveChildren);
             this.nodes[componentID] = node;
@@ -1334,12 +1349,12 @@ class MySceneGraph {
         // if (!rootNode.visited) {
             this.dfs_index = 0;
             var current_matrix = this.scene.getMatrix();
-            this.dfs_display(rootNode, current_matrix, "none", undefined);   
+            this.dfs_display(rootNode, current_matrix, "none", undefined, undefined, undefined);   
             this.count++;      
         // }
     }
 
-    dfs_display(node, transform, texture, material) {
+    dfs_display(node, transform, texture, material, length_s, lenght_t) {
 
         // if (node.visited)
         //     return;
@@ -1365,6 +1380,8 @@ class MySceneGraph {
             }
             if (node.texture != "none" && node.texture != "inherit"){
                 node.matDisplay[this.dfs_index].setTexture(this.textures[node.texture]);
+                length_s = node.length_s;
+                lenght_t = node.lenght_t;
                 // node.material[0].setTextureWrap('REPEAT', 'REPEAT');
                 console.log("Text :" + node.texture + " - id " + node.id);
             } else if (node.texture == "inherit") {
@@ -1380,6 +1397,8 @@ class MySceneGraph {
         node.matDisplay[this.dfs_index].apply();  // TODO transverse materials
 
         node.primitives.forEach(primitive => {
+            if (length_s != undefined && lenght_t != undefined)
+                primitive.updateTexCoords(length_s, lenght_t);
             primitive.display();
         });
 
@@ -1397,7 +1416,8 @@ class MySceneGraph {
             // console.log("Node: " + adjacent_id);
             // if (!adjacent_node.visited) {
                 // if (adjacent_node != undefined)
-                this.dfs_display(this.nodes[adjacent_id], this.scene.getMatrix(), node.texture == "inherit" ? texture : node.texture, node.matDisplay[curIndex]);
+                this.dfs_display(this.nodes[adjacent_id], this.scene.getMatrix(), node.texture == "inherit" ? texture : node.texture, node.matDisplay[curIndex],
+                length_s, lenght_t);
             // }
         });
 

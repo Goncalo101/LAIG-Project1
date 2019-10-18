@@ -99,6 +99,10 @@ class MyCylinder extends CGFobject {
         // console.log(this.indices);
         // console.log(this.texCoords);
     }
+
+    updateTexCoords(s_length, t_length) {
+		this.updateTexCoordsGLBuffers();
+	}
 }
 
 

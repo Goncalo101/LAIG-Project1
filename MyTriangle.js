@@ -42,4 +42,24 @@ class MyTriangle extends CGFobject {
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}
+
+	updateTexCoords(s_length, t_length) {
+
+		var a, b, c, cosa, sina;
+		a = Math.sqrt(Math.pow(this.x1-this.x2, 2) + Math.pow(this.y1-this.y2, 2));
+		b = Math.sqrt(Math.pow(this.x3-this.x2, 2) + Math.pow(this.y3-this.y2, 2));
+		c = Math.sqrt(Math.pow(this.x1-this.x3, 2) + Math.pow(this.y1-this.y3, 2));
+
+		cosa = (Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2))/(2*a*c);
+		sina = Math.sqrt(1 - Math.pow(cosa, 2));
+
+		this.texCoords = [
+			0, 0,
+			a/s_length, 0,
+			c*cosa/s_length, c*sina/t_length
+		];
+
+
+		this.updateTexCoordsGLBuffers();
+	}
 }
