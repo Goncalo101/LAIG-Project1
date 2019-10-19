@@ -23,6 +23,8 @@
     </lights>
 
     <textures>
+        <texture id="tower_door" file="scenes/images/castle_door.jpg" />
+        <texture id="window_tex" file="scenes/images/window.jpg" />
         <texture id="wood" file="scenes/images/table.jpg" />
         <texture id="rusted_copper" file="scenes/images/copper.jpg" />
         <texture id="stone_walls" file="scenes/images/stone_walls.jpg" />
@@ -44,11 +46,18 @@
             <rotate axis="x" angle="-45" />
             <rotate axis="z" angle="-45" />
         </transformation>
+        <transformation id="tower_limits_transform">
+            <translate x="0" y="0" z="-7"/>
+            <rotate axis="y" angle="-90"/>
+        </transformation>
     </transformations>
 
     <primitives>
         <primitive id="support_beam">
             <cylinder base="0.1" top="0.1" height="1.0" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="axis">
+            <cylinder base="1.0" top="1.0" height="6.5" slices="10" stacks="10" />
         </primitive>
         <primitive id="gun">
             <cylinder base="0.3" top="0.3" height="2.0" slices="10" stacks="10" />
@@ -65,14 +74,30 @@
         <primitive id="wall">
             <rectangle x1="0" y1="0" x2="5" y2="7" />
         </primitive>
-        <!-- <primitive id="sphere">
-            <sphere radius="1.0" slices="10" stacks="10" />
+        <primitive id="watchtower_floor">
+            <rectangle x1="0" y1="0" x2="7" y2="7" />
         </primitive>
-        <primitive id="triangle">
-            <triangle   x1="0"   y1="0" z1="0"
-                        x2="3"   y2="0" z2="0"
-                        x3="1.5" y3="0" z3="6" />
-        </primitive> -->
+        <primitive id="watchtower_limit">
+            <rectangle x1="0" y1="0" x2="7" y2="1.5" />
+        </primitive>
+        <primitive id="watchtower_limit_inner">
+            <rectangle x1="1" y1="0" x2="6.5" y2="0.5" />
+        </primitive>
+        <primitive id="watchtower_limit_inner_corner">
+            <rectangle x1="0" y1="0" x2="1" y2="0.5" />
+        </primitive>
+        <primitive id="wall_section">
+            <rectangle x1="1" y1="0" x2="6.5" y2="5" />
+        </primitive>
+        <primitive id="window">
+            <rectangle x1="1" y1="4" x2="2" y2="6" />
+        </primitive>
+        <primitive id="door">
+            <rectangle x1="-1" y1="0" x2="1" y2="3" />
+        </primitive>
+        <primitive id="axis_top">
+            <sphere radius="1.0" slices="10" stacks="10"/>
+        </primitive>
     </primitives>
 
     <components>
@@ -85,8 +110,137 @@
             </materials>
             <texture id="none" length_s="1" length_t="2"/>
             <children>
+                <componentref id="castle_walls"/>
                 <componentref id="cannon"/>
                 <componentref id="tower"/>
+                <componentref id="tower2"/>
+            </children>
+        </component>
+
+        <component id="tower2">
+            <transformation>
+                <translate x="25" y="0" z="0"/> 
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none" length_s="1" length_t="2"/>
+            <children>
+                <componentref id="tower"/>
+            </children>
+        </component>
+
+        <component id="castle_walls">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="stone_walls" length_s="1" length_t="2"/>
+            <children>
+                <componentref id="wall_component"/>
+                <componentref id="castle_walls2"/>
+            </children>
+        </component>
+
+        <component id="castle_walls2">
+            <transformation>
+                <translate x="5.5" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="wall_component" />
+                <componentref id="castle_walls3"/>
+            </children>
+        </component>
+
+        <component id="castle_walls3">
+            <transformation>
+                <translate x="5.5" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="wall_component" />
+                <componentref id="castle_walls4" />
+            </children>
+        </component>
+        
+        <component id="castle_walls4">
+            <transformation>
+                <translate x="5.5" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="wall_component" />
+            </children>
+        </component>
+
+        <component id="wall_component">
+            <transformation>
+                <translate x="1.5" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="wall_section"/>
+                <componentref id="wall_section_component"/>
+            </children>
+        </component>
+
+        <component id="wall_section_component">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="stone_walls" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="wall_section"/>
+                <componentref id="wall_top"/>
+            </children>
+        </component>
+
+        <component id="wall_top">
+            <transformation>
+                <translate x="0" y="5" z="0" />
+                <rotate axis="x" angle="-90"/>
+                <scale x="1" y="2" z="1"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="watchtower_limit_inner"/>
+                <componentref id="wall_axis"/>
+            </children>
+        </component>
+
+        <component id="wall_axis">
+            <transformation>
+                <translate x="6.5" y="0.5" z="1.5"/>
+                <rotate axis="y" angle="180"/>
+                <scale x="1" y="0.5" z="1"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="axis"/>
+                <primitiveref id="axis_top"/>
             </children>
         </component>
 
@@ -96,12 +250,167 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" length_s="1" length_t="2"/>
+            <texture id="stone_walls" length_s="1" length_t="2"/>
             <children>
+                <componentref id="window_comp"/>
                 <componentref id="walls"/>
-                <!-- <componentref id="watchtower"/> -->
+                <componentref id="watchtower"/>
+                <componentref id="window_comp"/>
+                <componentref id="door_comp"/>
             </children>
         </component>
+
+        <component id="door_comp">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="tower_door" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="door"/>
+            </children>
+        </component>
+
+        <component id="window_comp">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="window_tex" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="window"/>
+            </children>
+        </component>
+
+        <component id="watchtower">
+            <transformation>
+                <translate x="-3.5" y="7" z="1"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="watchtower_floor"/>
+                <componentref id="limit1"/>
+            </children>
+        </component>
+
+        <component id="watchtower_limits">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="watchtower_inner1"/>
+                <componentref id="watchtower_outer"/>
+            </children>
+        </component>
+
+        <component id="limit1">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="watchtower_limits"/>
+                <!-- <componentref id="watchtower_upper"/> -->
+                <componentref id="limit2"/>
+            </children>
+        </component>
+
+        <component id="watchtower_outer">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="watchtower_limit"/>
+            </children>
+        </component>
+
+        <component id="watchtower_inner1">
+            <transformation>
+                <translate x="0" y="1.5" z="0"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="watchtower_limit_inner"/>
+                <primitiveref id="watchtower_limit_inner_corner"/>
+                <componentref id="watchtower_inner2"/>
+            </children>
+        </component>
+
+        <component id="watchtower_inner2">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="watchtower_limit"/>
+            </children>
+        </component>
+
+        <component id="limit2">
+            <transformation>
+                <transformationref id="tower_limits_transform"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <!-- <primitiveref id="watchtower_limit"/> -->
+                <componentref id="watchtower_limits"/>
+                <componentref id="limit3"/>
+            </children>
+        </component> 
+
+        <component id="limit3">
+            <transformation>
+                <transformationref id="tower_limits_transform"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <!-- <primitiveref id="watchtower_limit"/> -->
+                <componentref id="watchtower_limits"/>
+                <componentref id="limit4"/>
+            </children>
+        </component> 
+
+        <component id="limit4">
+            <transformation>
+                <transformationref id="tower_limits_transform"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <!-- <primitiveref id="watchtower_limit"/> -->
+                <componentref id="watchtower_limits"/>
+            </children>
+        </component> 
 
         <component id="walls">
             <transformation>
@@ -110,7 +419,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="stone_walls" length_s="1" length_t="2"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="wall"/>
                 <componentref id="wall1"/>
@@ -125,7 +434,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="stone_walls" length_s="1" length_t="2"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="wall"/>
                 <componentref id="wall2"/>
@@ -140,7 +449,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="stone_walls" length_s="1" length_t="2"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="wall"/>
                 <componentref id="wall3"/>
@@ -155,7 +464,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="stone_walls" length_s="1" length_t="2"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="wall"/>
             </children>
