@@ -127,6 +127,7 @@
             <children>
                 <componentref id="castle_walls"/>
                 <componentref id="cannon_group"/>
+                <componentref id="cannon_group2"/>
                 <componentref id="tower"/>
                 <componentref id="tower2"/>
                 <componentref id="skybox"/>
@@ -136,6 +137,36 @@
         <component id="cannon_group">
             <transformation>
                 <translate x="7" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="cannon"/>
+                <componentref id="cannon_elem1"/>
+            </children>
+        </component>
+
+        <component id="cannon_group2">
+            <transformation>
+                <translate x="17" y="0" z="30" />
+                <rotate axis="y" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="cannon"/>
+                <componentref id="cannon_elem1"/>
+                <componentref id="cannon_group3"/>
+            </children>
+        </component>
+
+        <component id="cannon_group3">
+            <transformation>
+                <translate x="0" y="0" z="10" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
