@@ -40,12 +40,14 @@
         <texture id="sb_up" file="scenes/images/hills_up.jpg" />
 
         <!-- Other textures-->
+        <texture id="tree_top_tex" file="scenes/images/tree_top.svg" />
         <texture id="tower_door" file="scenes/images/castle_door.jpg" />
         <texture id="window_tex" file="scenes/images/window.jpg" />
         <texture id="wood" file="scenes/images/table.jpg" />
         <texture id="rusted_copper" file="scenes/images/copper.jpg" />
         <texture id="stone_walls" file="scenes/images/stone_walls.jpg" />
         <texture id="flag_tex" file="scenes/images/flag.jpg" />
+        <texture id="trunk_tex" file="scenes/images/trunk-image.jpg" />
         <texture id="demoTexture" file="scenes/images/vidral.jpg"/>
     </textures>
 
@@ -94,6 +96,9 @@
         </primitive>
         <primitive id="axis">
             <cylinder base="1.0" top="1.0" height="6.5" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="tree_top">
+            <cylinder base="3.0" top="0.0" height="4.0" slices="10" stacks="10" />
         </primitive>
         <primitive id="flagpole">
             <cylinder base="0.2" top="0.2" height="6" slices="10" stacks="10" />
@@ -145,8 +150,8 @@
         </primitive>
         <primitive id="flag">
             <triangle x1="0.0" y1="0.0" z1="0.0"
-                        x2="4.0" y2="0.0" z2="0.0"
-                        x3="0.0" y3="3.0" z3="0.0"/>
+                    x2="4.0" y2="0.0" z2="0.0"
+                    x3="0.0" y3="3.0" z3="0.0"/>
         </primitive>
     </primitives>
 
@@ -160,12 +165,165 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="tree_groups"/>
                 <componentref id="castle"/>
                 <componentref id="cannon_group"/>
                 <componentref id="cannon_group2"/>
                 <componentref id="tower"/>
                 <componentref id="tower2"/>
                 <componentref id="skybox"/>
+            </children>
+        </component>
+
+        <component id="tree_groups">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="tree_group1" />
+                <componentref id="tree_group2"/>
+            </children>
+        </component>
+        
+        
+        <component id="tree_group2">
+            <transformation>
+                <translate x="38" y="0" z="10"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp1" />
+            </children>
+        </component>
+
+        <component id="tree_group1">
+            <transformation>
+                <translate x="-5" y="0" z="10"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp1" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp1">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp2" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp2">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp3" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp3">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp4" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp4">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+            </children>
+        </component>
+
+        <component id="tree">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree_left"/>
+                <componentref id="tree_right"/>
+                <componentref id="tree_top_comp"/>
+            </children>
+        </component>
+
+        <component id="tree_right">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="tree_top_comp"/>
+            </children>
+        </component>
+
+        <component id="tree_left">
+            <transformation>
+                <translate x="-7" y="0" z="0"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="tree_top_comp"/>
+            </children>
+        </component>
+
+        <component id="tree_top_comp">
+            <transformation>
+                <translate x="0" y="0" z="6.5" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="tree_top_tex" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="tree_top"/>
             </children>
         </component>
 
