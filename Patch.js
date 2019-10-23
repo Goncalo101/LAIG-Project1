@@ -6,7 +6,9 @@ class Patch extends CGFobject {
 
         this.scene = scene;
 
-        this.patch = new CGFnurbsSurface(npointsU, npointsV, controlvertexes);
+        console.log(controlvertexes);
+
+        this.patch = new CGFnurbsSurface(npointsU-1, npointsV-1, controlvertexes);
 
 		this.patchObj = new CGFnurbsObject(this.scene, npartsU, npartsV, this.patch);
 
@@ -20,5 +22,9 @@ class Patch extends CGFobject {
     display(){
         this.patchObj.display();
     }
+
+    updateTexCoords(s_length, t_length) {
+		// this.updateTexCoordsGLBuffers();
+	}
 
 }

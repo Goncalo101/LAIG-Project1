@@ -58,10 +58,24 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive> -->
         <primitive id="cylinder">
-            <cylinder base="1.0" top="1.0" height="5.0" slices="3" stacks="1" />
+            <cylinder base="1.0" top="0.1" height="5.0" slices="10" stacks="1" />
         </primitive>
         <primitive id="torus">
             <torus inner="0.5" outer="1.5" slices="10" loops="10" />
+        </primitive>
+        <primitive id="plane">
+            <plane npartsU="1" npartsV="1" />
+        </primitive>
+
+        <primitive id="patch">
+            <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
+                <controlpoint xx="-1.5" yy="-1.5" zz="0" />
+                <controlpoint xx="-1.5" yy="1.5" zz="0" />
+                <controlpoint xx="0" yy="-1.5" zz="3" />
+                <controlpoint xx="0" yy="1.5" zz="3" />
+                <controlpoint xx="1.5" yy="-1.5" zz="0" />
+                <controlpoint xx="1.5" yy="1.5" zz="0" />
+            </patch>
         </primitive>
         <primitive id="sphere">
             <sphere radius="1.0" slices="10" stacks="10" />
@@ -88,12 +102,13 @@
             </materials>
             <texture id="demoTexture" length_s="1" length_t="2"/>
             <children>
-                <primitiveref id="triangle" />
-                <componentref id="test"/>
+                <primitiveref id="patch" />
+                <primitiveref id="plane" />
+                <!-- <componentref id="test"/> -->
             </children>
         </component>
 
-        <component id="test">
+        <!-- <component id="test">
             <transformation>
             <translate x="2.5" y="0" z="0" />
             </transformation>
@@ -104,6 +119,6 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-        </component>
+        </component> -->
     </components>
 </lxs>
