@@ -180,7 +180,8 @@ class XMLscene extends CGFscene {
             this.updateActiveCamera();
 
             // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            // this.graph.displayScene();
+            this.graph.displayAlternative();
         }
 
         this.popMatrix();

@@ -1459,99 +1459,105 @@ class MySceneGraph {
     }
 
     displayAlternative() {
-        this.scene.pushMatrix();
+        // this.scene.pushMatrix();
 
-        var triangle1 = new MyTriangle(this.scene, 6464, 0, 0, 1, 1, 0, 0);
-        var triangle2 = new MyTriangle(this.scene, 6464, 0, 1, 0, 1, 0, 0);
+        // var triangle1 = new MyTriangle(this.scene, 6464, 0, 0, 1, 1, 0, 0);
+        // var triangle2 = new MyTriangle(this.scene, 6464, 0, 1, 0, 1, 0, 0);
 
-        this.scene.translate(0, 0.5, 0);  // here
+        // this.scene.translate(0, 0.5, 0);  // here
 
-        this.scene.pushMatrix();
-        this.scene.translate(0.75, 1, 0);
-        triangle1.display();
-        triangle2.display();
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
+        // this.scene.translate(0.75, 1, 0);
+        // triangle1.display();
+        // triangle2.display();
+        // this.scene.popMatrix();
 
-        this.scene.rotate(-Math.PI / 2, 0, 1, 0);
+        // this.scene.rotate(-Math.PI / 2, 0, 1, 0);
 
-        this.scene.pushMatrix();
-        this.scene.translate(0.75, 1, 0);
-        triangle1.display();
-        triangle2.display();
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
+        // this.scene.translate(0.75, 1, 0);
+        // triangle1.display();
+        // triangle2.display();
+        // this.scene.popMatrix();
 
-        this.scene.rotate(-Math.PI / 2, 0, 1, 0);
+        // this.scene.rotate(-Math.PI / 2, 0, 1, 0);
 
-        this.scene.pushMatrix();
-        this.scene.translate(0.75, 1, 0);
-        triangle1.display();
-        triangle2.display();
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
+        // this.scene.translate(0.75, 1, 0);
+        // triangle1.display();
+        // triangle2.display();
+        // this.scene.popMatrix();
 
-        this.scene.rotate(-Math.PI / 2, 0, 1, 0);
+        // this.scene.rotate(-Math.PI / 2, 0, 1, 0);
 
-        this.scene.pushMatrix();
-        this.scene.translate(0.75, 1, 0);
-        triangle1.display();
-        triangle2.display();
-        this.scene.popMatrix();
-
-
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
+        // this.scene.translate(0.75, 1, 0);
+        // triangle1.display();
+        // triangle2.display();
+        // this.scene.popMatrix();
 
 
-
-        this.scene.pushMatrix();
-
-        // this.scene.translate(0,0,0);
-
-        // this.scene.scale(7, 5, 7);
-
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+        // this.scene.popMatrix();
 
 
-        var cylL = new MyCylinder(this.scene, 0.75, 0.75, 4, 10, 6);
-        var cylS = new MyCylinder(this.scene, 1.25, 0.01, 1.5, 8, 3);
 
-        this.scene.pushMatrix();
-        this.scene.translate(0, 0, 1);
-        cylL.display();
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
 
-        this.scene.pushMatrix();
+        // // this.scene.translate(0,0,0);
 
-        this.scene.translate(0, 0, 5);
+        // // this.scene.scale(7, 5, 7);
 
-        cylS.display();
+        // this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 
-        this.scene.popMatrix();
 
-        var rect = new MyRectangle(this.scene, "", 0, 2, -1, 1);
-        var rect2 = new MyRectangle(this.scene, "", 0, 2, 1, -1);
+        // var cylL = new MyCylinder(this.scene, 0.75, 0.75, 4, 10, 6);
+        // var cylS = new MyCylinder(this.scene, 1.25, 0.01, 1.5, 8, 3);
 
-        this.scene.pushMatrix();
-        this.scene.rotate(Math.PI / 2, 1, 0, 0);
-        rect.display();
-        rect2.display();
-        this.scene.rotate(Math.PI / 2, 0, 1, 0);
-        rect.display();
-        rect2.display();
-        this.scene.rotate(Math.PI / 2, 0, 1, 0);
-        rect.display();
-        rect2.display();
-        this.scene.rotate(Math.PI / 2, 0, 1, 0);
-        rect.display();
-        rect2.display();
-        this.scene.popMatrix();
+        // this.scene.pushMatrix();
+        // this.scene.translate(0, 0, 1);
+        // cylL.display();
+        // this.scene.popMatrix();
 
-        var torus = new MyTorus(this.scene, "", 0.5, 1.5, 10, 10);
+        // this.scene.pushMatrix();
 
-        this.scene.pushMatrix();
-        this.scene.translate(0, 0, 4);
-        torus.display();
-        this.scene.popMatrix();
+        // this.scene.translate(0, 0, 5);
 
-        var sphere = new MySphere(this.scene, "", 1, 10, 10);
-        sphere.display();
+        // cylS.display();
+
+        // this.scene.popMatrix();
+
+        // var rect = new MyRectangle(this.scene, "", 0, 2, -1, 1);
+        // var rect2 = new MyRectangle(this.scene, "", 0, 2, 1, -1);
+
+        // this.scene.pushMatrix();
+        // this.scene.rotate(Math.PI / 2, 1, 0, 0);
+        // rect.display();
+        // rect2.display();
+        // this.scene.rotate(Math.PI / 2, 0, 1, 0);
+        // rect.display();
+        // rect2.display();
+        // this.scene.rotate(Math.PI / 2, 0, 1, 0);
+        // rect.display();
+        // rect2.display();
+        // this.scene.rotate(Math.PI / 2, 0, 1, 0);
+        // rect.display();
+        // rect2.display();
+        // this.scene.popMatrix();
+
+        // var torus = new MyTorus(this.scene, "", 0.5, 1.5, 10, 10);
+
+        // this.scene.pushMatrix();
+        // this.scene.translate(0, 0, 4);
+        // torus.display();
+        // this.scene.popMatrix();
+
+        // var sphere = new MySphere(this.scene, "", 1, 10, 10);
+        // sphere.display();
+
+        // var rect = new MyRectangle(this.scene, 0, 0, 1, 0, 1);
+        // rect.display();
+
+        var plane = new Plane(this.scene, 5);
+        plane.display();
     }
 }
