@@ -61,7 +61,7 @@ class MyCylinderNURBS extends CGFobject {
            ]);
 
 
-        this.cylObj = new CGFnurbsObject(this.scene, 50, 1, this.cyl); 
+        this.cylObj = new CGFnurbsObject(this.scene, this.slices, this.stacks, this.cyl); 
 
         this.initBuffers();
 
