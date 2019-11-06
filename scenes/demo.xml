@@ -56,10 +56,10 @@
     <animations>
         <animation id="test">
             <keyframe instant="10">
-                <translate x="3" y="2" z="5">
-                <rotate angle_x="20" angle_y="30" angle_z="40">
-                <scale x="4" y="5" z="6">
-            </keframe>
+                <translate x="3" y="2" z="5"/>
+                <rotate angle_x="20" angle_y="30" angle_z="40"/>
+                <scale x="4" y="5" z="6"/>
+            </keyframe>
         </animation>
     </animations>
 
