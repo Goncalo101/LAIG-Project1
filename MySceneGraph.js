@@ -1637,30 +1637,35 @@ class MySceneGraph {
         // var rect = new MyRectangle(this.scene, 0, 0, 1, 0, 1);
         // rect.display();
 
-        var plane = new Patch(this.scene, 2, // degree on U: 3 control vertexes U
-            3, 10, 10, // degree on V: 4 control vertexes on V
-            [	// U = 0
-                [ // V = 0..3;
-                     [ -2.0, -2.0, 1.0, 1 ],
-                     [ -2.0, -1.0, -2.0, 1 ],
-                     [ -2.0, 1.0, 5.0, 1 ],
-                     [ -2.0, 2.0, -1.0, 1 ]
-                ],
-                // U = 1
-                [ // V = 0..3
-                     [ 0, -2.0, 0, 1 ],
-                     [ 0, -1.0, -1.0, 5 ],
-                     [ 0, 1.0, 1.5, 5 ],
-                     [ 0, 2.0, 0, 1 ]
-                ],
-                // U = 2
-                [ // V = 0..3
-                     [ 2.0, -2.0, -1.0, 1 ],
-                     [ 2.0, -1.0, 2.0, 1 ],
-                     [ 2.0, 1.0, -5.0, 1 ],
-                     [ 2.0, 2.0, 1.0, 1 ]
-                ]
-            ]);
-        plane.display();
+        // var plane = new Patch(this.scene, 2, // degree on U: 3 control vertexes U
+        //     3, 10, 10, // degree on V: 4 control vertexes on V
+        //     [	// U = 0
+        //         [ // V = 0..3;
+        //              [ -2.0, -2.0, 1.0, 1 ],
+        //              [ -2.0, -1.0, -2.0, 1 ],
+        //              [ -2.0, 1.0, 5.0, 1 ],
+        //              [ -2.0, 2.0, -1.0, 1 ]
+        //         ],
+        //         // U = 1
+        //         [ // V = 0..3
+        //              [ 0, -2.0, 0, 1 ],
+        //              [ 0, -1.0, -1.0, 5 ],
+        //              [ 0, 1.0, 1.5, 5 ],
+        //              [ 0, 2.0, 0, 1 ]
+        //         ],
+        //         // U = 2
+        //         [ // V = 0..3
+        //              [ 2.0, -2.0, -1.0, 1 ],
+        //              [ 2.0, -1.0, 2.0, 1 ],
+        //              [ 2.0, 1.0, -5.0, 1 ],
+        //              [ 2.0, 2.0, 1.0, 1 ]
+        //         ]
+        //     ]);
+        // plane.display();
+
+        var cyl = new MyCylinderNURBS(this.scene, 1, 2, 3, 2, 2);
+        cyl.display();
+        // var cylGood = new MyCylinder(this.scene, 1, 2, 3, 8,1);
+        // cylGood.display();
     }
 }
