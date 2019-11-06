@@ -861,7 +861,7 @@ class MySceneGraph {
     parseKeyframeTrasformation(transformation_tag) {
         switch (transformation_tag.nodeName) {
             case 'translate':
-                var coordinates = this.parseCoordinates3D(node, "translate transformation for keyframe");
+                var coordinates = this.parseCoordinates3D(transformation_tag, "translate transformation for keyframe");
                 if (!Array.isArray(coordinates))
                     this.onXMLError("unable to parse coordinates of translation for keyframe");
 
@@ -881,7 +881,7 @@ class MySceneGraph {
 
                 return [angle_x, angle_y, angle_z];
             case 'scale':
-                var coordinates = this.parseCoordinates3D(node, "scale transformation for keyframe");
+                var coordinates = this.parseCoordinates3D(transformation_tag, "scale transformation for keyframe");
                 if (!Array.isArray(coordinates))
                     this.onXMLError("unable to parse coordinates of scale for keyframe");
 
@@ -953,7 +953,7 @@ class MySceneGraph {
             if (grand_children.length == 0)
                 return "animation definition must have at least one keyframe";
             
-            var transformations = parseKeyframes(grand_children, animation_id);
+            var transformations = this.parseKeyframes(grand_children, animation_id);
             this.animations[animation_id] = new KeyframeAnimation(this.scene, transformations);
         }
     }
