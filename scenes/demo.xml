@@ -66,6 +66,9 @@
         <primitive id="plane">
             <plane npartsU="1" npartsV="1" />
         </primitive>
+        <primitive id="cylinder2">
+            <cylinder2 base="2" top="3" height="2" slices="20" stacks="2" />
+        </primitive>
 
         <primitive id="patch">
             <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
@@ -102,7 +105,7 @@
             </materials>
             <texture id="demoTexture" length_s="1" length_t="2"/>
             <children>
-                <primitiveref id="patch" />
+                <primitiveref id="cylinder2" />
                 <primitiveref id="plane" />
                 <!-- <componentref id="test"/> -->
             </children>

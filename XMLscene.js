@@ -49,6 +49,11 @@ class XMLscene extends CGFscene {
         this.views = [];
         this.curView = 0;
 
+        this.securityCamera = new MySecurityCamera(this);
+        this.testCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(5, 5, 15), vec3.fromValues(0, 0, 0));
+
+        this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+
     }
 
     /**
@@ -153,7 +158,7 @@ class XMLscene extends CGFscene {
     /**
      * Displays the scene.
      */
-    display() {
+    render(isRTT) {
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -182,10 +187,29 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
             // this.graph.displayAlternative();
+
+            if (isRTT){
+                this.camera = this.testCamera;
+                // this.camera = this.graph.cameras[this.curView];
+            } else {
+                this.camera = this.graph.cameras[this.curView];
+            }
+            
         }
+
+       
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    display(){
+        this.rtt.attachToFrameBuffer();
+        this.render(false);
+        this.securityCamera.display();
+        this.rtt.detachFromFrameBuffer();
+        this.render(true);
+        this.securityCamera.display();
     }
 
 
