@@ -50,7 +50,7 @@ class XMLscene extends CGFscene {
         this.curView = 0;
 
         this.securityCamera = new MySecurityCamera(this);
-        this.testCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(5, 5, 15), vec3.fromValues(0, 0, 0));
+        this.testCamera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
 
         this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
 
@@ -149,10 +149,11 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
-    update() {
+    update(t) {
         if (this.interface.isKeyPressed("KeyM")) {
             this.graph.keyMPressed();
         }
+        this.securityCamera.timefactor = (t % 5000) / 5000;
     }
 
     /**

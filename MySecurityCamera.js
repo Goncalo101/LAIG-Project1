@@ -7,6 +7,8 @@ class MySecurityCamera extends CGFobject {
 
         this.scene = scene;
 
+        this.timefactor = 0.0;
+
         this.rectangle = new MyRectangle(this.scene, 0, 0.25, 1, -1, -0.25);
 
         this.shader = new CGFshader(this.scene.gl, "shaders/texture1.vert", "shaders/texture1.frag");
@@ -15,6 +17,7 @@ class MySecurityCamera extends CGFobject {
 
         this.shader.setUniformsValues({ uSampler2: 1 });
         this.shader.setUniformsValues({ uSampler3: 2 });
+        
 
     }
 
@@ -24,8 +27,12 @@ class MySecurityCamera extends CGFobject {
 
         this.scene.setActiveShader(this.shader);
 
-        this.texture.bind(2);
+        // this.scene.gl.bindTexture(this.scene.gl.TEXTURE_2D, this.scene.gl.createTexture());
+
+        this.shader.setUniformsValues({ timefactor: this.timefactor });
+
         this.texture.bind(1);
+        this.texture.bind(2);
         this.scene.rtt.bind();
         
 
