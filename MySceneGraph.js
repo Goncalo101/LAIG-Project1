@@ -914,11 +914,13 @@ class MySceneGraph {
                 || transforms[2].nodeName != "scale") {
                 this.onXMLError("transformations in keyframe " + instant + " of animation with id " + animation_id + " in wrong order or unknown tag");
             }
-
+            
+            var transform_temp = [instant];
             for (var j = 0; j < 3; ++j) {
                 var transform = transforms[j];
-                transform_list.push(this.parseKeyframeTrasformation(transform));
+                transform_temp.push(this.parseKeyframeTrasformation(transform));
             }
+            transform_list.push(...transform_temp)
         }
 
         return transform_list;
@@ -1403,6 +1405,7 @@ class MySceneGraph {
 
 
             // Children
+            var animation_ids = [];
             var children = [];
             var primitiveChildren = []; 
             var childrenChildren = grandChildren[childrenIndex].children;
@@ -1413,12 +1416,15 @@ class MySceneGraph {
                 switch(child.nodeName) {
                     case "primitiveref": 
                         if (this.primitives[id] == null) return "primitive not found";
-                        
                         primitiveChildren.push(this.primitives[id]);
                         break;
                     case "componentref":
                         console.log("CHILD: " + id);
                         children.push(id);
+                        break;
+                    case "animationref":
+                        if (this.animations[id] == null) return "animation not found";
+                        animation_ids.push(id);
                         break;
                     default:
                         return "Unsupported child type: " + child.nodeName;
@@ -1428,6 +1434,7 @@ class MySceneGraph {
             var node = new MySceneGraphNode(componentID, nodeTransforms, materials, textureID, s_length, t_length);
             node.addAdjacent(children);
             node.addPrimitives(primitiveChildren);
+            node.addAnimations(animation_ids);
             this.nodes[componentID] = node;
         }
     }
@@ -1576,7 +1583,14 @@ class MySceneGraph {
             mat4.multiply(trans, node.transform[i], trans);
         }
         mat4.multiply(transform, transform, trans);
+        
+        var anim;
+        for (var i = 0; i < node.animations.length; ++i) {
+            anim = this.animations[node.animations[i]].update(this.curr_time);
+        }
+
         this.scene.pushMatrix();
+        mat4.multiply(transform, transform, anim);
         this.scene.setMatrix(transform); 
 
         var nodeMaterial = node.material[this.key_presses % node.material.length];
