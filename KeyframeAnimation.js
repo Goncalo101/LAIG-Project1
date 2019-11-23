@@ -31,7 +31,10 @@ class KeyframeAnimation extends Animation {
 
     update(t) {
         var matrix = mat4.create();
-        var translate = vec3.create();
+
+        var translation = vec3.create();
+        var rotation = vec3.create();
+
         var curr_transfs = this.keyframe_animations;
         var keyframe_time = this.keyframe_instants[this.curr_keyframe + 1] - this.keyframe_instants[this.curr_keyframe];
         var real_time = t / 1000;
@@ -42,8 +45,13 @@ class KeyframeAnimation extends Animation {
         else 
             lerp_factor = real_time * (1 / keyframe_time);
 
-        vec3.lerp(translate, translate, curr_transfs[0], lerp_factor);
-        mat4.translate(matrix, matrix, translate);
+        vec3.lerp(translation, translation, curr_transfs[0], lerp_factor);
+        mat4.translate(matrix, matrix, translation);
+        
+        vec3.lerp(rotation, rotation, curr_transfs[1], lerp_factor);
+        mat4.rotate(matrix, matrix, rotation[0] * Math.PI / 180, [1,0,0]);
+        mat4.rotate(matrix, matrix, rotation[1] * Math.PI / 180, [0,1,0]);
+        mat4.rotate(matrix, matrix, rotation[2] * Math.PI / 180, [0,0,1]);
 
         // console.log(this.matrix);
 
