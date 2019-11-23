@@ -10,7 +10,7 @@ class KeyframeAnimation extends Animation {
         // each element of this.keyframes is a list of 4 elements: the starting instant of the keyframe, 
         // followed by the translation, rotation and scale vectors
         this.keyframes = [[0, [0, 0, 0], [0, 0, 0], [1, 1, 1]]];
-        this.keyframes.push(transformations);
+        this.keyframes.push(...transformations);
 
         this.nkeyframes = this.keyframes.length; // number of keyframes (including keyframe 0)
         this.keyframe_instants = [];
@@ -21,7 +21,7 @@ class KeyframeAnimation extends Animation {
         this.keyframes.forEach((transformation) => {
             this.keyframe_instants.push(transformation[0]);
             this.keyframe_animations = transformation.slice(1, 4);
-        })        
+        });
     }
 
     update(t) {

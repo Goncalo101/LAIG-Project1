@@ -920,7 +920,7 @@ class MySceneGraph {
                 var transform = transforms[j];
                 transform_temp.push(this.parseKeyframeTrasformation(transform));
             }
-            transform_list.push(...transform_temp)
+            transform_list.push(transform_temp)
         }
 
         return transform_list;
