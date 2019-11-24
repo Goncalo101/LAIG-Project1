@@ -18,7 +18,7 @@ class KeyframeAnimation extends Animation {
         this.curr_keyframe = 0;
 
         this.keyframe_changed = false;
-        this.gambiarra = 0;
+        this.counter = 0;
 
         this.start_time = this.scene.start_time;
         this.time_factor = 0;
@@ -40,8 +40,8 @@ class KeyframeAnimation extends Animation {
         // javascript assignment, actually assigns a reference, not a value
         var matrix = Object.assign({}, this.matrices[this.curr_keyframe]);
 
-        if (this.gambiarra > 0) {
-            --this.gambiarra;
+        if (this.counter > 0) {
+            --this.counter;
             this.keyframe_changed = false;
             return matrix;
         }
@@ -84,7 +84,7 @@ class KeyframeAnimation extends Animation {
             this.scene.setStartTime(this.scene.curr_time)
             this.scene.checkUpdate();
             this.keyframe_changed = true;
-            this.gambiarra = 3;
+            this.counter = 3;
         }
         
         return matrix;
