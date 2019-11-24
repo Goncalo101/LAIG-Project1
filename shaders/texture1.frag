@@ -24,7 +24,7 @@ void main() {
 		color.rgb += (colorLine/3.0);
 	} 
 	// else {
-		gl_FragColor = vec4(color.rgb - (color3*dist*1.5), 1.0);
+		gl_FragColor = vec4(color.rgb - (color3*dist*1.0), 1.0);
 	// }
 
 // 0 -> 1
