@@ -53,6 +53,31 @@
         </transformation>
     </transformations>
 
+    <animations>
+        <animation id="test">
+            <keyframe instant="5">
+                <translate x="0" y="0" z="10"/>
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="2" z="1"/>
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="10" z="0"/>
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="15">
+                <translate x="0" y="0" z="-10"/>
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="20">
+                <translate x="0" y="-10" z="0"/>
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+        </animation>
+    </animations>
+
     <primitives>
         <!-- <primitive id="demoRectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
@@ -100,12 +125,28 @@
                 <!-- <scale x="2" y="1" z="1" /> -->
                 <!-- <rotate axis="x" angle="-90"/> -->
             </transformation>
+            <!-- <animationref id="test"/> -->
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture" length_s="1" length_t="2"/>
             <children>
-                <primitiveref id="cylinder2" />
+                <primitiveref id="patch" />
+                <componentref id="test"/>
+            </children>
+        </component>
+        <component id="test">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+                <!-- <scale x="2" y="1" z="1" /> -->
+                <!-- <rotate axis="x" angle="-90"/> -->
+            </transformation>
+            <animationref id="test"/>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture" length_s="1" length_t="2"/>
+            <children>
                 <primitiveref id="plane" />
                 <!-- <componentref id="test"/> -->
             </children>

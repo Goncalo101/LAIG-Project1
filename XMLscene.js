@@ -33,7 +33,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(50);
 
         this.light0 = true;
         this.light1 = false;
@@ -55,6 +55,7 @@ class XMLscene extends CGFscene {
 
         this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
 
+        this.count = 0;
     }
 
     /**
@@ -154,11 +155,25 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
+    setStartTime(t) {
+        this.start_time = t;
+        ++this.count;
+    }
+
     update(t) {
         if (this.interface.isKeyPressed("KeyM")) {
             this.graph.keyMPressed();
         }
-        this.securityCamera.timefactor = (t % 5000) / 5000;
+
+        if (this.count == 0) {
+            this.setStartTime(t);
+        }
+
+        // guarantee that the animations start at time = 0
+        if (this.start_time != undefined) {
+            this.graph.curr_time = t - this.start_time;
+            this.curr_time = t;
+        }
     }
 
     /**
