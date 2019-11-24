@@ -122,12 +122,12 @@
     <animations>
         <animation id="cannon_ball">
             <keyframe instant="5">
-                <translate x="0" y="-3" z="3" />
+                <translate x="0" y="3" z="-3" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="2" y="2" z="2" />
+                <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="10">
-                <translate x="0" y="3" z="-3" />
+                <translate x="0" y="-3" z="3" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
@@ -140,27 +140,27 @@
             </keyframe>
             <keyframe instant="10">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-20" angle_y="0" angle_z="0" />
+                <rotate angle_x="-40" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="15">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="20" angle_y="0" angle_z="0" />
+                <rotate angle_x="40" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="20">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-20" angle_y="0" angle_z="0" />
+                <rotate angle_x="-40" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="25">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="20" angle_y="0" angle_z="0" />
+                <rotate angle_x="40" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="30">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-20" angle_y="0" angle_z="0" />
+                <rotate angle_x="-40" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </animation>

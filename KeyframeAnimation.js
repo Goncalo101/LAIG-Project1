@@ -82,7 +82,7 @@ class KeyframeAnimation extends Animation {
             this.scene.setStartTime(this.scene.curr_time)
             this.scene.checkUpdate();
             this.keyframe_changed = true;
-            this.counter = 5;
+            this.counter = 50;
         }
         
         return matrix;
