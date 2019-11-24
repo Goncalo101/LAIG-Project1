@@ -122,14 +122,29 @@
                 <!-- <scale x="2" y="1" z="1" /> -->
                 <!-- <rotate axis="x" angle="-90"/> -->
             </transformation>
+            <!-- <animationref id="test"/> -->
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture" length_s="1" length_t="2"/>
             <children>
                 <primitiveref id="patch" />
+                <componentref id="test"/>
+            </children>
+        </component>
+        <component id="test">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+                <!-- <scale x="2" y="1" z="1" /> -->
+                <!-- <rotate axis="x" angle="-90"/> -->
+            </transformation>
+            <animationref id="test"/>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture" length_s="1" length_t="2"/>
+            <children>
                 <primitiveref id="plane" />
-                <animationref id="test"/>
                 <!-- <componentref id="test"/> -->
             </children>
         </component>

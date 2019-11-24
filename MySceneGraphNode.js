@@ -26,7 +26,7 @@ class MySceneGraphNode {
         this.adjacent = [];
         this.matDisplay = [];
 
-        this.animations = [];
+        this.animation;
     }
 
 
@@ -38,7 +38,7 @@ class MySceneGraphNode {
         this.adjacent.push(...adjacent_list);
     }
 
-    addAnimations(animation_ids_list) {
-        this.animations.push(...animation_ids_list);
+    setAnimation(animation) {
+        this.animation = animation;
     }
 }

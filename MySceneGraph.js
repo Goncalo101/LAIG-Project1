@@ -1297,6 +1297,7 @@ class MySceneGraph {
             }
             
             var transformationIndex = nodeNames.indexOf("transformation");
+            var animationIndex = nodeNames.indexOf("animationref");
             var materialsIndex = nodeNames.indexOf("materials");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
@@ -1304,12 +1305,6 @@ class MySceneGraph {
             // Transformations
             var nodeTransforms = [];
             var transformationChildren = grandChildren[transformationIndex].children;
-
-            // console.log("children length: " + componentsChildren.length);
-            // console.log(componentsChildren);
-            // console.log(grandChildren);
-            // console.log(this.transformations);
-            // console.log("transforms length = " + transformationChildren.length);
 
             for (var transformIndex = 0; transformIndex < transformationChildren.length; ++transformIndex) {
                 var transform = transformationChildren[transformIndex];
@@ -1345,8 +1340,6 @@ class MySceneGraph {
                         return "Unsupported transformation: " + transform.nodeName;
                 } 
             }
-            // console.log("transforms: ");
-            // console.log(nodeTransforms);
 
             // Materials
             var materials = [];
@@ -1372,11 +1365,7 @@ class MySceneGraph {
             }
 
             // Texture
-
             var texturesChildren = grandChildren[textureIndex];
-            // console.log("texturesChildren");
-            // console.log(texturesChildren);
-
             var textureID = this.reader.getString(texturesChildren, 'id');
             var texture = this.textures[textureID];
             var s_length, t_length;
@@ -1405,7 +1394,6 @@ class MySceneGraph {
 
 
             // Children
-            var animation_ids = [];
             var children = [];
             var primitiveChildren = []; 
             var childrenChildren = grandChildren[childrenIndex].children;
@@ -1434,7 +1422,16 @@ class MySceneGraph {
             var node = new MySceneGraphNode(componentID, nodeTransforms, materials, textureID, s_length, t_length);
             node.addAdjacent(children);
             node.addPrimitives(primitiveChildren);
-            node.addAnimations(animation_ids);
+
+            // Animations
+            if (animationIndex != -1) {
+                var animation = grandChildren[animationIndex];
+                var animationID = this.reader.getString(animation, 'id');
+
+                if (this.animations[animationID] == null) return "animation not found";
+                node.setAnimation(animationID);
+            }
+
             this.nodes[componentID] = node;
         }
     }
@@ -1584,12 +1581,11 @@ class MySceneGraph {
         }
         mat4.multiply(transform, transform, trans);
         
-        var anim;
-        for (var i = 0; i < node.animations.length; ++i) {
-            anim = this.animations[node.animations[i]].update(this.curr_time);
+        if (node.animation != undefined) {
+            var anim = this.animations[node.animation].update(this.curr_time);
+            mat4.multiply(transform, transform, anim);
         }
 
-        mat4.multiply(transform, transform, anim);
         this.scene.pushMatrix();
         this.scene.setMatrix(transform); 
 
