@@ -60,8 +60,6 @@ class KeyframeAnimation extends Animation {
 
         if (lerp_factor > 1) lerp_factor = 1;
         
-        console.log(real_time, keyframe_time);
-        
         // interpolate translation vector
         vec3.lerp(translation, translation, curr_transfs[0], lerp_factor);
         mat4.translate(matrix, matrix, translation);
