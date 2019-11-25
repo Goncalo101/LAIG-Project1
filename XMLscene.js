@@ -174,6 +174,8 @@ class XMLscene extends CGFscene {
             this.graph.curr_time = t - this.start_time;
             this.curr_time = t;
         }
+
+        this.securityCamera.timefactor = (t % 5000) / 5000;
     }
 
     /**
