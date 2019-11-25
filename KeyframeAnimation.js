@@ -62,6 +62,7 @@ class KeyframeAnimation extends Animation {
 
         if (lerp_factor > 1) lerp_factor = 1;
         
+<<<<<<< HEAD
         // console.log(real_time, keyframe_time);
 
         // console.log("prev + " + this.prev_animation);
@@ -71,6 +72,8 @@ class KeyframeAnimation extends Animation {
 
 
         
+=======
+>>>>>>> 3ed261b05abf2c30e7b13890e343b210a28a62e8
         // interpolate translation vector
         vec3.lerp(translation, this.prev_animation[0], curr_transfs[0], lerp_factor);
         mat4.translate(matrix, matrix, translation);
@@ -100,7 +103,7 @@ class KeyframeAnimation extends Animation {
             this.scene.setStartTime(this.scene.curr_time)
             this.scene.checkUpdate();
             this.keyframe_changed = true;
-            this.counter = 3;
+            this.counter = 50;
         }
         
         return matrix;

@@ -174,8 +174,11 @@
             <texture id="demoTexture" length_s="1" length_t="2"/>
             <children>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <primitiveref id="cylinder2" />
 =======
+=======
+>>>>>>> 3ed261b05abf2c30e7b13890e343b210a28a62e8
                 <primitiveref id="patch" />
                 <!-- <componentref id="test"/> -->
             </children>
@@ -192,7 +195,10 @@
             </materials>
             <texture id="demoTexture" length_s="1" length_t="2"/>
             <children>
+<<<<<<< HEAD
 >>>>>>> animation
+=======
+>>>>>>> 3ed261b05abf2c30e7b13890e343b210a28a62e8
                 <primitiveref id="plane" />
                 <!-- <componentref id="test"/> -->
             </children>
