@@ -20,8 +20,11 @@ class KeyframeAnimation extends Animation {
         this.keyframe_changed = false;
         this.counter = 0;
 
-        this.start_time = this.scene.start_time;
+        this.start_time;
         this.time_factor = 0;
+        this.passed_time;
+        this.realStart;
+        this.lastMatrix;
 
         // get starting instants of each keyframe
         this.keyframes.forEach((transformation) => {
@@ -39,8 +42,31 @@ class KeyframeAnimation extends Animation {
     }
 
     update(t) {
+
+        if (this.startTime == undefined){
+            this.startTime = t;
+            this.realStart = t;
+        }
+        this.passed_time = t - this.startTime;
         // javascript assignment, actually assigns a reference, not a value
         var matrix = JSON.parse(JSON.stringify(this.matrices[this.curr_keyframe]));
+
+        if ( t - this.realStart >  this.keyframes[this.keyframes.length-1][0]*1000){
+            // var frame = this.keyframes[this.keyframes.length-1];
+            // var mat = mat4.create();
+            // var trans = vec3.create();
+            // var rot = vec3.create();
+            // var sca = [1, 1, 1];
+            // vec3.lerp(trans, frame[1],frame[1], 1);
+            // vec3.lerp(rot, frame[2],frame[2], 1);
+            // vec3.lerp(sca, frame[3],frame[3], 1);
+            // mat4.translate(mat, mat, trans);
+            // mat4.rotate(mat, mat, frame[2][0] * Math.PI / 180, [1, 0, 0]);
+            // mat4.rotate(mat, mat, frame[2][1] * Math.PI / 180, [0, 1, 0]);
+            // mat4.rotate(mat, mat, frame[2][2] * Math.PI / 180, [0, 0, 1]);
+            // mat4.scale(mat, mat, sca);
+            return this.lastMatrix;
+        }
 
         if (this.counter > 0) {
             --this.counter;
@@ -54,7 +80,7 @@ class KeyframeAnimation extends Animation {
 
         var curr_transfs = this.keyframe_animations;
         var keyframe_time = this.keyframe_instants[this.curr_keyframe + 1] - this.keyframe_instants[this.curr_keyframe];
-        var real_time = t / 1000;
+        var real_time = this.passed_time / 1000;
         var lerp_factor;
 
         // when keyframe ends lerp_factor should be 1 to prevent further animations
@@ -62,7 +88,7 @@ class KeyframeAnimation extends Animation {
 
         if (lerp_factor > 1) lerp_factor = 1;
         
-        // console.log(real_time, keyframe_time);
+        // console.log(t);
 
         // console.log("prev + " + this.prev_animation);
         // console.log("next + " + this.keyframe_animations);
@@ -90,15 +116,18 @@ class KeyframeAnimation extends Animation {
         // interpolate scale
         vec3.lerp(scale, this.prev_animation[2], curr_transfs[2], lerp_factor);
         mat4.scale(matrix, matrix, scale);
+
+        this.lastMatrix = matrix;
         
         if ((real_time > keyframe_time) && ((this.curr_keyframe + 2) < this.nkeyframes)) {
             this.prev_animation = JSON.parse(JSON.stringify(this.keyframe_animations));
             this.matrices.push(matrix);
             this.keyframe_animations = this.keyframes[this.curr_keyframe + 2].splice(1, 4);
             ++this.curr_keyframe;
-            this.scene.count = 0;
-            this.scene.setStartTime(this.scene.curr_time)
-            this.scene.checkUpdate();
+            // this.scene.count = 0;
+            // this.scene.setStartTime(this.scene.curr_time)
+            // this.scene.checkUpdate();
+            this.startTime = t;
             this.keyframe_changed = true;
             this.counter = 50;
         }
