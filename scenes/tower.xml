@@ -122,12 +122,73 @@
     <animations>
         <animation id="cannon_ball">
             <keyframe instant="5">
-                <translate x="0" y="3" z="-3" />
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="90" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="0" z="10" />
+                <rotate angle_x="180" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translate x="0" y="-5" z="20" />
+                <rotate angle_x="270" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translate x="0" y="-15" z="30" />
+                <rotate angle_x="360" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </animation>
+        <animation id="wheel_canon">
+            <keyframe instant="5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-90" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </animation>
+        <animation id="cannon_move">
+            <keyframe instant="5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="0" y="0" z="-1" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="10">
-                <translate x="0" y="-3" z="3" />
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </animation>
+        <animation id="invert_cannon_move">
+            <keyframe instant="5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translate x="0" y="0" z="1" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
@@ -135,64 +196,64 @@
         <animation id="wind_moving_trees">
             <keyframe instant="5">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="20" angle_y="0" angle_z="0" />
+                <rotate angle_x="5" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="10">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-40" angle_y="0" angle_z="0" />
+                <rotate angle_x="-7" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="15">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="40" angle_y="0" angle_z="0" />
+                <rotate angle_x="8" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="20">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-40" angle_y="0" angle_z="0" />
+                <rotate angle_x="-6" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="25">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="40" angle_y="0" angle_z="0" />
+                <rotate angle_x="3" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="30">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="-40" angle_y="0" angle_z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </animation>
         <animation id="wind_moving_flag">
             <keyframe instant="5">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="20" angle_z="0" />
-                <scale x="1" y="1" z="1" />
+                <rotate angle_x="0" angle_y="15" angle_z="0" />
+                <scale x="1.1" y="1.0" z="1.1" />
             </keyframe>
             <keyframe instant="10">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="-20" angle_z="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.95" y="1" z="0.95" />
             </keyframe>
             <keyframe instant="15">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="20" angle_z="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="1.15" y="1.0" z="1.15" />
             </keyframe>
             <keyframe instant="20">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="-20" angle_z="0" />
-                <scale x="1" y="1" z="1" />
+                <rotate angle_x="0" angle_y="-15" angle_z="0" />
+                <scale x="0.9" y="1" z="0.9" />
             </keyframe>
             <keyframe instant="25">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="20" angle_z="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="1.05" y="1.0" z="1.05" />
             </keyframe>
             <keyframe instant="30">
                 <translate x="0" y="0" z="0" />
-                <rotate angle_x="0" angle_y="-20" angle_z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </animation>
@@ -1065,6 +1126,7 @@
             <transformation>
                 <translate x="0" y="1.0" z="3" />
             </transformation>
+            <animationref id="cannon_move" />
             <materials>
                 <material id="inherit" />
             </materials>
@@ -1117,14 +1179,29 @@
             <texture id="rusted_copper" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="gun"/>
+                <componentref id="projectileWrapper"/>
+            </children>
+        </component>
+        
+
+        <component id="projectileWrapper">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <animationref id="invert_cannon_move" />
+            <materials>
+                <material id="demoMaterial" />
+                <material id="demoMaterial2" />
+            </materials>
+            <texture id="rusted_copper" length_s="1" length_t="1"/>
+            <children>
                 <componentref id="projectile"/>
             </children>
         </component>
 
         <component id="projectile">
             <transformation>
-                <translate x="0" y="-1" z="8" />
-                <rotate axis="x" angle="-25" />
+                <translate x="0" y="0" z="2" />
             </transformation>
             <animationref id="cannon_ball" />
             <materials>
@@ -1141,6 +1218,7 @@
             <transformation>
                 <translate x="1.0" y="0" z="0"/>
             </transformation>
+            <animationref id="wheel_canon" />
             <materials>
                 <material id="wood_mat"/>
             </materials>
@@ -1158,6 +1236,7 @@
             <transformation>
                 <translate x="-1.0" y="0" z="0"/>
             </transformation>
+            <animationref id="wheel_canon" />
             <materials>
                 <material id="wood_mat"/>
             </materials>
