@@ -30,6 +30,8 @@ class KeyframeAnimation extends Animation {
 
         this.keyframe_animations = this.keyframes[1].slice(1, 4);
 
+        this.prev_animation = this.keyframes[0].slice(1, 4);
+
         this.matrices = [mat4.create()];
 
         console.log("keyframes")
@@ -38,7 +40,7 @@ class KeyframeAnimation extends Animation {
 
     update(t) {
         // javascript assignment, actually assigns a reference, not a value
-        var matrix = Object.assign({}, this.matrices[this.curr_keyframe]);
+        var matrix = JSON.parse(JSON.stringify(this.matrices[this.curr_keyframe]));
 
         if (this.counter > 0) {
             --this.counter;
@@ -60,23 +62,37 @@ class KeyframeAnimation extends Animation {
 
         if (lerp_factor > 1) lerp_factor = 1;
         
-        console.log(real_time, keyframe_time);
+        // console.log(real_time, keyframe_time);
+
+        // console.log("prev + " + this.prev_animation);
+        // console.log("next + " + this.keyframe_animations);
+
+        matrix = mat4.create();
+
+
         
         // interpolate translation vector
-        vec3.lerp(translation, translation, curr_transfs[0], lerp_factor);
+        vec3.lerp(translation, this.prev_animation[0], curr_transfs[0], lerp_factor);
         mat4.translate(matrix, matrix, translation);
 
+        // var finalRotate = vec3.create();
+        // vec3.divide(finalScale, curr_transfs[2], this.prev_animation[2]);
+
         // interpolate rotation
-        vec3.lerp(rotation, rotation, curr_transfs[1], lerp_factor);
+        vec3.lerp(rotation, this.prev_animation[1], curr_transfs[1], lerp_factor);
         mat4.rotate(matrix, matrix, rotation[0] * Math.PI / 180, [1, 0, 0]);
         mat4.rotate(matrix, matrix, rotation[1] * Math.PI / 180, [0, 1, 0]);
         mat4.rotate(matrix, matrix, rotation[2] * Math.PI / 180, [0, 0, 1]);
+
+        // var finalScale = vec3.create();
+        // vec3.divide(finalScale, curr_transfs[2], this.prev_animation[2]);
         
         // interpolate scale
-        vec3.lerp(scale, scale, curr_transfs[2], lerp_factor);
+        vec3.lerp(scale, this.prev_animation[2], curr_transfs[2], lerp_factor);
         mat4.scale(matrix, matrix, scale);
         
         if ((real_time > keyframe_time) && ((this.curr_keyframe + 2) < this.nkeyframes)) {
+            this.prev_animation = JSON.parse(JSON.stringify(this.keyframe_animations));
             this.matrices.push(matrix);
             this.keyframe_animations = this.keyframes[this.curr_keyframe + 2].splice(1, 4);
             ++this.curr_keyframe;
