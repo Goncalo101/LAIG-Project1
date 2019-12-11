@@ -237,7 +237,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="wood_light" length_s="1" length_t="2"/>
+            <texture id="inherit" length_s="1" length_t="2"/>
             <children>
                 <primitiveref id="board_place"/>
                 <componentref id="board_place2"/>
@@ -252,7 +252,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="wood_light" length_s="1" length_t="2"/>
+            <texture id="inherit" length_s="1" length_t="2"/>
             <children>
                 <primitiveref id="board_place"/>
                 <componentref id="board_place3"/>
@@ -267,7 +267,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="wood_light" length_s="1" length_t="2"/>
+            <texture id="inherit" length_s="1" length_t="2"/>
             <children>
                 <primitiveref id="board_place"/>
                 <componentref id="board_place4"/>
@@ -282,7 +282,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="wood_light" length_s="1" length_t="2"/>
+            <texture id="inherit" length_s="1" length_t="2"/>
             <children>
                 <primitiveref id="board_place"/>
                 <componentref id="piece_place"/>
