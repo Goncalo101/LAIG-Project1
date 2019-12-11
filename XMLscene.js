@@ -216,22 +216,19 @@ class XMLscene extends CGFscene {
             } else {
                 this.camera = this.graph.cameras[this.curView];
             }
-            
         }
-
-       
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
 
     display(){
-        this.rtt.attachToFrameBuffer();
+        // this.rtt.attachToFrameBuffer();
         this.render(false);
-        this.securityCamera.display();
-        this.rtt.detachFromFrameBuffer();
-        this.render(true);
-        this.securityCamera.display();
+        // this.securityCamera.display();
+        // this.rtt.detachFromFrameBuffer();
+        // this.render(true);
+        // this.securityCamera.display();
     }
 
 

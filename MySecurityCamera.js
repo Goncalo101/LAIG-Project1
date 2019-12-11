@@ -1,8 +1,6 @@
 
 class MySecurityCamera extends CGFobject {
-
     constructor(scene) {
-
         super(scene);
 
         this.scene = scene;
@@ -40,10 +38,6 @@ class MySecurityCamera extends CGFobject {
 
         this.scene.gl.enable(this.scene.gl.DEPTH_TEST);
 
-        this.scene.setActiveShader(this.scene.defaultShader);
-
-        
+        this.scene.setActiveShader(this.scene.defaultShader);   
     }
-
-
 } 
