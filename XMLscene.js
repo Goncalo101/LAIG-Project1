@@ -46,6 +46,12 @@ class XMLscene extends CGFscene {
 
         this.numberLights = 0;
 
+        this.difficulties = {'Easy': 0, 'Hard': 1};
+        this.selectedDifficulty = 0;
+
+        this.gameTypes = {'Player v Player': 0, 'Player v Computer': 1, 'Computer v Computer': 2};
+        this.selectedGameType = 0;
+
         this.views = [];
         this.curView = 0;
         this.securityView = 0;
