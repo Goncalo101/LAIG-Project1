@@ -86,7 +86,7 @@ class XMLscene extends CGFscene {
         }
 
         this.interface.gui.add(this, 'curView', this.views).name('Main camera');
-        this.interface.gui.add(this, 'securityView', this.views).name('Security camera');
+        // this.interface.gui.add(this, 'securityView', this.views).name('Security camera');
 
         this.camera =  this.graph.cameras[this.curView];
         this.testCamera = this.graph.cameras[this.securityView];
