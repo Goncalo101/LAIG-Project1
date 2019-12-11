@@ -29,6 +29,7 @@ serialInclude(['../lib/CGF.js',
     'KeyframeAnimation.js',
     'MyGameOrchestrator.js',
     'MyGameBoard.js',
+    'MyAnimator.js',
 
     main = function () {
         // Standard application, scene and interface setup
