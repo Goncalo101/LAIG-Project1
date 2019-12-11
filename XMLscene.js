@@ -206,16 +206,17 @@ class XMLscene extends CGFscene {
 
             this.updateActiveCamera();
 
-            // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            // Displays the scene (MyGameOrchestrator function).
+            this.myOrchestrator.display();
+            // this.graph.displayScene();
             // this.graph.displayAlternative();
 
-            if (isRTT){
-                this.camera = this.testCamera;
+            // if (isRTT){
+                // this.camera = this.testCamera;
                 // this.camera = this.graph.cameras[this.curView];
-            } else {
+            // } else {
                 this.camera = this.graph.cameras[this.curView];
-            }
+            // }
         }
 
         this.popMatrix();
