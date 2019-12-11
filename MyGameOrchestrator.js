@@ -1,8 +1,8 @@
 class MyGameOrchestrator {
     constructor(scene) {
-        this.scene = scene;
-        // this.animator = new MyAnimator();
-        // this.gameboard = new MyGameBoard();
+        this.scene = scene
+        // this.animator = new MyAnimator()
+        this.gameboard = new MyGameBoard(scene)
     }
 
     update(t) {
@@ -10,8 +10,8 @@ class MyGameOrchestrator {
     }
 
     display() {
-        this.scene.displayScene();
-        // this.gameboard.display();
-        // this.animator.display();
+        this.scene.displayScene()
+        // this.gameboard.display()
+        // this.animator.display()
     }
 }
