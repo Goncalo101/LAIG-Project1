@@ -53,7 +53,7 @@ class XMLscene extends CGFscene {
         this.selectedGameType = 0;
 
         this.scenes = {'shobu.xml': 0, 'tower.xml': 1};
-        this.selectedScene = 0;  
+        this.selectedScene = 0;
 
         this.views = [];
         this.curView = 0;
@@ -65,6 +65,15 @@ class XMLscene extends CGFscene {
         this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
 
         this.count = 0;
+    }
+
+    setScene(value) {
+        console.log(Object.keys(this.object))
+        if (value == 0) {
+            this.object.myOrchestrator.loadScene('shobu.xml');
+        } else if (value == 1) {
+            this.object.myOrchestrator.loadScene('tower.xml');
+        }
     }
 
     /**
@@ -129,8 +138,6 @@ class XMLscene extends CGFscene {
                     this.setLightTo(i, false);
                 }
 
-
-
                 this.lights[i].update();
 
                 this.interface.lights_folder.add(this, 'light' + i ).name(key);
@@ -177,6 +184,7 @@ class XMLscene extends CGFscene {
 
         if (this.count == 0) {
             this.setStartTime(t);
+            this.interface.sceneSelected.onFinishChange(this.setScene);
         }
 
         // guarantee that the animations start at time = 0

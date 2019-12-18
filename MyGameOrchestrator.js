@@ -1,6 +1,5 @@
 class MyGameOrchestrator {
-    constructor(myinterface, scene, xmlscene) {
-        this.myinterface = myinterface
+    constructor(scene, xmlscene) {
         this.scene = scene
         this.xmlscene = xmlscene
         // this.animator = new MyAnimator()
@@ -48,5 +47,6 @@ class MyGameOrchestrator {
 
     loadScene(filename) {
         this.scene = new MySceneGraph(filename, this.xmlscene);
+        this.scene.myOrchestrator = this;
     }
 }
