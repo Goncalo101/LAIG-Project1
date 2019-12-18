@@ -1,8 +1,11 @@
 class MyGameOrchestrator {
-    constructor(scene) {
+    constructor(myinterface, scene, xmlscene) {
+        this.myinterface = myinterface
         this.scene = scene
+        this.xmlscene = xmlscene
         // this.animator = new MyAnimator()
         this.gameboard = new MyGameBoard(scene)
+        this.moves = []
     }
 
     update(t) {
@@ -37,5 +40,13 @@ class MyGameOrchestrator {
                 // clear results
                 pickResults.splice(0, pickResults.length);
             }
+    }
+
+    undoMove() {
+
+    }
+
+    loadScene(filename) {
+        this.scene = new MySceneGraph(filename, this.xmlscene);
     }
 }

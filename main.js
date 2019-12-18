@@ -54,7 +54,7 @@ serialInclude(['../lib/CGF.js',
         var myGraph = new MySceneGraph(filename, myScene);
 
         // bind graph to orchestrator
-        myScene.myOrchestrator = new MyGameOrchestrator(myGraph);
+        myScene.myOrchestrator = new MyGameOrchestrator(interface, myGraph, myScene);
 
         // start
         app.run();
