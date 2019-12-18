@@ -46,6 +46,15 @@ class XMLscene extends CGFscene {
 
         this.numberLights = 0;
 
+        this.difficulties = {'Easy': 0, 'Hard': 1};
+        this.selectedDifficulty = 0;
+
+        this.gameTypes = {'Player v Player': 0, 'Player v Computer': 1, 'Computer v Computer': 2};
+        this.selectedGameType = 0;
+
+        this.scenes = {'shobu.xml': 0, 'tower.xml': 1};
+        this.selectedScene = 0;  
+
         this.views = [];
         this.curView = 0;
         this.securityView = 0;
@@ -80,7 +89,7 @@ class XMLscene extends CGFscene {
         }
 
         this.interface.gui.add(this, 'curView', this.views).name('Main camera');
-        this.interface.gui.add(this, 'securityView', this.views).name('Security camera');
+        // this.interface.gui.add(this, 'securityView', this.views).name('Security camera');
 
         this.camera =  this.graph.cameras[this.curView];
         this.testCamera = this.graph.cameras[this.securityView];

@@ -24,6 +24,10 @@ class MyInterface extends CGFinterface {
         this.lights_folder = this.gui.addFolder('Lights');
         this.lights_folder.open();
 
+        this.gui.add(this.scene, 'selectedDifficulty', this.scene.difficulties).name('Difficulty');
+        this.gui.add(this.scene, 'selectedGameType', this.scene.gameTypes).name('Game Type');
+        var selectedScene = this.gui.add(this.scene, 'selectedScene', this.scene.scenes).name('Selected Scene');
+
         this.initKeys();
 
         return true;
@@ -33,17 +37,17 @@ class MyInterface extends CGFinterface {
      * initKeys
      */
     initKeys() {
-        this.scene.gui=this;
-        this.processKeyboard=function(){};
-        this.activeKeys={};
+        this.scene.gui = this;
+        this.processKeyboard = function () { };
+        this.activeKeys = {};
     }
 
     processKeyDown(event) {
-        this.activeKeys[event.code]=true;
+        this.activeKeys[event.code] = true;
     };
 
     processKeyUp(event) {
-        this.activeKeys[event.code]=false;
+        this.activeKeys[event.code] = false;
     };
 
     isKeyPressed(keyCode) {
