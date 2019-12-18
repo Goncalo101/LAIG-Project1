@@ -26,7 +26,7 @@ class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'selectedDifficulty', this.scene.difficulties).name('Difficulty');
         this.gui.add(this.scene, 'selectedGameType', this.scene.gameTypes).name('Game Type');
-        this.selectedScene = this.gui.add(this.scene, 'selectedScene', this.scene.scenes).name('Selected Scene');
+        this.sceneSelected = this.gui.add(this.scene, 'selectedScene', this.scene.scenes).name('Selected Scene');
 
         this.initKeys();
 
