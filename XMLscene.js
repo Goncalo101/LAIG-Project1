@@ -52,6 +52,9 @@ class XMLscene extends CGFscene {
         this.gameTypes = {'Player v Player': 0, 'Player v Computer': 1, 'Computer v Computer': 2};
         this.selectedGameType = 0;
 
+        this.scenes = {'shobu.xml': 0, 'tower.xml': 1};
+        this.selectedScene = 0;  
+
         this.views = [];
         this.curView = 0;
         this.securityView = 0;
