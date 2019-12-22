@@ -48,5 +48,6 @@ class MyGameOrchestrator {
     loadScene(filename) {
         this.scene = new MySceneGraph(filename, this.xmlscene);
         this.scene.myOrchestrator = this;
+        this.xmlscene.graph = this.scene;
     }
 }

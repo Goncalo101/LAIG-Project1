@@ -23,6 +23,8 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
+        this.viewsGUI = [];
+
         this.initCameras();
 
         this.enableTextures(true);
@@ -67,12 +69,63 @@ class XMLscene extends CGFscene {
         this.count = 0;
     }
 
+    reset(){
+        this.sceneInited = false;
+
+        this.viewsGUI.forEach( (item, index) => {
+            console.log(item);
+            this.interface.lights_folder.remove(item);
+        });
+
+        if (this.removeCamera != null)
+            this.interface.gui.remove(this.removeCamera);
+
+        this.removeCamera = null;
+
+        this.initCameras();
+
+        this.enableTextures(true);
+
+        this.gl.clearDepth(100.0);
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.enable(this.gl.CULL_FACE);
+        this.gl.depthFunc(this.gl.LEQUAL);
+
+        this.axis = new CGFaxis(this);
+        this.setUpdatePeriod(50);
+
+        this.light0 = true;
+        this.light1 = false;
+        this.light2 = false;
+        this.light3 = false;
+        this.light4 = false;
+        this.light5 = false;
+        this.light6 = false;
+        this.light7 = false;
+
+        this.numberLights = 0;
+
+        this.views = [];
+        
+        this.viewsGUI = [];
+        this.curView = 0;
+        this.securityView = 0;
+
+        this.selectedDifficulty = 0;
+        this.selectedGameType = 0;
+        this.selectedScene = 0;
+
+        this.count = 0;
+    }
+
     setScene(value) {
         console.log(Object.keys(this.object))
         if (value == 0) {
             this.object.myOrchestrator.loadScene('shobu.xml');
+            this.object.reset();
         } else if (value == 1) {
             this.object.myOrchestrator.loadScene('tower.xml');
+            this.object.reset();
         }
     }
 
@@ -97,7 +150,7 @@ class XMLscene extends CGFscene {
 
         }
 
-        this.interface.gui.add(this, 'curView', this.views).name('Main camera');
+        this.removeCamera = this.interface.gui.add(this, 'curView', this.views).name('Main camera');
         // this.interface.gui.add(this, 'securityView', this.views).name('Security camera');
 
         this.camera =  this.graph.cameras[this.curView];
@@ -140,7 +193,8 @@ class XMLscene extends CGFscene {
 
                 this.lights[i].update();
 
-                this.interface.lights_folder.add(this, 'light' + i ).name(key);
+                this.viewsGUI.push(this.interface.lights_folder.add(this, 'light' + i ).name(key));
+                // this.interface.lights_folder.remove(this.interface.lights_folder.add(this, 'light' + i ).name(key));
 
                 i++;
                 this.numberLights++;
