@@ -7,20 +7,28 @@ class MyGameBoard {
         this.x2 = x2;
         this.y2 = y2;
 
-        this.b = new MyBoard(this.scene);
+
+        this.height = 0.5;
+
+        this.side = 1.25;
+
+        this.gap = 0.2;
+
+        this.gapBoards = 2;
+
+
+        this.b = new MyBoard(this.scene, this.height, this.side, this.gap, this.gapBoards);
+
+        this.piece = new MySphere(this.scene, 64, 0.5, 10, 10);
 
 
 
-        this.board = [[
-            [
+        this.board = [
+                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],
+                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],        
                 [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],
                 [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
-            ],
-            [
-                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],
-                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
-            ]
-        ]]
+            ];
     }
 
     addPiece(piece) { }
@@ -34,12 +42,25 @@ class MyGameBoard {
         let tex = this.scene.activeTexture;
 
 
-        
+
         this.b.display();
 
+        for (let b = 0; b < 4; b++){
+            for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 4; c++){
+                    if (this.board[b][l][c] != 0){
+                        let positions = this.b.getTranslationFromPosition(b+1, l+1, c+1);
+                        this.scene.pushMatrix();
 
+                        this.scene.translate(positions.x, positions.y + 0.5, positions.z);
 
-        this.scene.activeTexture = tex;
+                        this.piece.display();
+
+                        this.scene.popMatrix();
+                    }
+                }
+            }
+        }
 
         if (tex != null)
             tex.bind();

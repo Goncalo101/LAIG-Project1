@@ -1,17 +1,17 @@
 class MyBoard {
 
-    constructor(scene) {
+    constructor(scene, height, sideCubes, gapCubes, gapBoards) {
         this.scene = scene;
 
         this.rectLight = new MyRectangle(this.scene, 64, 0, 1, 0, 1);
 
-        this.height = 0.5;
+        this.height = height;
 
-        this.side = 1.25;
+        this.side = sideCubes;
 
-        this.gap = 0.2;
+        this.gap = gapCubes;
 
-        this.gapBoards = 2;
+        this.gapBoards = gapBoards;
 
         this.sizeBoard = this.side*4+this.gap*5;
 
@@ -20,7 +20,34 @@ class MyBoard {
         this.cylinder = new MyCylinderNURBS(this.scene, 0.5, 0.5, this.sizeBoard*2+this.gapBoards-1, 20, 10);
 
         this.initTextures();
-	}
+    }
+
+    getTranslationFromPosition(board, line, column){
+        let x = 0, y = this.height, z = 0;
+
+        if (board % 2 == 0)
+            x += (this.sizeBoard+this.gapBoards)/2;
+        else 
+            x -= (this.sizeBoard+this.gapBoards)/2;
+
+        if (board <= 2)
+            z -= (this.sizeBoard+this.gapBoards)/2;
+        else 
+            z += (this.sizeBoard+this.gapBoards)/2;
+
+        if (column <= 2)
+            x -= (this.gap+this.side)/2 + (this.gap+this.side)*(2-column);
+        else 
+            x += (this.gap+this.side)/2 + (this.gap+this.side)*(column-3);
+
+        if (line <= 2)
+            z -= (this.gap+this.side)/2 + (this.gap+this.side)*(2-line);
+        else 
+            z += (this.gap+this.side)/2 + (this.gap+this.side)*(line-3);
+
+        
+        return {x: x, y:y, z:z};        
+    }
 
     initTextures() {
 
