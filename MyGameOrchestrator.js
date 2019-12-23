@@ -1,9 +1,9 @@
 class MyGameOrchestrator {
-    constructor(scene, xmlscene) {
-        this.scene = scene
+    constructor(graph, xmlscene) {
+        this.graph = graph
         this.xmlscene = xmlscene
         // this.animator = new MyAnimator()
-        this.gameboard = new MyGameBoard(scene)
+        this.gameboard = new MyGameBoard(this.xmlscene);
         this.moves = []
     }
 
@@ -12,7 +12,7 @@ class MyGameOrchestrator {
     }
 
     display() {
-        this.scene.displayScene()
+        this.graph.displayScene()
         // this.gameboard.display()
         // this.animator.display()
     }
@@ -46,8 +46,8 @@ class MyGameOrchestrator {
     }
 
     loadScene(filename) {
-        this.scene = new MySceneGraph(filename, this.xmlscene);
-        this.scene.myOrchestrator = this;
-        this.xmlscene.graph = this.scene;
+        this.graph = new MySceneGraph(filename, this.xmlscene);
+        this.graph.myOrchestrator = this;
+        this.xmlscene.graph = this.graph;
     }
 }

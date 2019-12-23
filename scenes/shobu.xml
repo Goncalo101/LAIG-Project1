@@ -102,6 +102,9 @@
     </animations>
 
     <primitives>
+        <primitive id="board">
+            <gameboard x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive>
         <primitive id="board_place">
             <rectangle x1="0" y1="0" x2="1" y2="1" />
         </primitive>
@@ -128,8 +131,9 @@
             </materials>
             <texture id="wood_light" length_s="1" length_t="2"/>
             <children>
-                <componentref id="board"/>
-                <componentref id="rope"/>
+                <!-- <componentref id="board"/>
+                <componentref id="rope"/> -->
+                <primitiveref id="board"/>
             </children>
         </component>
 
