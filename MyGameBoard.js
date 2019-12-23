@@ -21,13 +21,18 @@ class MyGameBoard {
 
         this.piece = new MySphere(this.scene, 64, 0.5, 10, 10);
 
+        this.pieces = [];
+
+        for (let i = 0; i <= 32; i++)
+            this.pieces.push(new MySphere(this.scene, 64, 0.5, 10, 10));
+
 
 
         this.board = [
-                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],
-                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],        
-                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]],
-                [[2, 2, 2, 2], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
+                [[5, 6, 7, 8], [0, 0, 0, 0], [0, 0, 0, 0], [1, 2, 3, 4]],
+                [[13, 14, 15, 16], [0, 0, 0, 0], [0, 0, 0, 0], [9, 10, 11, 12]],        
+                [[21, 22, 23, 24], [0, 0, 0, 0], [0, 0, 0, 0], [17, 18, 19, 20]],
+                [[29, 30, 31, 32], [0, 0, 0, 0], [0, 0, 0, 0], [25, 26, 27, 28]]
             ];
     }
 
@@ -41,7 +46,8 @@ class MyGameBoard {
         
         let tex = this.scene.activeTexture;
 
-
+        this.scene.logPicking();
+        this.scene.clearPickRegistration();
 
         this.b.display();
 
@@ -54,7 +60,9 @@ class MyGameBoard {
 
                         this.scene.translate(positions.x, positions.y + 0.5, positions.z);
 
-                        this.piece.display();
+                        this.scene.registerForPick(this.board[b][l][c], this.pieces[this.board[b][l][c]]);
+
+                        this.pieces[this.board[b][l][c]].display();
 
                         this.scene.popMatrix();
                     }
