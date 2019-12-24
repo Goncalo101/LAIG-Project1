@@ -2,9 +2,14 @@ class MyGameOrchestrator {
     constructor(graph, xmlscene) {
         this.graph = graph
         this.xmlscene = xmlscene
+        
+        this.graph.myOrchestrator = this;
         // this.animator = new MyAnimator()
         this.gameboard = new MyGameBoard(this.xmlscene);
         this.moves = []
+
+        this.lastPiece = 0;
+        this.lastTile = 0;
     }
 
     update(t) {
@@ -19,8 +24,18 @@ class MyGameOrchestrator {
 
     // These functions may not work out of the box, needs adaptation to our game
     onObjectSelected(obj, id) {
-        if (obj instanceof MyPiece) {// do something with id knowing it is a piece
-        } else if (obj instanceof MyTile) {// do something with id knowing it is a tile
+        if (obj instanceof MySphere) {// do something with id knowing it is a piece
+            console.log("Piece with id = " + id + " pressed.");
+            this.lastPiece = id;
+            this.lastTile = 0;
+        } else if (obj instanceof MyRectangle) {// do something with id knowing it is a tile
+            console.log("Tile with id = " + id + " pressed.");
+            this.lastTile = id;
+            if (this.lastPiece != 0){
+                this.gameboard.makeMove(this.lastPiece, this.lastTile);
+            }
+            this.lastPiece = 0;
+            this.lastTile = 0;
         } else {// error ? 
         }
     }
@@ -29,15 +44,15 @@ class MyGameOrchestrator {
         if (mode == false /* && some other game conditions */)
             if (results != null && results.length > 0) { // any results?
                 for (var i = 0; i < results.length; i++) {
-                    var obj = pickResults[i][0]; // get object from result
+                    var obj = results[i][0]; // get object from result
                     if (obj) { // exists?
-                        var uniqueId = pickResults[i][1] // get id
+                        var uniqueId = results[i][1] // get id
                         this.onObjectSelected(obj, uniqueId);
                     }
                 } 
                 
                 // clear results
-                pickResults.splice(0, pickResults.length);
+                results.splice(0, results.length);
             }
     }
 

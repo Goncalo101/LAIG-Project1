@@ -22,11 +22,13 @@ class MyGameBoard {
         this.piece = new MySphere(this.scene, 64, 0.5, 10, 10);
 
         this.pieces = [];
+        this.tiles = [];
 
         for (let i = 0; i <= 32; i++)
             this.pieces.push(new MySphere(this.scene, 64, 0.5, 10, 10));
 
-
+        for (let i = 0; i <= 64; i++)
+            this.tiles.push(new MyRectangle(this.scene, 64, -0.5, 0.5, -0.5, 0.5));
 
         this.board = [
                 [[5, 6, 7, 8], [0, 0, 0, 0], [0, 0, 0, 0], [1, 2, 3, 4]],
@@ -34,6 +36,28 @@ class MyGameBoard {
                 [[21, 22, 23, 24], [0, 0, 0, 0], [0, 0, 0, 0], [17, 18, 19, 20]],
                 [[29, 30, 31, 32], [0, 0, 0, 0], [0, 0, 0, 0], [25, 26, 27, 28]]
             ];
+    }
+
+    makeMove(idPiece, idTile){
+        console.log("Making move");
+        console.log("Piece: " + idPiece + "  Tile: " + idTile)
+        let index = 65;
+        for (let b = 0; b < 4; b++){
+            for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 4; c++){
+                    if (this.board[b][l][c] == idPiece){
+                        this.board[b][l][c] = 0;
+                        console.log("Removing piece");
+                    }
+                    
+                    if (index++ == idTile) {
+                        this.board[b][l][c] = idPiece;
+                        console.log("Adding piece");
+                    }
+                }
+            }
+        }
+        console.log(this.board);
     }
 
     addPiece(piece) { }
@@ -51,11 +75,13 @@ class MyGameBoard {
 
         this.b.display();
 
+        let index = 1;
         for (let b = 0; b < 4; b++){
             for (let l = 0; l < 4; l++){
                 for (let c = 0; c < 4; c++){
+                    let positions = this.b.getTranslationFromPosition(b+1, l+1, c+1);
                     if (this.board[b][l][c] != 0){
-                        let positions = this.b.getTranslationFromPosition(b+1, l+1, c+1);
+                        
                         this.scene.pushMatrix();
 
                         this.scene.translate(positions.x, positions.y + 0.5, positions.z);
@@ -66,6 +92,21 @@ class MyGameBoard {
 
                         this.scene.popMatrix();
                     }
+
+                    this.scene.pushMatrix();
+
+                    this.scene.rotate(-Math.PI/2, 1, 0, 0);
+
+                    this.scene.translate(positions.x, -positions.z,  positions.y + 0.1);
+
+                    this.scene.registerForPick(index+64, this.tiles[index]);
+
+                    this.tiles[index].display();
+
+                    this.scene.popMatrix();
+
+                    index++;
+
                 }
             }
         }

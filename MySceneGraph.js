@@ -1025,9 +1025,9 @@ class MySceneGraph {
                 if (!(y2 != null && !isNaN(y2)))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
 
-                var rect = new MyGameBoard(this.scene, x1, x2, y1, y2);
+                // var rect = new MyGameBoard(this.scene, x1, x2, y1, y2); //TODO
 
-                this.primitives[primitiveId] = rect;
+                this.primitives[primitiveId] = this.myOrchestrator.gameboard;
 
             } else if (primitiveType == 'rectangle') {
                 // x1
