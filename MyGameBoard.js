@@ -70,8 +70,7 @@ class MyGameBoard {
         
         let tex = this.scene.activeTexture;
 
-        this.scene.logPicking();
-        this.scene.clearPickRegistration();
+        
 
         this.b.display();
 

@@ -120,23 +120,6 @@ class XMLscene extends CGFscene {
         this.count = 0;
     }
 
-    logPicking() {
-        this.myOrchestrator.managePick(this.pickMode, this.pickResults);
-		// if (this.pickMode == false) {
-		// 	if (this.pickResults != null && this.pickResults.length > 0) {
-		// 		for (var i = 0; i < this.pickResults.length; i++) {
-		// 			var obj = this.pickResults[i][0];
-		// 			if (obj) {
-		// 				var customId = this.pickResults[i][1];
-        //                 console.log("Picked object: " + obj + ", with pick id " + customId);	
-        //                 this.myOrchestrator.onObjectSelected(obj, customId);					
-		// 			}
-		// 		}
-		// 		this.pickResults.splice(0, this.pickResults.length);
-		// 	}
-		// }
-	}
-
     setScene(value) {
         console.log(Object.keys(this.object))
         if (value == 0) {
@@ -271,6 +254,8 @@ class XMLscene extends CGFscene {
      * Displays the scene.
      */
     render(isRTT) {
+        this.myOrchestrator.managePick(this.pickMode, this.pickResults);
+        this.clearPickRegistration();
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
