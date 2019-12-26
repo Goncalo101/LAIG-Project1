@@ -35,6 +35,7 @@ class MyGameBoard {
 
         this.currentMove = null;
         this.currentMoveTime = 0;
+        this.currentUndoMove = null;
 
         this.updatePositionPieces();
     }
@@ -58,7 +59,27 @@ class MyGameBoard {
             if (this.currentMoveTime >= 1000){
                 this.endMovement();
             }
+        } else if (this.currentUndoMove != null){
+            this.currentMoveTime += delta;
+            if (this.currentMoveTime >= 1000){
+                this.endMovement();
+            }
         }
+    }
+
+    undoMove(){
+
+        this.endMovement();
+
+        if (this.orchestrator.moves.length > 0){
+            this.currentUndoMove = this.orchestrator.moves[this.orchestrator.moves.length-1];
+            this.currentMoveTime = 0;
+        }
+
+        
+        // this.board = Move.beforeBoard;
+        // Move.piece.setPosition(Move.fromPosition.board, Move.fromPosition.line, Move.fromPosition.column);
+        // console.log(Move.beforeBoard);
     }
 
     endMovement(){
@@ -72,11 +93,17 @@ class MyGameBoard {
 
             this.orchestrator.moves.push(this.currentMove);
 
-            console.log(this.orchestrator.moves);
+        } else if (this.currentUndoMove != null){
+
+            this.currentUndoMove.piece.setPosition(this.currentUndoMove.fromPosition.board, this.currentUndoMove.fromPosition.line, this.currentUndoMove.fromPosition.column);
+
+            this.board = this.currentUndoMove.beforeBoard;
+
+            this.orchestrator.moves.pop();
+
         }
 
-        
-
+        this.currentUndoMove = null;
         this.currentMove = null;
         this.currentMoveTime = 0;
     }
@@ -99,7 +126,7 @@ class MyGameBoard {
                     if (index++ == idTile) {
                         this.currentMoveTime = 0;
                         this.currentMove = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
-                        {board: b, line: l, column: c});
+                        {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
                         
                     }
                 }
@@ -124,6 +151,8 @@ class MyGameBoard {
 
         if (this.currentMove != null){
             idPieceOnMovement = this.currentMove.piece.id;
+        } else if (this.currentUndoMove != null){
+            idPieceOnMovement = this.currentUndoMove.piece.id;
         }
 
         for (let b = 0; b < 4; b++){
@@ -167,7 +196,29 @@ class MyGameBoard {
             this.pieces[this.currentMove.piece.id].display();
 
             this.scene.popMatrix();
-        }        
+        } else if (this.currentUndoMove != null){
+
+            let ob = this.currentUndoMove.fromPosition.board, ol = this.currentUndoMove.fromPosition.line, oc = this.currentUndoMove.fromPosition.column, 
+            nb = this.currentUndoMove.toPosition.board, nl = this.currentUndoMove.toPosition.line, nc = this.currentUndoMove.toPosition.column;
+
+            this.scene.pushMatrix();
+
+            var translation = vec3.create();
+
+            let toPosition = this.b.getTranslationFromPosition(ob+1, ol+1, oc+1);
+            let fromPosition = this.b.getTranslationFromPosition(nb+1, nl+1, nc+1);
+
+            var from = vec3.fromValues(fromPosition.x, fromPosition.y, fromPosition.z)
+            var to = vec3.fromValues(toPosition.x, toPosition.y, toPosition.z)
+
+            vec3.lerp(translation, from, to, this.currentMoveTime/1000.0);
+
+            this.scene.translate(translation[0], translation[1] + 0.5, translation[2]);
+            
+            this.pieces[this.currentUndoMove.piece.id].display();
+
+            this.scene.popMatrix();
+        }   
 
         if (tex != null)
             tex.bind();

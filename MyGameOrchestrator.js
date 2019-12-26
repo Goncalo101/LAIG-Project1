@@ -26,6 +26,10 @@ class MyGameOrchestrator {
         this.gameboard.update(this.currentTime - this.previousTime);
     }
 
+    undoMove(){
+        this.gameboard.undoMove();
+    }
+
     display() {
         this.graph.displayScene()
         // this.gameboard.display()
@@ -64,10 +68,6 @@ class MyGameOrchestrator {
                 // clear results
                 results.splice(0, results.length);
             }
-    }
-
-    undoMove() {
-
     }
 
     loadScene(filename) {

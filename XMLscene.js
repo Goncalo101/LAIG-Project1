@@ -69,6 +69,10 @@ class XMLscene extends CGFscene {
         this.count = 0;
 
         this.setPickEnabled(true);
+
+        this.undoMove = () => {
+            this.myOrchestrator.undoMove();
+        };
     }
 
     reset(){
