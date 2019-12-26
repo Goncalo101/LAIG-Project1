@@ -19,6 +19,18 @@ class MyBoard {
 
         this.cylinder = new MyCylinderNURBS(this.scene, 0.5, 0.5, this.sizeBoard*2+this.gapBoards-1, 20, 10);
 
+        this.tiles = [];
+
+        let index = 1;
+        for (let b = 0; b < 4; b++){
+            for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 4; c++){                    
+                    this.tiles.push(new MyTile(this.scene, index + 64, b, l, c));
+                    index++;
+                }
+            }
+        }
+
         this.initTextures();
     }
 
@@ -106,6 +118,19 @@ class MyBoard {
 
         this.scene.popMatrix();
 
+        for (let i = 0; i < this.tiles.length; i++){
+
+            let position = this.getTranslationFromPosition(this.tiles[i].board + 1, this.tiles[i].line + 1, this.tiles[i].column + 1);
+
+            this.scene.pushMatrix();
+
+            this.scene.translate(position.x, position.y + 0.1,  position.z);
+
+            this.tiles[i].display();
+
+            this.scene.popMatrix();
+
+        }
     }
 
     displayOneBoard(){

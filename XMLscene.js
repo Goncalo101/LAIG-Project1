@@ -248,6 +248,9 @@ class XMLscene extends CGFscene {
             this.graph.curr_time = t - this.start_time;
             this.curr_time = t;
         }
+
+        if (this.myOrchestrator != null)
+            this.myOrchestrator.update(t);
     }
 
     /**

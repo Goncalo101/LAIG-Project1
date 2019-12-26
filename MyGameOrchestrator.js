@@ -2,18 +2,28 @@ class MyGameOrchestrator {
     constructor(graph, xmlscene) {
         this.graph = graph
         this.xmlscene = xmlscene
-        
+
         this.graph.myOrchestrator = this;
-        // this.animator = new MyAnimator()
-        this.gameboard = new MyGameBoard(this.xmlscene);
+        this.animator = new MyAnimator()
+        this.gameboard = new MyGameBoard(this.xmlscene, this);
         this.moves = []
 
         this.lastPiece = 0;
         this.lastTile = 0;
+
+        this.previousTime = null;
+        this.currentTime = null;
     }
 
     update(t) {
         this.animator.update(t)
+
+        if (this.previousTime == null)
+            this.currentTime = t;
+        this.previousTime = this.currentTime;
+        this.currentTime = t;
+
+        this.gameboard.update(this.currentTime - this.previousTime);
     }
 
     display() {

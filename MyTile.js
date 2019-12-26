@@ -26,7 +26,7 @@ class MyTile {
 
         this.scene.rotate(-Math.PI/2, 1, 0, 0);
 
-        this.scene.registerForPick(id, this.tile);
+        this.scene.registerForPick(this.id, this.tile);
 
         this.tile.display();
 
