@@ -34,6 +34,7 @@ serialInclude(['../lib/CGF.js',
     'MyPiece.js',
     'MyTile.js',
     'MyMove.js',
+    'MyPrologInterface.js',
 
     main = function () {
         // Standard application, scene and interface setup

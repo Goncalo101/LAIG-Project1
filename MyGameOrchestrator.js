@@ -6,7 +6,11 @@ class MyGameOrchestrator {
         this.graph.myOrchestrator = this;
         this.animator = new MyAnimator()
         this.gameboard = new MyGameBoard(this.xmlscene, this);
+        this.prolog = new MyPrologInterface(8081, this);
+        this.prolog.requestPossibleMoves(0, this.gameboard.board);
         this.moves = []
+
+        this.possibleMoves;
 
         this.lastPiece = 0;
         this.lastTile = 0;
