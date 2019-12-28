@@ -54,7 +54,7 @@ class XMLscene extends CGFscene {
         this.gameTypes = {'Player v Player': 0, 'Player v Computer': 1, 'Computer v Computer': 2};
         this.selectedGameType = 0;
 
-        this.scenes = {'shobu.xml': 0, 'tower.xml': 1};
+        this.scenes = {'shobu.xml': 0, 'shobu_forest.xml': 1, 'tower.xml': 2};
         this.selectedScene = 0;
 
         this.views = [];
@@ -130,6 +130,9 @@ class XMLscene extends CGFscene {
             this.object.myOrchestrator.loadScene('shobu.xml');
             this.object.reset();
         } else if (value == 1) {
+            this.object.myOrchestrator.loadScene('shobu_forest.xml');
+            this.object.reset();
+        } else if (value == 2) {
             this.object.myOrchestrator.loadScene('tower.xml');
             this.object.reset();
         }
