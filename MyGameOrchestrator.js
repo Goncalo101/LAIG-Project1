@@ -7,16 +7,25 @@ class MyGameOrchestrator {
         this.animator = new MyAnimator()
         this.gameboard = new MyGameBoard(this.xmlscene, this);
         this.prolog = new MyPrologInterface(8081, this);
-        this.prolog.requestPossibleMoves(0, this.gameboard.board);
+
         this.moves = []
 
-        this.possibleMoves;
+        this.possibleMoves = [];
+
+        this.currentPlayer = 0;
+
+        this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
+        
 
         this.lastPiece = 0;
         this.lastTile = 0;
 
         this.previousTime = null;
         this.currentTime = null;
+    }
+
+    changePlayer(){
+        this.currentPlayer ^= 1;
     }
 
     update(t) {

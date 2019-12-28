@@ -11,7 +11,7 @@ class MyPrologInterface {
         // let requestString = 'valid_moves(1,[[[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]],[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]]],[[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]],[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]]]])'; 
         let requestProlog = new XMLHttpRequest();
 
-        requestProlog.orch = this;
+        requestProlog.orch = this.myOrchestrator;
 
         requestProlog.addEventListener("load", this.parseStartPrologReply); 
         requestProlog.addEventListener("error",this.startPrologGameError);

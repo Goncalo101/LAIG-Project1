@@ -93,6 +93,10 @@ class MyGameBoard {
 
             this.orchestrator.moves.push(this.currentMove);
 
+            this.orchestrator.changePlayer();
+
+            this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
+
         } else if (this.currentUndoMove != null){
 
             this.currentUndoMove.piece.setPosition(this.currentUndoMove.fromPosition.board, this.currentUndoMove.fromPosition.line, this.currentUndoMove.fromPosition.column);
@@ -100,6 +104,10 @@ class MyGameBoard {
             this.board = this.currentUndoMove.beforeBoard;
 
             this.orchestrator.moves.pop();
+
+            this.orchestrator.changePlayer();
+
+            this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         }
 
@@ -125,14 +133,56 @@ class MyGameBoard {
                     
                     if (index++ == idTile) {
                         this.currentMoveTime = 0;
-                        this.currentMove = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
+                        var move = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
                         {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
+
+                        if (this.checkMove(move)){
+                            console.log("Valid move");
+                            this.currentMove = move;
+                        } else {
+                            console.log("Invalid move");
+                        }
+                        // this.currentMove = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
+                        // {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
                         
                     }
                 }
             }
         }
         console.log(this.board);
+    }
+
+    checkMove(Move){
+
+        console.log(Move);
+
+        console.log("Length Moves: " + this.orchestrator.possibleMoves.length);
+
+        for (let i = 0; i < this.orchestrator.possibleMoves.length; i++){
+            let curMove = this.orchestrator.possibleMoves[i];
+            if (curMove[0] != Move.fromPosition.board + 1)
+                continue;
+
+            if (curMove[0] != Move.toPosition.board + 1)
+                continue;
+
+            if (curMove[1] != Move.fromPosition.line + 1)
+                continue;
+
+            if (curMove[2] != Move.fromPosition.column + 1)
+                continue;
+                
+            if (curMove[3] != Move.toPosition.line + 1)
+                continue;
+
+            if (curMove[4] != Move.toPosition.column + 1)
+                continue;
+
+            return true;
+
+        }
+
+        return false;
     }
 
     addPiece(piece) { }
