@@ -1,15 +1,17 @@
 class MyMove {
 
-    constructor(scene, piece, fromPosition, toPosition, beforeBoard) {
+    constructor(scene, piecePassive, fromPositionPassive, toPositionPassive, pieceAgressive, fromPositionAgressive, toPositionAgressive, beforeBoard) {
         this.scene = scene;
 
-        this.piece = piece;
-        this.fromPosition = fromPosition;
-        this.toPosition = toPosition;
+
+        this.piecePassive = piecePassive;
+        this.fromPositionPassive = fromPositionPassive;
+        this.toPositionPassive = toPositionPassive;
+        this.pieceAgressive = pieceAgressive;
+        this.fromPositionAgressive = fromPositionAgressive;
+        this.toPositionAgressive = toPositionAgressive;
 
         this.beforeBoard = beforeBoard;
-
-
     }
 
     display() { 

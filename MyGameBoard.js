@@ -84,12 +84,22 @@ class MyGameBoard {
 
     endMovement(){
         if (this.currentMove != null){
-            let ob = this.currentMove.fromPosition.board, ol = this.currentMove.fromPosition.line, oc = this.currentMove.fromPosition.column, 
-            nb = this.currentMove.toPosition.board, nl = this.currentMove.toPosition.line, nc = this.currentMove.toPosition.column;
-            this.board[ob][ol][oc] = 0;
-            this.board[nb][nl][nc] = this.currentMove.piece.id;
+            let obpassive = this.currentMove.fromPositionPassive.board, olpassive = this.currentMove.fromPositionPassive.line, ocpassive = this.currentMove.fromPositionPassive.column, 
+            nbpassive = this.currentMove.toPositionPassive.board, nlpassive = this.currentMove.toPositionPassive.line, ncpassive = this.currentMove.toPositionPassive.column;
+            this.board[obpassive][olpassive][ocpassive] = 0;
+            this.board[nbpassive][nlpassive][ncpassive] = this.currentMove.piecePassive.id;
 
-            this.pieces[this.currentMove.piece.id].setPosition(nb, nl, nc);
+            this.pieces[this.currentMove.piecePassive.id].setPosition(nbpassive, nlpassive, ncpassive);
+
+
+            let obagressive = this.currentMove.fromPositionAgressive.board, olagressive = this.currentMove.fromPositionAgressive.line, ocagressive = this.currentMove.fromPositionAgressive.column, 
+            nbagressive = this.currentMove.toPositionAgressive.board, nlagressive = this.currentMove.toPositionAgressive.line, ncagressive = this.currentMove.toPositionAgressive.column;
+            this.board[obagressive][olagressive][ocagressive] = 0;
+            this.board[nbagressive][nlagressive][ncagressive] = this.currentMove.pieceAgressive.id;
+
+            this.pieces[this.currentMove.pieceAgressive.id].setPosition(nbagressive, nlagressive, ncagressive);
+
+
 
             this.orchestrator.moves.push(this.currentMove);
 
@@ -99,7 +109,9 @@ class MyGameBoard {
 
         } else if (this.currentUndoMove != null){
 
-            this.currentUndoMove.piece.setPosition(this.currentUndoMove.fromPosition.board, this.currentUndoMove.fromPosition.line, this.currentUndoMove.fromPosition.column);
+            this.currentUndoMove.piecePassive.setPosition(this.currentUndoMove.fromPositionPassive.board, this.currentUndoMove.fromPositionPassive.line, this.currentUndoMove.fromPositionPassive.column);
+
+            this.currentUndoMove.pieceAgressive.setPosition(this.currentUndoMove.fromPositionAgressive.board, this.currentUndoMove.fromPositionAgressive.line, this.currentUndoMove.fromPositionAgressive.column);
 
             this.board = this.currentUndoMove.beforeBoard;
 
@@ -116,39 +128,63 @@ class MyGameBoard {
         this.currentMoveTime = 0;
     }
 
-    makeMove(idPiece, idTile){
+    makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive){
 
         this.endMovement();
 
+        var toPositionPassive = null, toPositionAgressive = null;
+
         console.log("Making move");
-        console.log("Piece: " + idPiece + "  Tile: " + idTile)
+        console.log("Piece 1: " + idPiecePassive + "  Tile 1: " + idTilePassive + "  Piece 2: " + idPieceAgressive + "  Tile 2: " + idTileAgressive);
         let index = 65;
         for (let b = 0; b < 4; b++){
             for (let l = 0; l < 4; l++){
                 for (let c = 0; c < 4; c++){
-                    // if (this.board[b][l][c] == idPiece){
-                    //     this.board[b][l][c] = 0;
-                    //     console.log("Removing piece");
-                    // }
-                    
-                    if (index++ == idTile) {
-                        this.currentMoveTime = 0;
-                        var move = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
-                        {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
 
-                        if (this.checkMove(move)){
-                            console.log("Valid move");
-                            this.currentMove = move;
-                        } else {
-                            console.log("Invalid move");
-                        }
-                        // this.currentMove = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
-                        // {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
-                        
+                    if (index == idTilePassive){
+                        toPositionPassive = {board: b, line: l, column: c};
                     }
+
+                    if (index++ == idTileAgressive){
+                        toPositionAgressive = {board: b, line: l, column: c};
+                    }
+                    
+                    // if (index++ == idTile) {
+                    //     this.currentMoveTime = 0;
+                    //     var move = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
+                    //     {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
+
+                    //     if (this.checkMove(move)){
+                    //         console.log("Valid move");
+                    //         this.currentMove = move;
+                    //     } else {
+                    //         console.log("Invalid move");
+                    //     }
+                    //     // this.currentMove = new MyMove(this.scene, this.pieces[idPiece], this.pieces[idPiece].getPosition(),
+                    //     // {board: b, line: l, column: c}, JSON.parse(JSON.stringify(this.board)));
+                        
+                    // }
                 }
             }
         }
+
+        if (toPositionPassive != null && toPositionAgressive != null){
+
+            this.currentMoveTime = 0;
+            var move = new MyMove(this.scene, this.pieces[idPiecePassive], this.pieces[idPiecePassive].getPosition(),
+            toPositionPassive, this.pieces[idPieceAgressive], this.pieces[idPieceAgressive].getPosition(),
+            toPositionAgressive, JSON.parse(JSON.stringify(this.board)));
+
+            if (this.checkMove(move)){
+                console.log("Valid move");
+                this.currentMove = move;
+            } else {
+                console.log("Invalid move");
+            }
+
+        }
+        
+
         console.log(this.board);
     }
 
@@ -160,22 +196,40 @@ class MyGameBoard {
 
         for (let i = 0; i < this.orchestrator.possibleMoves.length; i++){
             let curMove = this.orchestrator.possibleMoves[i];
-            if (curMove[0] != Move.fromPosition.board + 1)
+            if (curMove[0] != Move.fromPositionPassive.board + 1)
                 continue;
 
-            if (curMove[0] != Move.toPosition.board + 1)
+            if (curMove[0] != Move.toPositionPassive.board + 1)
                 continue;
 
-            if (curMove[1] != Move.fromPosition.line + 1)
+            if (curMove[1] != Move.fromPositionPassive.line + 1)
                 continue;
 
-            if (curMove[2] != Move.fromPosition.column + 1)
+            if (curMove[2] != Move.fromPositionPassive.column + 1)
                 continue;
                 
-            if (curMove[3] != Move.toPosition.line + 1)
+            if (curMove[3] != Move.toPositionPassive.line + 1)
                 continue;
 
-            if (curMove[4] != Move.toPosition.column + 1)
+            if (curMove[4] != Move.toPositionPassive.column + 1)
+                continue;
+
+            if (curMove[5] != Move.fromPositionAgressive.board + 1)
+                continue;
+
+            if (curMove[5] != Move.toPositionAgressive.board + 1)
+                continue;
+
+            if (curMove[6] != Move.fromPositionAgressive.line + 1)
+                continue;
+
+            if (curMove[7] != Move.fromPositionAgressive.column + 1)
+                continue;
+                
+            if (curMove[8] != Move.toPositionAgressive.line + 1)
+                continue;
+
+            if (curMove[9] != Move.toPositionAgressive.column + 1)
                 continue;
 
             return true;
@@ -197,12 +251,15 @@ class MyGameBoard {
 
         this.b.display();
 
-        let idPieceOnMovement = -1;
+        let idPieceOnMovementPassive = -1, idPieceOnMovementAgressive = -1;
 
         if (this.currentMove != null){
-            idPieceOnMovement = this.currentMove.piece.id;
+            idPieceOnMovementPassive = this.currentMove.piecePassive.id;
+            idPieceOnMovementAgressive = this.currentMove.pieceAgressive.id;
+
         } else if (this.currentUndoMove != null){
-            idPieceOnMovement = this.currentUndoMove.piece.id;
+            idPieceOnMovementPassive = this.currentUndoMove.piecePassive.id;
+            idPieceOnMovementAgressive = this.currentUndoMove.pieceAgressive.id;
         }
 
         for (let b = 0; b < 4; b++){
@@ -215,7 +272,7 @@ class MyGameBoard {
 
                         this.scene.translate(positions.x, positions.y + 0.5, positions.z);
 
-                        if (this.board[b][l][c] != idPieceOnMovement)
+                        if (this.board[b][l][c] != idPieceOnMovementPassive && this.board[b][l][c] != idPieceOnMovementAgressive)
                             this.pieces[this.board[b][l][c]].display();
 
                         this.scene.popMatrix();
@@ -224,51 +281,7 @@ class MyGameBoard {
             }
         }
 
-        if (this.currentMove != null){
-
-            let ob = this.currentMove.fromPosition.board, ol = this.currentMove.fromPosition.line, oc = this.currentMove.fromPosition.column, 
-            nb = this.currentMove.toPosition.board, nl = this.currentMove.toPosition.line, nc = this.currentMove.toPosition.column;
-
-            this.scene.pushMatrix();
-
-            var translation = vec3.create();
-
-            let fromPosition = this.b.getTranslationFromPosition(ob+1, ol+1, oc+1);
-            let toPosition = this.b.getTranslationFromPosition(nb+1, nl+1, nc+1);
-
-            var from = vec3.fromValues(fromPosition.x, fromPosition.y, fromPosition.z)
-            var to = vec3.fromValues(toPosition.x, toPosition.y, toPosition.z)
-
-            vec3.lerp(translation, from, to, this.currentMoveTime/1000.0);
-
-            this.scene.translate(translation[0], translation[1] + 0.5, translation[2]);
-            
-            this.pieces[this.currentMove.piece.id].display();
-
-            this.scene.popMatrix();
-        } else if (this.currentUndoMove != null){
-
-            let ob = this.currentUndoMove.fromPosition.board, ol = this.currentUndoMove.fromPosition.line, oc = this.currentUndoMove.fromPosition.column, 
-            nb = this.currentUndoMove.toPosition.board, nl = this.currentUndoMove.toPosition.line, nc = this.currentUndoMove.toPosition.column;
-
-            this.scene.pushMatrix();
-
-            var translation = vec3.create();
-
-            let toPosition = this.b.getTranslationFromPosition(ob+1, ol+1, oc+1);
-            let fromPosition = this.b.getTranslationFromPosition(nb+1, nl+1, nc+1);
-
-            var from = vec3.fromValues(fromPosition.x, fromPosition.y, fromPosition.z)
-            var to = vec3.fromValues(toPosition.x, toPosition.y, toPosition.z)
-
-            vec3.lerp(translation, from, to, this.currentMoveTime/1000.0);
-
-            this.scene.translate(translation[0], translation[1] + 0.5, translation[2]);
-            
-            this.pieces[this.currentUndoMove.piece.id].display();
-
-            this.scene.popMatrix();
-        }   
+        this.drawCurrentMovement();
 
         if (tex != null)
             tex.bind();
@@ -276,5 +289,95 @@ class MyGameBoard {
 
     updateTexCoords(s_length, t_length) {
 
-	}
+    }
+    
+    drawCurrentMovement(){
+        if (this.currentMove != null){
+
+            let obpassive = this.currentMove.fromPositionPassive.board, olpassive = this.currentMove.fromPositionPassive.line, ocpassive = this.currentMove.fromPositionPassive.column, 
+            nbpassive = this.currentMove.toPositionPassive.board, nlpassive = this.currentMove.toPositionPassive.line, ncpassive = this.currentMove.toPositionPassive.column;
+
+            this.scene.pushMatrix();
+
+            var translationpassive = vec3.create();
+
+            let fromPositionpassive = this.b.getTranslationFromPosition(obpassive+1, olpassive+1, ocpassive+1);
+            let toPositionpassive = this.b.getTranslationFromPosition(nbpassive+1, nlpassive+1, ncpassive+1);
+
+            var frompassive = vec3.fromValues(fromPositionpassive.x, fromPositionpassive.y, fromPositionpassive.z)
+            var topassive = vec3.fromValues(toPositionpassive.x, toPositionpassive.y, toPositionpassive.z)
+
+            vec3.lerp(translationpassive, frompassive, topassive, this.currentMoveTime/1000.0);
+
+            this.scene.translate(translationpassive[0], translationpassive[1] + 0.5, translationpassive[2]);
+            
+            this.pieces[this.currentMove.piecePassive.id].display();
+
+            this.scene.popMatrix();
+
+            let obagressive = this.currentMove.fromPositionAgressive.board, olagressive = this.currentMove.fromPositionAgressive.line, ocagressive = this.currentMove.fromPositionAgressive.column, 
+            nbagressive = this.currentMove.toPositionAgressive.board, nlagressive = this.currentMove.toPositionAgressive.line, ncagressive = this.currentMove.toPositionAgressive.column;
+
+            this.scene.pushMatrix();
+
+            var translationagressive = vec3.create();
+
+            let fromPositionagressive = this.b.getTranslationFromPosition(obagressive+1, olagressive+1, ocagressive+1);
+            let toPositionagressive = this.b.getTranslationFromPosition(nbagressive+1, nlagressive+1, ncagressive+1);
+
+            var fromagressive = vec3.fromValues(fromPositionagressive.x, fromPositionagressive.y, fromPositionagressive.z)
+            var toagressive = vec3.fromValues(toPositionagressive.x, toPositionagressive.y, toPositionagressive.z)
+
+            vec3.lerp(translationagressive, fromagressive, toagressive, this.currentMoveTime/1000.0);
+
+            this.scene.translate(translationagressive[0], translationagressive[1] + 0.5, translationagressive[2]);
+            
+            this.pieces[this.currentMove.pieceAgressive.id].display();
+
+            this.scene.popMatrix();
+        } else if (this.currentUndoMove != null){
+
+            let obpassive = this.currentUndoMove.fromPositionPassive.board, olpassive = this.currentUndoMove.fromPositionPassive.line, ocpassive = this.currentUndoMove.fromPositionPassive.column, 
+            nbpassive = this.currentUndoMove.toPositionPassive.board, nlpassive = this.currentUndoMove.toPositionPassive.line, ncpassive = this.currentUndoMove.toPositionPassive.column;
+
+            this.scene.pushMatrix();
+
+            var translationpassive = vec3.create();
+
+            let fromPositionpassive = this.b.getTranslationFromPosition(obpassive+1, olpassive+1, ocpassive+1);
+            let toPositionpassive = this.b.getTranslationFromPosition(nbpassive+1, nlpassive+1, ncpassive+1);
+
+            var topassive = vec3.fromValues(fromPositionpassive.x, fromPositionpassive.y, fromPositionpassive.z)
+            var frompassive = vec3.fromValues(toPositionpassive.x, toPositionpassive.y, toPositionpassive.z)
+
+            vec3.lerp(translationpassive, frompassive, topassive, this.currentMoveTime/1000.0);
+
+            this.scene.translate(translationpassive[0], translationpassive[1] + 0.5, translationpassive[2]);
+            
+            this.pieces[this.currentUndoMove.piecePassive.id].display();
+
+            this.scene.popMatrix();
+
+            let obagressive = this.currentUndoMove.fromPositionAgressive.board, olagressive = this.currentUndoMove.fromPositionAgressive.line, ocagressive = this.currentUndoMove.fromPositionAgressive.column, 
+            nbagressive = this.currentUndoMove.toPositionAgressive.board, nlagressive = this.currentUndoMove.toPositionAgressive.line, ncagressive = this.currentUndoMove.toPositionAgressive.column;
+
+            this.scene.pushMatrix();
+
+            var translationagressive = vec3.create();
+
+            let fromPositionagressive = this.b.getTranslationFromPosition(obagressive+1, olagressive+1, ocagressive+1);
+            let toPositionagressive = this.b.getTranslationFromPosition(nbagressive+1, nlagressive+1, ncagressive+1);
+
+            var toagressive = vec3.fromValues(fromPositionagressive.x, fromPositionagressive.y, fromPositionagressive.z)
+            var fromagressive = vec3.fromValues(toPositionagressive.x, toPositionagressive.y, toPositionagressive.z)
+
+            vec3.lerp(translationagressive, fromagressive, toagressive, this.currentMoveTime/1000.0);
+
+            this.scene.translate(translationagressive[0], translationagressive[1] + 0.5, translationagressive[2]);
+            
+            this.pieces[this.currentUndoMove.pieceAgressive.id].display();
+
+            this.scene.popMatrix();
+        }   
+    }
 }

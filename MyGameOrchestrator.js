@@ -17,8 +17,10 @@ class MyGameOrchestrator {
         this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
         
 
-        this.lastPiece = 0;
-        this.lastTile = 0;
+        this.lastPiecePassive = 0;
+        this.lastTilePassive = 0;
+        this.lastPieceAgressive = 0;
+        this.lastTileAgressive = 0;
 
         this.previousTime = null;
         this.currentTime = null;
@@ -52,17 +54,33 @@ class MyGameOrchestrator {
     // These functions may not work out of the box, needs adaptation to our game
     onObjectSelected(obj, id) {
         if (obj instanceof MySphere) {// do something with id knowing it is a piece
-            console.log("Piece with id = " + id + " pressed.");
-            this.lastPiece = id;
-            this.lastTile = 0;
-        } else if (obj instanceof MyRectangle) {// do something with id knowing it is a tile
-            console.log("Tile with id = " + id + " pressed.");
-            this.lastTile = id;
-            if (this.lastPiece != 0){
-                this.gameboard.makeMove(this.lastPiece, this.lastTile);
+            // console.log("Piece with id = " + id + " pressed.");
+
+            if (this.lastTilePassive == 0){
+                console.log("First Piece with id = " + id + " pressed.");
+                this.lastPiecePassive = id;
+            } else {
+                console.log("Second Piece with id = " + id + " pressed.");
+                this.lastPieceAgressive = id;
             }
-            this.lastPiece = 0;
-            this.lastTile = 0;
+
+        } else if (obj instanceof MyRectangle) {// do something with id knowing it is a tile
+            // console.log("Tile with id = " + id + " pressed.");
+
+            if (this.lastPieceAgressive != 0 ){
+                console.log("Second Tile with id = " + id + " pressed.");
+                this.lastTileAgressive = id;
+                this.gameboard.makeMove(this.lastPiecePassive, this.lastTilePassive, this.lastPieceAgressive, this.lastTileAgressive);
+
+                this.lastPiecePassive = 0;
+                this.lastTilePassive = 0;
+                this.lastPieceAgressive = 0;
+                this.lastTileAgressive = 0;
+
+            } else if (this.lastPiecePassive != 0 ){
+                console.log("First Tile with id = " + id + " pressed.");
+                this.lastTilePassive = id;
+            }
         } else {// error ? 
         }
     }
