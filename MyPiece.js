@@ -31,7 +31,9 @@ class MyPiece {
 
     initTextures() {
 
-        this.texRope = new CGFtexture( this.scene, 'scenes/images/rope.jpg' )
+        // this.texRope = new CGFtexture( this.scene, 'scenes/images/rope.jpg' )
+        this.texWoodLight = new CGFtexture(this.scene, 'scenes/images/wood_light.jpg')
+        this.texWoodDark = new CGFtexture(this.scene, 'scenes/images/wood_dark.jpg')
 
     }
 
@@ -39,7 +41,12 @@ class MyPiece {
 
         this.scene.registerForPick(this.id, this.sphere);
 
+        if (this.owner == 0)  {
+            this.texWoodDark.bind();
+        } else {
+            this.texWoodLight.bind();
+        }
+        
         this.sphere.display();
-
     }
 }
