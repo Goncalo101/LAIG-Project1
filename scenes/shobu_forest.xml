@@ -1,0 +1,586 @@
+<lxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="10" y="15" z="10" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+        <perspective id="defaultCamera2" near="0.1" far="500" angle="45">
+            <from x="-5" y="5" z="5" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <globals>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+        <omni id="niceLight" enabled="1">
+            <location x="5.8" y="5.9" z="5" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <!-- Board textures -->
+        <texture id="wood_light" file="scenes/images/wood_light.jpg" />
+        <texture id="wood_dark" file="scenes/images/wood_dark.jpg" />
+
+        <!-- Skybox textures-->
+        <texture id="sb_down" file="scenes/images/hills_dn.jpg" />
+        <texture id="sb_back" file="scenes/images/hills_bk.jpg" />
+        <texture id="sb_front" file="scenes/images/hills_ft.jpg" />
+        <texture id="sb_left" file="scenes/images/hills_lf.jpg" />
+        <texture id="sb_right" file="scenes/images/hills_rt.jpg" />
+        <texture id="sb_up" file="scenes/images/hills_up.jpg" />
+
+        <!-- Tree textures -->
+        <texture id="wood" file="scenes/images/table.jpg" />
+        <texture id="trunk_tex" file="scenes/images/trunk-image.jpg" />
+        <texture id="tree_top_tex" file="scenes/images/tree_top.svg" />
+
+    </textures>
+
+    <materials>
+        <material id="skyboxMat" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+        </material>
+        <material id="demoMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+        </material>
+        <material id="wood_mat" shininess="5">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.63" g="0.32" b="0.17" a="1.0" />
+            <diffuse r="0.63" g="0.32" b="0.17" a="1.0" />
+            <specular r="0.63" g="0.32" b="0.17" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <animations>
+    </animations>
+
+    <primitives>
+        <primitive id="board">
+            <gameboard x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive>
+        <primitive id="board_place">
+            <rectangle x1="0" y1="0" x2="1" y2="1" />
+        </primitive>
+        <primitive id="board_side">
+            <rectangle x1="-7" y1="-1" x2="1" y2="1" />
+        </primitive>
+        <primitive id="piece_place">
+            <rectangle x1="0.2" y1="0.2" x2="0.8" y2="0.8"/>
+        </primitive>
+        <primitive id="rope">
+            <cylinder2 base="0.5" top="0.5" height="18" slices="20" stacks="10"/>
+        </primitive>
+        <primitive id="rope_end">
+            <sphere radius="0.5" slices="10" stacks="10"/>
+        </primitive>
+        <primitive id="skybox_tile">
+            <rectangle x1="-10" y1="0" x2="50" y2="30" />
+        </primitive>
+        <primitive id="skybox_tile_b">
+            <rectangle x1="-10" y1="0" x2="50" y2="60" />
+        </primitive>
+        <primitive id="axis">
+            <cylinder base="1.0" top="1.0" height="6.5" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="tree_top">
+            <cylinder2 base="3.0" top="0.0" height="4.0" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="table">
+            <rectangle x1="-8" y1="-8" x2="8" y2="8" />
+        </primitive>
+        <primitive id="table_side">
+            <rectangle x1="-8" y1="-0.5" x2="8" y2="0.5" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="demoRoot">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="board"/>
+                <componentref id="board_support"/>
+                <componentref id="skybox_comp"/>
+                <componentref id="chair_group"/>
+            </children>
+        </component>
+
+        <component id="board_support">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <componentref id="table"/>
+                <componentref id="chair_legs" />
+            </children>
+        </component>
+
+        <component id="chair_group">
+            <transformation>
+                <translate x="0" y="-1" z="0"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <componentref id="chair1" />
+                <componentref id="chair2" />
+            </children>
+        </component>
+
+        <component id="chair1">
+            <transformation>
+                <translate x="0" y="0" z="13"/>
+                <scale x="0.4" y="1" z="0.4"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="table" />
+                <componentref id="chair_legs"/>
+            </children>
+        </component>
+
+        <component id="chair2">
+            <transformation>
+                <translate x="0" y="0" z="-13"/>
+                <scale x="0.4" y="1" z="0.4"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="table" />
+                <componentref id="chair_legs"/>
+            </children>
+        </component>
+
+        <component id="chair_legs">
+            <transformation>
+                <translate x="6" y="-0.15" z="6"/>
+                <scale x="1" y="0.55" z="1"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="chair_leg1"/>
+            </children>
+        </component>
+
+        <component id="chair_leg1">
+            <transformation>
+                <translate x="-12.5" y="0" z="0"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="chair_leg2"/>
+            </children>
+        </component>
+
+        <component id="chair_leg2">
+            <transformation>
+                <translate x="0" y="-12.5" z="0"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="chair_leg3"/>
+            </children>
+        </component>
+
+        <component id="chair_leg3">
+            <transformation>
+                <translate x="12.5" y="0" z="0"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="axis"/>
+            </children>
+        </component>
+
+        <component id="table">
+            <transformation>
+                <translate x="0" y="-0.1" z="0"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="wood_light" length_s="1" length_t="2"/>
+            <children>
+                <primitiveref id="table" />
+                <componentref id="table_side1" />
+            </children>
+        </component>
+
+        <component id="table_side1">
+            <transformation>
+                <translate x="0" y="-8" z="-0.5" />
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="table_side" />
+                <componentref id="table_side2" />
+            </children>
+        </component>
+
+        <component id="table_side2">
+            <transformation>
+                <translate x="8" y="0" z="-8" />
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="table_side" />
+                <componentref id="table_side3" />
+            </children>
+        </component>
+
+        <component id="table_side3">
+            <transformation>
+                <translate x="8" y="0" z="-8" />
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="table_side" />
+                <componentref id="table_side4" />
+            </children>
+        </component>
+
+        <component id="table_side4">
+            <transformation>
+                <translate x="8" y="0" z="-8" />
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="table_side" />
+            </children>
+        </component>
+
+        <component id="tree_groups">
+            <transformation>
+                <scale x="1" y="1.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="wood_mat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="tree_group1" />
+                <componentref id="tree_group2"/>
+            </children>
+        </component>
+        
+        <component id="tree_group2">
+            <transformation>
+                <translate x="38" y="0" z="10"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp1" />
+            </children>
+        </component>
+
+        <component id="tree_group1">
+            <transformation>
+                <translate x="-5" y="0" z="10"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp1" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp1">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp2" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp2">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp3" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp3">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+                <componentref id="tree_group_comp4" />
+            </children>
+        </component>
+
+        <component id="tree_group_comp4">
+            <transformation>
+                <translate x="0" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree"/>
+            </children>
+        </component>
+
+        <component id="tree">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="tree_left"/>
+                <componentref id="tree_right"/>
+                <componentref id="tree_top_comp"/>
+            </children>
+        </component>
+
+        <component id="tree_right">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="tree_top_comp"/>
+            </children>
+        </component>
+
+        <component id="tree_left">
+            <transformation>
+                <translate x="-7" y="0" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunk_tex" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="axis"/>
+                <componentref id="tree_top_comp"/>
+            </children>
+        </component>
+
+        <component id="tree_top_comp">
+            <transformation>
+                <translate x="0" y="0" z="6.5" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="tree_top_tex" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="tree_top"/>
+            </children>
+        </component>
+
+        <component id="skybox_comp">
+            <transformation>
+                <translate x="-10" y="-5" z="-20"/>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="skybox"/>
+                <componentref id="tree_groups"/>
+            </children>
+        </component>
+
+        <component id="skybox">
+            <transformation>
+                <translate x="-8" y="0" z="-8"/>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="sb_back" length_s="60" length_t="30"/>
+            <children>
+                <primitiveref id="skybox_tile"/>
+                <componentref id="sb_left_tile"/>
+                <componentref id="sb_bottom_tile"/>
+            </children>
+        </component>
+
+        <component id="sb_bottom_tile">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+                <translate x="0" y="-60" z="0" />
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="sb_down" length_s="60" length_t="30"/>
+            <children>
+                <primitiveref id="skybox_tile_b"/>
+                <componentref id="sb_top_tile"/>
+            </children>
+        </component>
+
+        <component id="sb_top_tile">
+            <transformation>
+                <rotate axis="y" angle="180"/>
+                <rotate axis="z" angle="-90"/>
+                <translate x="-50" y="-50" z="-30" />
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="sb_up" length_s="60" length_t="60"/>
+            <children>
+                <primitiveref id="skybox_tile_b"/>
+            </children>
+        </component>
+        
+        <component id="sb_left_tile">
+            <transformation>
+                <rotate axis="y" angle="90"/>
+                <translate x="-50" y="0" z="-10" />
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="sb_left" length_s="60" length_t="30"/>
+            <children>
+                <primitiveref id="skybox_tile"/>
+                <componentref id="sb_front_tile"/>
+            </children>
+        </component>
+
+        <component id="sb_front_tile">
+            <transformation>
+                <rotate axis="y" angle="90"/>
+                <translate x="-50" y="0" z="-10" />
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="sb_front" length_s="60" length_t="30"/>
+            <children>
+                <primitiveref id="skybox_tile"/>
+                <componentref id="sb_right_tile"/>
+            </children>
+        </component>
+
+        <component id="sb_right_tile">
+            <transformation>
+                <rotate axis="y" angle="90"/>
+                <translate x="-50" y="0" z="-10" />
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="sb_right" length_s="60" length_t="30"/>
+            <children>
+                <primitiveref id="skybox_tile"/>
+                <!-- <componentref id="sb_right_tile"/> -->
+            </children>
+        </component>
+    </components>
+</lxs>
