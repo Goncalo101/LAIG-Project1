@@ -82,6 +82,38 @@
     </transformations>
 
     <animations>
+        <animation id="wind_moving_trees">
+            <keyframe instant="5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="5" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-7" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="8" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-6" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="25">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="3" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="30">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </animation>
     </animations>
 
     <primitives>
@@ -428,6 +460,7 @@
             <transformation>
                 <rotate axis="x" angle="-90"/>
             </transformation>
+            <animationref id="wind_moving_trees"/>
             <materials>
                 <material id="inherit" />
             </materials>
