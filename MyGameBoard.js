@@ -31,10 +31,10 @@ class MyGameBoard {
                 [[13, 14, 15, 16], [0, 0, 0, 0], [0, 0, 0, 0], [9, 10, 11, 12]],        
                 [[21, 22, 23, 24], [0, 0, 0, 0], [0, 0, 0, 0], [17, 18, 19, 20]],
                 [[29, 30, 31, 32], [0, 0, 0, 0], [0, 0, 0, 0], [25, 26, 27, 28]],
-                [[0, 0, 0, 0], [0, 0, 0, 0]],
-                [[0, 0, 0, 0], [0, 0, 0, 0]],
-                [[0, 0, 0, 0], [0, 0, 0, 0]],
-                [[0, 0, 0, 0], [0, 0, 0, 0]]
+                [[0, 0], [0, 0], [0, 0], [0, 0]],
+                [[0, 0], [0, 0], [0, 0], [0, 0]],
+                [[0, 0], [0, 0], [0, 0], [0, 0]],
+                [[0, 0], [0, 0], [0, 0], [0, 0]],
             ];
 
         this.currentMove = null;
@@ -96,6 +96,16 @@ class MyGameBoard {
             this.pieces[this.currentMove.piecePassive.id].setPosition(nbpassive, nlpassive, ncpassive);
 
 
+            if (this.currentMove.pieceBehind.id != 0){
+                let obbehind = this.currentMove.fromPositionBehind.board, olbehind = this.currentMove.fromPositionBehind.line, ocbehind = this.currentMove.fromPositionBehind.column, 
+                nbbehind = this.currentMove.toPositionBehind.board, nlbehind = this.currentMove.toPositionBehind.line, ncbehind = this.currentMove.toPositionBehind.column;
+                this.board[obbehind][olbehind][ocbehind] = 0;
+                this.board[nbbehind][nlbehind][ncbehind] = this.currentMove.pieceBehind.id;
+
+                this.pieces[this.currentMove.pieceBehind.id].setPosition(nbbehind, nlbehind, ncbehind);
+            }
+
+
             let obagressive = this.currentMove.fromPositionAgressive.board, olagressive = this.currentMove.fromPositionAgressive.line, ocagressive = this.currentMove.fromPositionAgressive.column, 
             nbagressive = this.currentMove.toPositionAgressive.board, nlagressive = this.currentMove.toPositionAgressive.line, ncagressive = this.currentMove.toPositionAgressive.column;
             this.board[obagressive][olagressive][ocagressive] = 0;
@@ -116,6 +126,9 @@ class MyGameBoard {
             this.currentUndoMove.piecePassive.setPosition(this.currentUndoMove.fromPositionPassive.board, this.currentUndoMove.fromPositionPassive.line, this.currentUndoMove.fromPositionPassive.column);
 
             this.currentUndoMove.pieceAgressive.setPosition(this.currentUndoMove.fromPositionAgressive.board, this.currentUndoMove.fromPositionAgressive.line, this.currentUndoMove.fromPositionAgressive.column);
+
+            if (this.currentUndoMove.pieceBehind.id != 0)
+                this.currentUndoMove.pieceBehind.setPosition(this.currentUndoMove.fromPositionBehind.board, this.currentUndoMove.fromPositionBehind.line, this.currentUndoMove.fromPositionBehind.column);
 
             this.board = this.currentUndoMove.beforeBoard;
 
@@ -181,6 +194,8 @@ class MyGameBoard {
 
             if (this.checkMove(move)){
                 console.log("Valid move");
+                move.pieceBehind = this.pieces[move.idPieceBehind];
+                console.log(move);
                 this.currentMove = move;
             } else {
                 console.log("Invalid move");
@@ -188,8 +203,6 @@ class MyGameBoard {
 
         }
         
-
-        console.log(this.board);
     }
 
     checkMove(Move){
@@ -255,15 +268,17 @@ class MyGameBoard {
 
         this.b.display();
 
-        let idPieceOnMovementPassive = -1, idPieceOnMovementAgressive = -1;
+        let idPieceOnMovementPassive = -1, idPieceOnMovementAgressive = -1, idPieceOnMovementBehind = -1;
 
         if (this.currentMove != null){
             idPieceOnMovementPassive = this.currentMove.piecePassive.id;
             idPieceOnMovementAgressive = this.currentMove.pieceAgressive.id;
+            idPieceOnMovementBehind = this.currentMove.pieceBehind.id;
 
         } else if (this.currentUndoMove != null){
             idPieceOnMovementPassive = this.currentUndoMove.piecePassive.id;
             idPieceOnMovementAgressive = this.currentUndoMove.pieceAgressive.id;
+            idPieceOnMovementBehind = this.currentUndoMove.pieceBehind.id;
         }
 
         for (let b = 0; b < 4; b++){
@@ -276,7 +291,7 @@ class MyGameBoard {
 
                         this.scene.translate(positions.x, positions.y + 0.5, positions.z);
 
-                        if (this.board[b][l][c] != idPieceOnMovementPassive && this.board[b][l][c] != idPieceOnMovementAgressive)
+                        if (this.board[b][l][c] != idPieceOnMovementPassive && this.board[b][l][c] != idPieceOnMovementAgressive && this.board[b][l][c] != idPieceOnMovementBehind)
                             this.pieces[this.board[b][l][c]].display();
 
                         this.scene.popMatrix();
@@ -286,8 +301,8 @@ class MyGameBoard {
         }
 
         for (let b = 4; b < 8; b++){
-            for (let l = 0; l < 2; l++){
-                for (let c = 0; c < 4; c++){
+            for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 2; c++){
                     let positions = this.b.getTranslationFromPosition(b+1, l+1, c+1);
                     if (this.board[b][l][c] != 0){
                         
@@ -295,7 +310,7 @@ class MyGameBoard {
 
                         this.scene.translate(positions.x, positions.y + 0.5, positions.z);
 
-                        if (this.board[b][l][c] != idPieceOnMovementPassive && this.board[b][l][c] != idPieceOnMovementAgressive)
+                        if (this.board[b][l][c] != idPieceOnMovementPassive && this.board[b][l][c] != idPieceOnMovementAgressive && this.board[b][l][c] != idPieceOnMovementBehind)
                             this.pieces[this.board[b][l][c]].display();
 
                         this.scene.popMatrix();
@@ -358,6 +373,32 @@ class MyGameBoard {
             this.pieces[this.currentMove.pieceAgressive.id].display();
 
             this.scene.popMatrix();
+
+
+            if (this.currentMove.pieceBehind.id != 0){
+                let obbehind = this.currentMove.fromPositionBehind.board, olbehind = this.currentMove.fromPositionBehind.line, ocbehind = this.currentMove.fromPositionBehind.column, 
+                nbbehind = this.currentMove.toPositionBehind.board, nlbehind = this.currentMove.toPositionBehind.line, ncbehind = this.currentMove.toPositionBehind.column;
+
+                this.scene.pushMatrix();
+
+                var translationbehind = vec3.create();
+
+                let fromPositionbehind = this.b.getTranslationFromPosition(obbehind+1, olbehind+1, ocbehind+1);
+                let toPositionbehind = this.b.getTranslationFromPosition(nbbehind+1, nlbehind+1, ncbehind+1);
+
+                var frombehind = vec3.fromValues(fromPositionbehind.x, fromPositionbehind.y, fromPositionbehind.z)
+                var tobehind = vec3.fromValues(toPositionbehind.x, toPositionbehind.y, toPositionbehind.z)
+
+                vec3.lerp(translationbehind, frombehind, tobehind, this.currentMoveTime/1000.0);
+
+                this.scene.translate(translationbehind[0], translationbehind[1] + 0.5, translationbehind[2]);
+                
+                this.pieces[this.currentMove.pieceBehind.id].display();
+
+                this.scene.popMatrix();
+
+            }
+
         } else if (this.currentUndoMove != null){
 
             let obpassive = this.currentUndoMove.fromPositionPassive.board, olpassive = this.currentUndoMove.fromPositionPassive.line, ocpassive = this.currentUndoMove.fromPositionPassive.column, 
@@ -401,6 +442,30 @@ class MyGameBoard {
             this.pieces[this.currentUndoMove.pieceAgressive.id].display();
 
             this.scene.popMatrix();
+
+
+            if (this.currentUndoMove.pieceBehind.id != 0) {
+                let obbehind = this.currentUndoMove.fromPositionBehind.board, olbehind = this.currentUndoMove.fromPositionBehind.line, ocbehind = this.currentUndoMove.fromPositionBehind.column, 
+                nbbehind = this.currentUndoMove.toPositionBehind.board, nlbehind = this.currentUndoMove.toPositionBehind.line, ncbehind = this.currentUndoMove.toPositionBehind.column;
+
+                this.scene.pushMatrix();
+
+                var translationbehind = vec3.create();
+
+                let fromPositionbehind = this.b.getTranslationFromPosition(obbehind+1, olbehind+1, ocbehind+1);
+                let toPositionbehind = this.b.getTranslationFromPosition(nbbehind+1, nlbehind+1, ncbehind+1);
+
+                var tobehind = vec3.fromValues(fromPositionbehind.x, fromPositionbehind.y, fromPositionbehind.z)
+                var frombehind = vec3.fromValues(toPositionbehind.x, toPositionbehind.y, toPositionbehind.z)
+
+                vec3.lerp(translationbehind, frombehind, tobehind, this.currentMoveTime/1000.0);
+
+                this.scene.translate(translationbehind[0], translationbehind[1] + 0.5, translationbehind[2]);
+                
+                this.pieces[this.currentUndoMove.pieceBehind.id].display();
+
+                this.scene.popMatrix();
+            }
         }   
     }
 }
