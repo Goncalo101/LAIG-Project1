@@ -30,7 +30,11 @@ class MyGameBoard {
                 [[5, 6, 7, 8], [0, 0, 0, 0], [0, 0, 0, 0], [1, 2, 3, 4]],
                 [[13, 14, 15, 16], [0, 0, 0, 0], [0, 0, 0, 0], [9, 10, 11, 12]],        
                 [[21, 22, 23, 24], [0, 0, 0, 0], [0, 0, 0, 0], [17, 18, 19, 20]],
-                [[29, 30, 31, 32], [0, 0, 0, 0], [0, 0, 0, 0], [25, 26, 27, 28]]
+                [[29, 30, 31, 32], [0, 0, 0, 0], [0, 0, 0, 0], [25, 26, 27, 28]],
+                [[0, 0, 0, 0], [0, 0, 0, 0]],
+                [[0, 0, 0, 0], [0, 0, 0, 0]],
+                [[0, 0, 0, 0], [0, 0, 0, 0]],
+                [[0, 0, 0, 0], [0, 0, 0, 0]]
             ];
 
         this.currentMove = null;
@@ -264,6 +268,25 @@ class MyGameBoard {
 
         for (let b = 0; b < 4; b++){
             for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 4; c++){
+                    let positions = this.b.getTranslationFromPosition(b+1, l+1, c+1);
+                    if (this.board[b][l][c] != 0){
+                        
+                        this.scene.pushMatrix();
+
+                        this.scene.translate(positions.x, positions.y + 0.5, positions.z);
+
+                        if (this.board[b][l][c] != idPieceOnMovementPassive && this.board[b][l][c] != idPieceOnMovementAgressive)
+                            this.pieces[this.board[b][l][c]].display();
+
+                        this.scene.popMatrix();
+                    }
+                }
+            }
+        }
+
+        for (let b = 4; b < 8; b++){
+            for (let l = 0; l < 2; l++){
                 for (let c = 0; c < 4; c++){
                     let positions = this.b.getTranslationFromPosition(b+1, l+1, c+1);
                     if (this.board[b][l][c] != 0){
