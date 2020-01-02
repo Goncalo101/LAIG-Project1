@@ -33,6 +33,12 @@ class MyGameOrchestrator {
 
     changePlayer(){
         this.currentPlayer ^= 1;
+        document.getElementById('player_turn').innerHTML = this.currentPlayer === 0 ? "Black" : "White";
+    }
+
+    changeToPlayer(player){
+        this.currentPlayer = player;
+        document.getElementById('player_turn').innerHTML = this.currentPlayer === 0 ? "Black" : "White";
     }
 
     update(t) {

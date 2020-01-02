@@ -18,7 +18,7 @@ class MyInterface extends CGFinterface {
         // init GUI. For more information on the methods, check:
         //  http://workshop.chromeexperiments.com/examples/gui
 
-        this.gui = new dat.GUI();
+        this.gui = new dat.GUI({resizable: false});
 
         // add a group of controls (and open/expand by defult)
         this.lights_folder = this.gui.addFolder('Lights');

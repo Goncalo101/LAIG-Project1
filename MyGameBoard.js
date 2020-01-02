@@ -40,6 +40,7 @@ class MyGameBoard {
         this.currentMove = null;
         this.currentMoveTime = 0;
         this.currentUndoMove = null;
+        this.currentLimitTime = 20000;
 
         this.updatePositionPieces();
     }
@@ -56,7 +57,22 @@ class MyGameBoard {
         }
     }
 
+    getNextMoveInformation(){
+
+        this.orchestrator.computerMove = null;
+        this.orchestrator.possibleMoves = [];
+        this.currentLimitTime = 20000;
+
+        this.orchestrator.prolog.requestWinner(this.board);
+        this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
+        this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
+
+    }
+
     update(delta){
+
+        if (delta > 2000)  // to not prejudice player on first display
+            return;
 
         if (this.currentMove != null){
             this.currentMoveTime += delta;
@@ -72,7 +88,14 @@ class MyGameBoard {
             (this.orchestrator.xmlscene.selectedGameType == 1 && this.orchestrator.currentPlayer == 1)) {
                 if (this.orchestrator.computerMove != null)
                     this.makeMoveFromProlog(this.orchestrator.computerMove);
+        } else {
+            this.currentLimitTime -= delta;
+            if (this.currentLimitTime < 0){
+                this.orchestrator.changePlayer();
+                this.getNextMoveInformation();
             }
+            document.getElementById('player_time').innerHTML = (this.currentLimitTime/1000).toFixed(2);
+        }
     }
 
     undoMove(){
@@ -84,10 +107,6 @@ class MyGameBoard {
             this.currentMoveTime = 0;
         }
 
-        
-        // this.board = Move.beforeBoard;
-        // Move.piece.setPosition(Move.fromPosition.board, Move.fromPosition.line, Move.fromPosition.column);
-        // console.log(Move.beforeBoard);
     }
 
     endMovement(){
@@ -120,7 +139,15 @@ class MyGameBoard {
 
 
             this.orchestrator.moves.push(this.currentMove);
+            
             this.orchestrator.computerMove = null;
+            this.orchestrator.possibleMoves = [];
+
+            this.updatePointsPlayer();
+
+            this.currentLimitTime = 20000;
+
+            document.getElementById('player_time').innerHTML = (this.currentLimitTime/1000).toFixed(2);
 
             this.orchestrator.changePlayer();
 
@@ -142,8 +169,15 @@ class MyGameBoard {
             this.orchestrator.moves.pop();
 
             this.orchestrator.computerMove = null;
+            this.orchestrator.possibleMoves = [];
 
-            this.orchestrator.changePlayer();
+            this.updatePointsPlayer();
+
+            this.currentLimitTime = 20000;
+
+            document.getElementById('player_time').innerHTML = (this.currentLimitTime/1000).toFixed(2);
+
+            this.orchestrator.changeToPlayer(this.currentUndoMove.piecePassive.owner);
 
             this.orchestrator.prolog.requestWinner(this.board);
             this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
@@ -518,5 +552,31 @@ class MyGameBoard {
                 this.scene.popMatrix();
             }
         }   
+    }
+
+    updatePointsPlayer(){
+
+        let minBlack = 4, minWhite = 4;
+
+        for (let b = 0; b < 4; b++){
+            let curBlack = 0, curWhite = 0;
+            for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 4; c++){
+                    if (this.board[b][l][c] != 0){
+                        
+                        if (this.pieces[this.board[b][l][c]].owner == 0)
+                            curBlack++;
+                        else 
+                            curWhite++;
+                    }
+                }
+            }
+            minBlack = Math.min(minBlack, curBlack);
+            minWhite = Math.min(minWhite, curWhite);
+        }
+
+        document.getElementById('points_black').innerHTML = minBlack;
+        document.getElementById('points_white').innerHTML = minWhite;
+
     }
 }
