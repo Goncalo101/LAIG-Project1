@@ -29,6 +29,14 @@ class MyPrologInterface {
         this.sendRequest(requestString, this.parsePossibleMoves);
     }
 
+    requestComputerMove(Player, Board){
+        let requestString = 'computer_move(' + (Player+1) + ',' +  this.convertBoardToProlog(Board) + ')';
+
+        console.log(requestString);
+
+        this.sendRequest(requestString, this.parseComputerMove);
+    }
+
     requestWinner(Board){
         let requestString = 'game_over(' + this.convertBoardToProlog(Board) + ')';
 
@@ -91,6 +99,22 @@ class MyPrologInterface {
         console.log(this);
 
         this.orch.possibleMoves = JSON.parse(this.responseText);
+        
+    }
+
+    parseComputerMove(){
+
+        console.log('Good Parse');
+
+        if (this.status === 400) { 
+            console.log("ERROR"); 
+            return;
+        }
+
+        console.log("Computer move: " + JSON.parse(this.responseText));
+
+
+        this.orch.computerMove = JSON.parse(this.responseText);
         
     }
 

@@ -14,8 +14,11 @@ class MyGameOrchestrator {
 
         this.winner = 0;
 
+        this.computerMove = null;
+
         this.currentPlayer = 0;
 
+        this.prolog.requestComputerMove(this.currentPlayer, this.gameboard.board);
         this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
         
 

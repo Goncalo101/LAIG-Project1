@@ -68,7 +68,11 @@ class MyGameBoard {
             if (this.currentMoveTime >= 1000){
                 this.endMovement();
             }
-        }
+        } else if (this.orchestrator.xmlscene.selectedGameType == 2 || 
+            (this.orchestrator.xmlscene.selectedGameType == 1 && this.orchestrator.currentPlayer == 1)) {
+                if (this.orchestrator.computerMove != null)
+                    this.makeMoveFromProlog(this.orchestrator.computerMove);
+            }
     }
 
     undoMove(){
@@ -116,10 +120,12 @@ class MyGameBoard {
 
 
             this.orchestrator.moves.push(this.currentMove);
+            this.orchestrator.computerMove = null;
 
             this.orchestrator.changePlayer();
 
             this.orchestrator.prolog.requestWinner(this.board);
+            this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
             this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         } else if (this.currentUndoMove != null){
@@ -135,9 +141,12 @@ class MyGameBoard {
 
             this.orchestrator.moves.pop();
 
+            this.orchestrator.computerMove = null;
+
             this.orchestrator.changePlayer();
 
             this.orchestrator.prolog.requestWinner(this.board);
+            this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
             this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         }
@@ -145,6 +154,41 @@ class MyGameBoard {
         this.currentUndoMove = null;
         this.currentMove = null;
         this.currentMoveTime = 0;
+    }
+
+    makeMoveFromProlog(ListMove) {
+        let idPiecePassive, idPieceAgressive, idTilePassive, idTileAgressive;
+        let index = 65;
+        for (let b = 0; b < 4; b++){
+            for (let l = 0; l < 4; l++){
+                for (let c = 0; c < 4; c++){
+
+                    if (b+1 == ListMove[0] && l+1 == ListMove[1] && c+1 == ListMove[2]){
+                        if (this.board[b][l][c] == 0)
+                            return;
+                        idPiecePassive = this.board[b][l][c];
+                    }
+
+                    if (b+1 == ListMove[0] && l+1 == ListMove[3] && c+1 == ListMove[4]){
+                        idTilePassive = index;
+                    }
+
+                    if (b+1 == ListMove[5] && l+1 == ListMove[6] && c+1 == ListMove[7]){
+                        if (this.board[b][l][c] == 0)
+                            return;
+                        idPieceAgressive = this.board[b][l][c];
+                    }
+
+                    if (b+1 == ListMove[5] && l+1 == ListMove[8] && c+1 == ListMove[9]){
+                        idTileAgressive = index;
+                    }
+
+                    index++;
+                }
+            }
+        }
+
+        this.makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive);
     }
 
     makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive){
