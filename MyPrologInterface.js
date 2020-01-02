@@ -6,14 +6,14 @@ class MyPrologInterface {
     }
 
 
-    sendRequest(requestString){
+    sendRequest(requestString, functionOnSuccess){
 
         // let requestString = 'valid_moves(1,[[[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]],[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]]],[[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]],[[2,2,2,2],[0,0,0,0],[0,0,0,0],[1,1,1,1]]]])'; 
         let requestProlog = new XMLHttpRequest();
 
         requestProlog.orch = this.myOrchestrator;
 
-        requestProlog.addEventListener("load", this.parseStartPrologReply); 
+        requestProlog.addEventListener("load", functionOnSuccess); 
         requestProlog.addEventListener("error",this.startPrologGameError);
 
         requestProlog.open('GET', 'http://localhost:'+this.port+'/'+requestString, true); 
@@ -26,10 +26,15 @@ class MyPrologInterface {
 
         console.log(requestString);
 
-        this.sendRequest(requestString);
+        this.sendRequest(requestString, this.parsePossibleMoves);
+    }
 
+    requestWinner(Board){
+        let requestString = 'game_over(' + this.convertBoardToProlog(Board) + ')';
 
+        console.log(requestString);
 
+        this.sendRequest(requestString, this.parseWinner);
     }
 
     convertBoardToProlog(Board){
@@ -71,7 +76,7 @@ class MyPrologInterface {
         return boardString;
     }
 
-    parseStartPrologReply(){
+    parsePossibleMoves(){
         console.log('Good Parse');
 
         if (this.status === 400) { 
@@ -86,6 +91,22 @@ class MyPrologInterface {
         console.log(this);
 
         this.orch.possibleMoves = JSON.parse(this.responseText);
+        
+    }
+
+    parseWinner(){
+        console.log('Good Parse');
+
+        if (this.status === 400) { 
+            console.log("ERROR"); 
+            return;
+        }
+
+        // let responseArray = textStringToArray(this.responseText,true);
+
+        console.log(this.responseText);
+
+        this.orch.winner = parseInt(this.responseText);
         
     }
 

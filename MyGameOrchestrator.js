@@ -12,6 +12,8 @@ class MyGameOrchestrator {
 
         this.possibleMoves = [];
 
+        this.winner = 0;
+
         this.currentPlayer = 0;
 
         this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);

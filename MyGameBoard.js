@@ -119,6 +119,7 @@ class MyGameBoard {
 
             this.orchestrator.changePlayer();
 
+            this.orchestrator.prolog.requestWinner(this.board);
             this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         } else if (this.currentUndoMove != null){
@@ -136,6 +137,7 @@ class MyGameBoard {
 
             this.orchestrator.changePlayer();
 
+            this.orchestrator.prolog.requestWinner(this.board);
             this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         }
@@ -148,6 +150,11 @@ class MyGameBoard {
     makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive){
 
         this.endMovement();
+
+        console.log("Winner: " + this.orchestrator.winner);
+
+        if (this.orchestrator.winner != 0)
+            return;
 
         var toPositionPassive = null, toPositionAgressive = null;
 
