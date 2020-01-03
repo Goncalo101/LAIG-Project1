@@ -153,6 +153,9 @@
         <primitive id="table_side">
             <rectangle x1="-12" y1="-0.5" x2="12" y2="0.5" />
         </primitive>
+        <primitive id="table_side_small">
+            <rectangle x1="-8" y1="-0.5" x2="8" y2="0.5" />
+        </primitive>
     </primitives>
 
     <components>
@@ -317,7 +320,7 @@
 
         <component id="table_side2">
             <transformation>
-                <translate x="8" y="0" z="-8" />
+                <translate x="12" y="0" z="-8" />
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
@@ -325,14 +328,14 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="table_side" />
+                <primitiveref id="table_side_small" />
                 <componentref id="table_side3" />
             </children>
         </component>
 
         <component id="table_side3">
             <transformation>
-                <translate x="8" y="0" z="-8" />
+                <translate x="8" y="0" z="-12" />
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
@@ -347,7 +350,7 @@
 
         <component id="table_side4">
             <transformation>
-                <translate x="8" y="0" z="-8" />
+                <translate x="12" y="0" z="-8" />
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
@@ -355,7 +358,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="table_side" />
+                <primitiveref id="table_side_small" />
             </children>
         </component>
 
@@ -514,7 +517,7 @@
 
         <component id="skybox_comp">
             <transformation>
-                <translate x="-10" y="-5" z="-20"/>
+                <translate x="-12.5" y="-5" z="-25"/>
             </transformation>
             <materials>
                 <material id="skyboxMat" />
