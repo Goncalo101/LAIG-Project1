@@ -68,6 +68,12 @@
             <diffuse r="0.63" g="0.32" b="0.17" a="1.0" />
             <specular r="0.63" g="0.32" b="0.17" a="1.0" />
         </material>
+        <material id="body_mat" shininess="2">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.725" g="0.369" b="0.262" a="1.0" />
+            <diffuse r="0.725" g="0.369" b="0.262" a="1.0" />
+            <specular r="0.725" g="0.369" b="0.262" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
@@ -132,6 +138,15 @@
         <primitive id="rope_end">
             <sphere radius="0.5" slices="10" stacks="10"/>
         </primitive>
+        <primitive id="fish_body">
+            <sphere radius="1.0" slices="10" stacks="10"/>
+        </primitive>
+        <primitive id="fish_tail">
+           <triangle x1="0" y1="0" z1="0" x2="2" y2="-1.5" z2="0" x3="2" y3="1.5" z3="0"/>
+        </primitive>
+        <primitive id="fish_fin">
+           <triangle x1="0" y1="0" z1="0" x2="0" y2="1.2" z2="2" x3="0" y3="0" z3="3"/>
+        </primitive>
         <primitive id="skybox_tile">
             <rectangle x1="-10" y1="0" x2="50" y2="30" />
         </primitive>
@@ -146,6 +161,9 @@
         </primitive>
         <primitive id="table_side">
             <rectangle x1="-12" y1="-0.5" x2="12" y2="0.5" />
+        </primitive>
+        <primitive id="table_side_small">
+            <rectangle x1="-8" y1="-0.5" x2="8" y2="0.5" />
         </primitive>
     </primitives>
 
@@ -311,7 +329,7 @@
 
         <component id="table_side2">
             <transformation>
-                <translate x="8" y="0" z="-8" />
+                <translate x="12" y="0" z="-8" />
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
@@ -319,14 +337,14 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="table_side" />
+                <primitiveref id="table_side_small" />
                 <componentref id="table_side3" />
             </children>
         </component>
 
         <component id="table_side3">
             <transformation>
-                <translate x="8" y="0" z="-8" />
+                <translate x="8" y="0" z="-12" />
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
@@ -341,7 +359,7 @@
 
         <component id="table_side4">
             <transformation>
-                <translate x="8" y="0" z="-8" />
+                <translate x="12" y="0" z="-8" />
                 <rotate axis="y" angle="90"/>
             </transformation>
             <materials>
@@ -349,7 +367,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="table_side" />
+                <primitiveref id="table_side_small" />
             </children>
         </component>
 
@@ -363,7 +381,6 @@
             </materials>
             <texture id="blue" length_s="1" length_t="1"/>
             <children>
-                <!-- <componentref id="tree_groups"/> -->
                 <componentref id="bubbles1"/>
             </children>
         </component>
@@ -378,7 +395,6 @@
             </materials>
             <texture id="blue" length_s="1" length_t="1"/>
             <children>
-                <!-- <componentref id="tree_groups"/> -->
                 <primitiveref id="rope_end"/>
                 <componentref id="bubbles2"/>
                 <componentref id="bubble1"/>
@@ -394,7 +410,6 @@
             </materials>
             <texture id="blue" length_s="1" length_t="1"/>
             <children>
-                <!-- <componentref id="tree_groups"/> -->
                 <primitiveref id="rope_end"/>
                 <componentref id="bubble1"/>
             </children>
@@ -409,7 +424,6 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <!-- <componentref id="tree_groups"/> -->
                 <primitiveref id="rope_end"/>
                 <componentref id="bubble2"/>
             </children>
@@ -424,7 +438,6 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <!-- <componentref id="tree_groups"/> -->
                 <primitiveref id="rope_end"/>
                 <componentref id="bubble3"/>
             </children>
@@ -439,14 +452,115 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <!-- <componentref id="tree_groups"/> -->
                 <primitiveref id="rope_end"/>
+            </children>
+        </component>
+
+        <component id="fishes">
+            <transformation>
+                <translate x="27" y="15" z="25"/>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="fish1"/>
+                <componentref id="fish2"/>
+                <componentref id="fish3"/>
+            </children>
+        </component>
+
+        <component id="fish1">
+            <transformation>
+                <!-- <translate x="12.5" y="8" z="25"/> -->
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="fish_body"/>
+                <componentref id="fish_tail"/>
+                <componentref id="fish_fin"/>
+            </children>
+        </component>
+
+        <component id="fish2">
+            <transformation>
+                <translate x="2" y="1.5" z="1.3"/>
+                <scale x="1.5" y="1.5" z="1.5"/>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="fish_body"/>
+                <componentref id="fish_tail"/>
+                <componentref id="fish_fin"/>
+            </children>
+        </component>
+
+        <component id="fish3">
+            <transformation>
+                <translate x="1" y="1" z="-2.5"/>
+                <scale x="0.7" y="0.7" z="0.7"/>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="fish_body"/>
+                <componentref id="fish_tail"/>
+                <componentref id="fish_fin"/>
+            </children>
+        </component>
+
+        <component id="fish_fin">
+            <transformation>
+                <translate x="0" y="0.8" z="-1.5"/>
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="fish_fin"/>
+            </children>
+        </component>
+
+         <component id="fish_tail">
+            <transformation>
+                <translate x="0" y="0" z="-0.8"/>
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="skyboxMat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="fish_tail"/>
+            </children>
+        </component>
+
+        <component id="fish_body">
+            <transformation>
+                <scale x="0.5" y="1.5" z="2"/>
+            </transformation>
+            <materials>
+                <material id="body_mat" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="fish_body"/>
             </children>
         </component>
 
         <component id="skybox_comp">
             <transformation>
-                <translate x="-10" y="-5" z="-20"/>
+                <translate x="-12.5" y="-5" z="-25"/>
             </transformation>
             <materials>
                 <material id="skyboxMat" />
@@ -454,8 +568,8 @@
             <texture id="none"/>
             <children>
                 <componentref id="skybox"/>
-                <!-- <componentref id="tree_groups"/> -->
                 <componentref id="bubbles"/>
+                <componentref id="fishes"/>
             </children>
         </component>
 
