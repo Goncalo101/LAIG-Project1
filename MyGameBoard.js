@@ -45,6 +45,21 @@ class MyGameBoard {
         this.updatePositionPieces();
     }
 
+    resetGameBoard() {
+        this.board = [
+            [[5, 6, 7, 8], [0, 0, 0, 0], [0, 0, 0, 0], [1, 2, 3, 4]],
+            [[13, 14, 15, 16], [0, 0, 0, 0], [0, 0, 0, 0], [9, 10, 11, 12]],        
+            [[21, 22, 23, 24], [0, 0, 0, 0], [0, 0, 0, 0], [17, 18, 19, 20]],
+            [[29, 30, 31, 32], [0, 0, 0, 0], [0, 0, 0, 0], [25, 26, 27, 28]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+        ];
+
+        this.updatePositionPieces();
+    }
+
     updatePositionPieces(){
         for (let b = 0; b < 4; b++){
             for (let l = 0; l < 4; l++){
@@ -86,8 +101,12 @@ class MyGameBoard {
             }
         } else if (this.orchestrator.xmlscene.selectedGameType == 2 || 
             (this.orchestrator.xmlscene.selectedGameType == 1 && this.orchestrator.currentPlayer == 1)) {
-                if (this.orchestrator.computerMove != null)
-                    this.makeMoveFromProlog(this.orchestrator.computerMove);
+                if (this.orchestrator.computerMove != null) {
+                    var move = this.makeMoveFromProlog(this.orchestrator.computerMove);
+                    if (move != undefined)
+                        this.orchestrator.moves.push(move);
+                }
+
         } else {
             this.currentLimitTime -= delta;
             if (this.currentLimitTime < 0){
@@ -222,7 +241,7 @@ class MyGameBoard {
             }
         }
 
-        this.makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive);
+        return this.makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive);
     }
 
     makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive){
@@ -231,8 +250,10 @@ class MyGameBoard {
 
         console.log("Winner: " + this.orchestrator.winner);
 
-        if (this.orchestrator.winner != 0)
+        if (this.orchestrator.winner != 0) {
+            this.orchestrator.moviePlayable = true;
             return;
+        }
 
         var toPositionPassive = null, toPositionAgressive = null;
 
@@ -282,6 +303,8 @@ class MyGameBoard {
                 move.pieceBehind = this.pieces[move.idPieceBehind];
                 console.log(move);
                 this.currentMove = move;
+
+                return move;
             } else {
                 console.log("Invalid move");
             }
