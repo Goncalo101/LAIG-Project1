@@ -20,7 +20,6 @@ class MyGameOrchestrator {
 
         this.prolog.requestComputerMove(this.currentPlayer, this.gameboard.board);
         this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
-        
 
         this.lastPiecePassive = 0;
         this.lastTilePassive = 0;
@@ -29,14 +28,28 @@ class MyGameOrchestrator {
 
         this.previousTime = null;
         this.currentTime = null;
+
+        this.moviePlayable = false;
+        this.moviePlaying = false;
     }
 
-    changePlayer(){
+    playMovie() {
+        this.moviePlaying = true;
+        this.gameboard.resetGameBoard();
+        for (var i = 0; i < this.moves.length; ++i) {
+            this.gameboard.currentMove = this.moves[i];
+            this.gameboard.display();
+        }
+
+        this.moviePlaying = false;
+    }
+
+    changePlayer() {
         this.currentPlayer ^= 1;
         document.getElementById('player_turn').innerHTML = this.currentPlayer === 0 ? "Black" : "White";
     }
 
-    changeToPlayer(player){
+    changeToPlayer(player) {
         this.currentPlayer = player;
         document.getElementById('player_turn').innerHTML = this.currentPlayer === 0 ? "Black" : "White";
     }
@@ -52,7 +65,7 @@ class MyGameOrchestrator {
         this.gameboard.update(this.currentTime - this.previousTime);
     }
 
-    undoMove(){
+    undoMove() {
         this.gameboard.undoMove();
     }
 
@@ -67,7 +80,7 @@ class MyGameOrchestrator {
         if (obj instanceof MySphere) {// do something with id knowing it is a piece
             // console.log("Piece with id = " + id + " pressed.");
 
-            if (this.lastTilePassive == 0){
+            if (this.lastTilePassive == 0) {
                 console.log("First Piece with id = " + id + " pressed.");
                 this.lastPiecePassive = id;
             } else {
@@ -78,17 +91,23 @@ class MyGameOrchestrator {
         } else if (obj instanceof MyRectangle) {// do something with id knowing it is a tile
             // console.log("Tile with id = " + id + " pressed.");
 
-            if (this.lastPieceAgressive != 0 ){
+            if (this.lastPieceAgressive != 0) {
                 console.log("Second Tile with id = " + id + " pressed.");
                 this.lastTileAgressive = id;
-                this.gameboard.makeMove(this.lastPiecePassive, this.lastTilePassive, this.lastPieceAgressive, this.lastTileAgressive);
+                var move = this.gameboard.makeMove(this.lastPiecePassive, this.lastTilePassive, this.lastPieceAgressive, this.lastTileAgressive);
+
+                if (move != undefined)
+                    this.moves.push(move);
+
+                console.log("moves:")
+                console.log(this.moves);
 
                 this.lastPiecePassive = 0;
                 this.lastTilePassive = 0;
                 this.lastPieceAgressive = 0;
                 this.lastTileAgressive = 0;
 
-            } else if (this.lastPiecePassive != 0 ){
+            } else if (this.lastPiecePassive != 0) {
                 console.log("First Tile with id = " + id + " pressed.");
                 this.lastTilePassive = id;
             }
@@ -105,8 +124,8 @@ class MyGameOrchestrator {
                         var uniqueId = results[i][1] // get id
                         this.onObjectSelected(obj, uniqueId);
                     }
-                } 
-                
+                }
+
                 // clear results
                 results.splice(0, results.length);
             }

@@ -73,6 +73,11 @@ class XMLscene extends CGFscene {
         this.undoMove = () => {
             this.myOrchestrator.undoMove();
         };
+
+        this.playMovie = () => {
+            if (this.myOrchestrator.moviePlayable)
+                this.myOrchestrator.playMovie();
+        }
     }
 
     reset(){
