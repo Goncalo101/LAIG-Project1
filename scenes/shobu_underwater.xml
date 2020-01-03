@@ -142,10 +142,10 @@
             <cylinder base="1.0" top="1.0" height="6.5" slices="10" stacks="10" />
         </primitive>
         <primitive id="table">
-            <rectangle x1="-8" y1="-8" x2="8" y2="8" />
+            <rectangle x1="-12" y1="-8" x2="12" y2="8" />
         </primitive>
         <primitive id="table_side">
-            <rectangle x1="-8" y1="-0.5" x2="8" y2="0.5" />
+            <rectangle x1="-12" y1="-0.5" x2="12" y2="0.5" />
         </primitive>
     </primitives>
 
