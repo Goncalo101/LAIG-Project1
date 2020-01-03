@@ -7,16 +7,38 @@ class MyGameOrchestrator {
         this.animator = new MyAnimator()
         this.gameboard = new MyGameBoard(this.xmlscene, this);
         this.prolog = new MyPrologInterface(8081, this);
-        this.prolog.requestPossibleMoves(0, this.gameboard.board);
+
         this.moves = []
 
-        this.possibleMoves;
+        this.possibleMoves = [];
 
-        this.lastPiece = 0;
-        this.lastTile = 0;
+        this.winner = 0;
+
+        this.computerMove = null;
+
+        this.currentPlayer = 0;
+
+        this.prolog.requestComputerMove(this.currentPlayer, this.gameboard.board);
+        this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
+        
+
+        this.lastPiecePassive = 0;
+        this.lastTilePassive = 0;
+        this.lastPieceAgressive = 0;
+        this.lastTileAgressive = 0;
 
         this.previousTime = null;
         this.currentTime = null;
+    }
+
+    changePlayer(){
+        this.currentPlayer ^= 1;
+        document.getElementById('player_turn').innerHTML = this.currentPlayer === 0 ? "Black" : "White";
+    }
+
+    changeToPlayer(player){
+        this.currentPlayer = player;
+        document.getElementById('player_turn').innerHTML = this.currentPlayer === 0 ? "Black" : "White";
     }
 
     update(t) {
@@ -43,17 +65,33 @@ class MyGameOrchestrator {
     // These functions may not work out of the box, needs adaptation to our game
     onObjectSelected(obj, id) {
         if (obj instanceof MySphere) {// do something with id knowing it is a piece
-            console.log("Piece with id = " + id + " pressed.");
-            this.lastPiece = id;
-            this.lastTile = 0;
-        } else if (obj instanceof MyRectangle) {// do something with id knowing it is a tile
-            console.log("Tile with id = " + id + " pressed.");
-            this.lastTile = id;
-            if (this.lastPiece != 0){
-                this.gameboard.makeMove(this.lastPiece, this.lastTile);
+            // console.log("Piece with id = " + id + " pressed.");
+
+            if (this.lastTilePassive == 0){
+                console.log("First Piece with id = " + id + " pressed.");
+                this.lastPiecePassive = id;
+            } else {
+                console.log("Second Piece with id = " + id + " pressed.");
+                this.lastPieceAgressive = id;
             }
-            this.lastPiece = 0;
-            this.lastTile = 0;
+
+        } else if (obj instanceof MyRectangle) {// do something with id knowing it is a tile
+            // console.log("Tile with id = " + id + " pressed.");
+
+            if (this.lastPieceAgressive != 0 ){
+                console.log("Second Tile with id = " + id + " pressed.");
+                this.lastTileAgressive = id;
+                this.gameboard.makeMove(this.lastPiecePassive, this.lastTilePassive, this.lastPieceAgressive, this.lastTileAgressive);
+
+                this.lastPiecePassive = 0;
+                this.lastTilePassive = 0;
+                this.lastPieceAgressive = 0;
+                this.lastTileAgressive = 0;
+
+            } else if (this.lastPiecePassive != 0 ){
+                console.log("First Tile with id = " + id + " pressed.");
+                this.lastTilePassive = id;
+            }
         } else {// error ? 
         }
     }
