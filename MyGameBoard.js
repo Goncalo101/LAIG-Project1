@@ -63,6 +63,8 @@ class MyGameBoard {
         this.currentMoveTime = 0;
         this.currentUndoMove = null;
         this.currentLimitTime = 20000;
+
+        this.updatePointsPlayer();
     }
 
     updatePositionPieces(){
