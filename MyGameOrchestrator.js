@@ -30,6 +30,10 @@ class MyGameOrchestrator {
         this.currentTime = null;
 
         this.moviePlaying = false;
+
+        this.rotation = 0;
+        this.currentRotation = 0;
+        this.inProgressRotation = false;
     }
 
     resetGame(){
@@ -86,9 +90,30 @@ class MyGameOrchestrator {
         this.previousTime = this.currentTime;
         this.currentTime = t;
 
-        this.gameboard.update(this.currentTime - this.previousTime);
+        if (!this.inProgressRotation)
+            this.gameboard.update(this.currentTime - this.previousTime);
+        else 
+            this.gameboard.update(0);
 
         this.updateMovie();
+        this.updateRotation();
+    }
+
+    updateRotation(){
+        if (this.inProgressRotation){
+            this.currentRotation += this.currentTime - this.previousTime;
+            if (this.currentRotation >= 1500){
+                this.rotation++;
+                this.currentRotation = 0;
+                this.inProgressRotation = false;
+            }
+        } else {
+            if (this.rotation % 2 == 1 && this.currentPlayer == 0 && (this.xmlscene.selectedGameType == 0 || this.xmlscene.selectedGameType == 1)){
+                this.inProgressRotation = true;
+            } else if (this.rotation % 2 == 0 && this.currentPlayer == 1 && this.xmlscene.selectedGameType == 0) {
+                this.inProgressRotation = true;
+            }
+        }
     }
 
     undoMove() {
@@ -97,9 +122,20 @@ class MyGameOrchestrator {
     }
 
     display() {
+
+        this.xmlscene.pushMatrix();
+
+        let curRot = this.rotation;
+        if (this.currentRotation != 0)
+            curRot += this.currentRotation/1500;
+
+        this.xmlscene.rotate(Math.PI*curRot, 0, 1, 0);
+
         this.graph.displayScene()
         // this.gameboard.display()
         // this.animator.display()
+
+        this.xmlscene.popMatrix();
     }
 
     // These functions may not work out of the box, needs adaptation to our game
