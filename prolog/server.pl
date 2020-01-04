@@ -110,7 +110,7 @@ parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 parse_input(valid_moves(Player, Board), Valid) :- valid_moves(Player, Board, Valid).
 parse_input(game_over(Board), Winner) :- gameOver(Board, Winner).
-parse_input(computer_move(Player, Board), Move) :- get_random_valid_move(Player, Board, Move).
+parse_input(computer_move(Player, Difficulty, Board), Move) :- get_random_valid_move(Player, Board, Move).
 
 
 
