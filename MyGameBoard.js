@@ -58,6 +58,11 @@ class MyGameBoard {
         ];
 
         this.updatePositionPieces();
+
+        this.currentMove = null;
+        this.currentMoveTime = 0;
+        this.currentUndoMove = null;
+        this.currentLimitTime = 20000;
     }
 
     updatePositionPieces(){
@@ -102,9 +107,7 @@ class MyGameBoard {
         } else if (this.orchestrator.xmlscene.selectedGameType == 2 || 
             (this.orchestrator.xmlscene.selectedGameType == 1 && this.orchestrator.currentPlayer == 1)) {
                 if (this.orchestrator.computerMove != null) {
-                    var move = this.makeMoveFromProlog(this.orchestrator.computerMove);
-                    if (move != undefined)
-                        this.orchestrator.moves.push(move);
+                    this.makeMoveFromProlog(this.orchestrator.computerMove);
                 }
 
         } else {
@@ -156,8 +159,8 @@ class MyGameBoard {
             this.pieces[this.currentMove.pieceAgressive.id].setPosition(nbagressive, nlagressive, ncagressive);
 
 
-
-            this.orchestrator.moves.push(this.currentMove);
+            if (!this.orchestrator.moviePlaying)
+                this.orchestrator.moves.push(this.currentMove);
             
             this.orchestrator.computerMove = null;
             this.orchestrator.possibleMoves = [];
@@ -241,7 +244,7 @@ class MyGameBoard {
             }
         }
 
-        return this.makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive);
+        this.makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive);
     }
 
     makeMove(idPiecePassive, idTilePassive, idPieceAgressive, idTileAgressive){
@@ -251,7 +254,6 @@ class MyGameBoard {
         console.log("Winner: " + this.orchestrator.winner);
 
         if (this.orchestrator.winner != 0) {
-            this.orchestrator.moviePlayable = true;
             return;
         }
 
@@ -303,8 +305,6 @@ class MyGameBoard {
                 move.pieceBehind = this.pieces[move.idPieceBehind];
                 console.log(move);
                 this.currentMove = move;
-
-                return move;
             } else {
                 console.log("Invalid move");
             }

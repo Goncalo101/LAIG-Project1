@@ -29,19 +29,43 @@ class MyGameOrchestrator {
         this.previousTime = null;
         this.currentTime = null;
 
-        this.moviePlayable = false;
         this.moviePlaying = false;
+    }
+
+    resetGame(){
+        this.gameboard.resetGameBoard();
+        this.changeToPlayer(0);
+
+        this.moves = []
+        this.possibleMoves = [];
+        this.winner = 0;
+        this.computerMove = null;
+
+        this.prolog.requestComputerMove(this.currentPlayer, this.gameboard.board);
+        this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
+
+        this.moviePlaying = 0;
     }
 
     playMovie() {
         this.moviePlaying = true;
         this.gameboard.resetGameBoard();
-        for (var i = 0; i < this.moves.length; ++i) {
-            this.gameboard.currentMove = this.moves[i];
-            this.gameboard.display();
-        }
 
-        this.moviePlaying = false;
+        this.curMovieMove = 0;
+        this.changeToPlayer(0);
+    }
+
+    updateMovie(){
+        if (this.moviePlaying){
+            if (this.gameboard.currentMove == null){
+                if (this.curMovieMove < this.moves.length){
+                    this.gameboard.currentMove = this.moves[this.curMovieMove++];
+                } else {
+                    this.curMovieMove = 0;
+                    this.moviePlaying = false;
+                }
+            }
+        }
     }
 
     changePlayer() {
@@ -63,9 +87,12 @@ class MyGameOrchestrator {
         this.currentTime = t;
 
         this.gameboard.update(this.currentTime - this.previousTime);
+
+        this.updateMovie();
     }
 
     undoMove() {
+    if (!this.moviePlaying)
         this.gameboard.undoMove();
     }
 
@@ -77,6 +104,7 @@ class MyGameOrchestrator {
 
     // These functions may not work out of the box, needs adaptation to our game
     onObjectSelected(obj, id) {
+        if (!this.moviePlaying)
         if (obj instanceof MySphere) {// do something with id knowing it is a piece
             // console.log("Piece with id = " + id + " pressed.");
 
@@ -94,13 +122,8 @@ class MyGameOrchestrator {
             if (this.lastPieceAgressive != 0) {
                 console.log("Second Tile with id = " + id + " pressed.");
                 this.lastTileAgressive = id;
-                var move = this.gameboard.makeMove(this.lastPiecePassive, this.lastTilePassive, this.lastPieceAgressive, this.lastTileAgressive);
+                this.gameboard.makeMove(this.lastPiecePassive, this.lastTilePassive, this.lastPieceAgressive, this.lastTileAgressive);
 
-                if (move != undefined)
-                    this.moves.push(move);
-
-                console.log("moves:")
-                console.log(this.moves);
 
                 this.lastPiecePassive = 0;
                 this.lastTilePassive = 0;
