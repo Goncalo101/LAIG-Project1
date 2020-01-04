@@ -86,7 +86,7 @@ class MyGameBoard {
         this.currentLimitTime = 20000;
 
         this.orchestrator.prolog.requestWinner(this.board);
-        this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
+        this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.orchestrator.xmlscene.selectedDifficulty, this.board);
         this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
     }
@@ -176,7 +176,7 @@ class MyGameBoard {
             this.orchestrator.changePlayer();
 
             this.orchestrator.prolog.requestWinner(this.board);
-            this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
+            this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.orchestrator.xmlscene.selectedDifficulty, this.board);
             this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         } else if (this.currentUndoMove != null){
@@ -204,7 +204,7 @@ class MyGameBoard {
             this.orchestrator.changeToPlayer(this.currentUndoMove.piecePassive.owner);
 
             this.orchestrator.prolog.requestWinner(this.board);
-            this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.board);
+            this.orchestrator.prolog.requestComputerMove(this.orchestrator.currentPlayer, this.orchestrator.xmlscene.selectedDifficulty, this.board);
             this.orchestrator.prolog.requestPossibleMoves(this.orchestrator.currentPlayer, this.board);
 
         }

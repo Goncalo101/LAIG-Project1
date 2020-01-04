@@ -29,8 +29,8 @@ class MyPrologInterface {
         this.sendRequest(requestString, this.parsePossibleMoves);
     }
 
-    requestComputerMove(Player, Board){
-        let requestString = 'computer_move(' + (Player+1) + ',' +  this.convertBoardToProlog(Board) + ')';
+    requestComputerMove(Player, Difficulty, Board){
+        let requestString = 'computer_move(' + (Player+1) + ',' + Difficulty + ',' +  this.convertBoardToProlog(Board) + ')';
 
         console.log(requestString);
 

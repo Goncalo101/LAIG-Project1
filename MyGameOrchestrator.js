@@ -18,7 +18,7 @@ class MyGameOrchestrator {
 
         this.currentPlayer = 0;
 
-        this.prolog.requestComputerMove(this.currentPlayer, this.gameboard.board);
+        this.prolog.requestComputerMove(this.currentPlayer, this.xmlscene.selectedDifficulty, this.gameboard.board);
         this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
 
         this.lastPiecePassive = 0;
@@ -45,7 +45,7 @@ class MyGameOrchestrator {
         this.winner = 0;
         this.computerMove = null;
 
-        this.prolog.requestComputerMove(this.currentPlayer, this.gameboard.board);
+        this.prolog.requestComputerMove(this.currentPlayer, this.xmlscene.selectedDifficulty, this.gameboard.board);
         this.prolog.requestPossibleMoves(this.currentPlayer, this.gameboard.board);
 
         this.moviePlaying = 0;
@@ -100,18 +100,20 @@ class MyGameOrchestrator {
     }
 
     updateRotation(){
-        if (this.inProgressRotation){
-            this.currentRotation += this.currentTime - this.previousTime;
-            if (this.currentRotation >= 1500){
-                this.rotation++;
-                this.currentRotation = 0;
-                this.inProgressRotation = false;
-            }
-        } else {
-            if (this.rotation % 2 == 1 && this.currentPlayer == 0 && (this.xmlscene.selectedGameType == 0 || this.xmlscene.selectedGameType == 1)){
-                this.inProgressRotation = true;
-            } else if (this.rotation % 2 == 0 && this.currentPlayer == 1 && this.xmlscene.selectedGameType == 0) {
-                this.inProgressRotation = true;
+        if (!this.moviePlaying){
+            if (this.inProgressRotation){
+                this.currentRotation += this.currentTime - this.previousTime;
+                if (this.currentRotation >= 1500){
+                    this.rotation++;
+                    this.currentRotation = 0;
+                    this.inProgressRotation = false;
+                }
+            } else {
+                if (this.rotation % 2 == 1 && this.currentPlayer == 0 && (this.xmlscene.selectedGameType == 0 || this.xmlscene.selectedGameType == 1)){
+                    this.inProgressRotation = true;
+                } else if (this.rotation % 2 == 0 && this.currentPlayer == 1 && this.xmlscene.selectedGameType == 0) {
+                    this.inProgressRotation = true;
+                }
             }
         }
     }
