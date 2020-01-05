@@ -35,6 +35,8 @@ serialInclude(['../lib/CGF.js',
     'MyTile.js',
     'MyMove.js',
     'MyPrologInterface.js',
+    'CGFOBJModel.js',
+    'CGFResourceReader.js',
 
     main = function () {
         // Standard application, scene and interface setup

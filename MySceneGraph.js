@@ -996,7 +996,7 @@ class MySceneGraph {
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
                     grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' &&
                     grandChildren[0].nodeName != 'patch' && grandChildren[0].nodeName != 'cylinder2' && 
-                    grandChildren[0].nodeName != 'gameboard')) {  // reflater
+                    grandChildren[0].nodeName != 'gameboard') && grandChildren[0].nodeName != 'objfile') {  // reflater
                 return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere or torus)"
             }
 
@@ -1004,7 +1004,15 @@ class MySceneGraph {
             var primitiveType = grandChildren[0].nodeName;
 
             // Retrieves the primitive coordinates.
-            if (primitiveType == 'gameboard') {
+
+            if (primitiveType == 'objfile') {
+                var fileName = this.reader.getString(grandChildren[0], 'file')
+                if (fileName == undefined) 
+                    return "unable to parse filename of objfile with ID = " + primitiveId
+
+                this.primitives[primitiveId] = new CGFOBJModel(this.scene, fileName)
+
+            } else if (primitiveType == 'gameboard') {
                 // x1
                 var x1 = this.reader.getFloat(grandChildren[0], 'x1');
                 if (!(x1 != null && !isNaN(x1)))
@@ -1679,6 +1687,7 @@ class MySceneGraph {
 
         node.primitives.forEach(primitive => {
             // if (length_s != undefined && length_t != undefined)
+                if (!(primitive instanceof CGFOBJModel))
                 primitive.updateTexCoords(length_s, length_t);
             primitive.display();
         });
