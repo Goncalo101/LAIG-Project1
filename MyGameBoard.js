@@ -501,7 +501,10 @@ class MyGameBoard {
 
                 vec3.lerp(translationbehind, frombehind, tobehind, this.currentMoveTime/1000.0);
 
-                this.scene.translate(translationbehind[0], translationbehind[1] + 0.5, translationbehind[2]);
+                if (nbbehind >= 4)
+                    this.scene.translate(translationbehind[0], translationbehind[1] + 0.5 + 3*(0.5-Math.abs(0.5-this.currentMoveTime/1000.0)), translationbehind[2]);     
+                else
+                    this.scene.translate(translationbehind[0], translationbehind[1] + 0.5, translationbehind[2]);
                 
                 this.pieces[this.currentMove.pieceBehind.id].display();
 
@@ -570,7 +573,10 @@ class MyGameBoard {
 
                 vec3.lerp(translationbehind, frombehind, tobehind, this.currentMoveTime/1000.0);
 
-                this.scene.translate(translationbehind[0], translationbehind[1] + 0.5, translationbehind[2]);
+                if (nbbehind >= 4)
+                    this.scene.translate(translationbehind[0], translationbehind[1] + 0.5 + 3*(0.5-Math.abs(0.5-this.currentMoveTime/1000.0)), translationbehind[2]);     
+                else
+                    this.scene.translate(translationbehind[0], translationbehind[1] + 0.5, translationbehind[2]);
                 
                 this.pieces[this.currentUndoMove.pieceBehind.id].display();
 
