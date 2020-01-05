@@ -18,14 +18,14 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="1">
-            <location x="9.8" y="11.9" z="10" w="1.0" />
+        <omni id="top_right" enabled="1">
+            <location x="-6" y="10" z="5" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
-        <omni id="niceLight" enabled="1">
-            <location x="5.8" y="5.9" z="5" w="1.0" />
+        <omni id="bottom_left" enabled="1">
+            <location x="6" y="10" z="-5" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
