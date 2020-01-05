@@ -58,7 +58,6 @@ scenes/images/xmas_plate.jpg
 # Object files
 *.o
 *.ko
-*.obj
 *.elf
 
 # Linker output
